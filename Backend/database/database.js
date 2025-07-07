@@ -1,13 +1,22 @@
 const mongoose = require("mongoose");
 
-async function handleDatabase(){
-   try{
-    await  mongoose.connect(process.env.MONGO_DB_URL);
-    console.log("Database connected Successfully");
-    }catch(error){
-        console.log("Error while connecting to database : ",error.message);
-        process.exit(1);
+let isConnected = false;
+
+async function handleDatabase() {
+  if (isConnected) return;
+
+  try {
+    const db = await mongoose.connect(process.env.MONGO_DB_URL);
+
+    isConnected = db.connections[0].readyState === 1;
+
+    if (isConnected) {
+      console.log("MongoDB connected successfully");
     }
+  } catch (error) {
+    console.error("MongoDB connection failed:", error.message);
+    throw error;
+  }
 }
 
-module.exports = {handleDatabase};
+module.exports = { handleDatabase };
