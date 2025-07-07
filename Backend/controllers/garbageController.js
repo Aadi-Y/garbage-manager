@@ -15,11 +15,12 @@ async function handleCreateGarbage(req, res) {
             pincode,
             depositedOn,
             description,
-            status = "Pending"
+            status = "Pending",
+            weight
         } = req.body;
 
-        if (!garbageType || !state || !district || !taluk || !area || !landMark || !pincode || !depositedOn || !description || !status) {
-            res.status(400).json({
+        if (!garbageType || !state || !district || !taluk || !area || !landMark || !pincode || !depositedOn || !description || !status || !weight) {
+            return res.status(400).json({
                 error: true,
                 message: "Please fill all necessary field"
             })
@@ -45,7 +46,8 @@ async function handleCreateGarbage(req, res) {
             pincode,
             depositedOn,
             description,
-            status
+            status,
+            weight,
         }
 
         const garbage = await Garbage.create(garbageDetails);
@@ -172,10 +174,41 @@ async function handleDeleteGarbage(req, res) {
     }
 }
 
+async function handleDisposeStatus(req,res){
+    try{
+        const garbageId = req.params.id;
+
+        const garbage = await Garbage.findById(garbageId);
+
+        if(!garbage){
+            return res.status(404).json({
+                error:true,
+                message:"Garbage not found"
+            })
+        }
+
+        garbage.disposed = !garbage.disposed;
+
+        await garbage.save();
+
+        res.status(201).json({
+            error:false,
+            message:"Garbage disposed status changed"
+        });
+
+    }catch(error){
+        res.status(500).json({
+            error:true,
+            message:error.message
+        })
+    }
+}
+
 module.exports = {
     handleCreateGarbage,
     handleDeleteGarbage,
     handleUpdateGarbage,
     handleGetSingleGarbage,
-    handleGetAllGarbage
+    handleGetAllGarbage,
+    handleDisposeStatus,
 }

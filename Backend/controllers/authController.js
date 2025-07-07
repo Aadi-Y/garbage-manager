@@ -50,7 +50,7 @@ async function handleRegister(req, res) {
             })
         }
 
-        function isUpperCase() {
+        function isUpperCase(word) {
             let firstLetter = word.charAt(0);
             if (firstLetter === firstLetter.toUpperCase()) {
                 return true

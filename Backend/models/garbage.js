@@ -47,6 +47,15 @@ const garbageSchema = new mongoose.Schema({
         type:String,
         enum:["Pending","Approved","Rejected","Scheduled"],
         default:"Pending"
+    },
+    disposed:{
+        type:Boolean,
+        required:true,
+        default:false
+    },
+    weight:{
+        type:String,
+        required:true
     }
 
 },
