@@ -16,6 +16,11 @@ app.use("/api/garbage",garbageRouter);
 app.use("/api/driver",driverRouter);
 app.use("/api/area",areaRouter);
 
+app.get("/",(req,res)=>{
+    res.status(200).json({
+        message:"Welcome to Garbage Management System"
+    })
+})
 
 const PORT = process.env.PORT || 8000
 
