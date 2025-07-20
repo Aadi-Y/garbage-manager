@@ -21,10 +21,10 @@ function Signup() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[100vh] gap-5">
+    <div className="flex flex-col items-center justify-center h-[100vh] gap-5 bg-slate-100">
       <h2 className='text-2xl font-medium text-green-600'>Signup</h2>
       <form onSubmit={handleSubmit}
-      className="w-100 flex flex-col gap-2 px-4 py-5 bg-gray-200 rounded"
+      className="w-100 flex flex-col gap-2 px-4 py-5 bg-white rounded-lg shadow-lg"
       >
         <div>
           <label className='text-[18px]'>Name:</label><br />
@@ -34,7 +34,7 @@ function Signup() {
             value={formData.name}
             onChange={handleChange}
             required
-            className='w-full focus:outline-green-600 rounded p-2 bg-white'
+            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
             placeholder='Enter name'
           />
         </div>
@@ -46,7 +46,7 @@ function Signup() {
             value={formData.email}
             onChange={handleChange}
             required
-            className='w-full focus:outline-green-600 rounded p-2 bg-white'
+            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
             placeholder='Enter email'
           />
         </div>
@@ -58,7 +58,7 @@ function Signup() {
             value={formData.password}
             onChange={handleChange}
             required
-            className='w-full focus:outline-green-600 rounded p-2 bg-white'
+            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
             placeholder='Enter password'
           />
         </div>
@@ -70,7 +70,7 @@ function Signup() {
         </div>
         <button type="submit"
         disabled={isLoading}
-        className='border w-full outline-none focus:border-green-600 rounded p-2 bg-green-600  text-white hover:bg-green-500 cursor-pointer transition-all duration-200'
+        className='border w-full outline-none focus:border-green-600 rounded-lg p-2 bg-green-500  text-white hover:bg-green-600 cursor-pointer transition-all duration-200'
         >{isLoading ? "Signing up" : "Signup"}</button>
       </form>
     </div>

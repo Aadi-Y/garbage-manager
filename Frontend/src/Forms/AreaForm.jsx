@@ -7,13 +7,13 @@ const AreaForm = ({ onSubmit }) => {
     areaPincode: '',
     assignedDrivers: []
   });
-  const [error,setError] = useState(null);
-  const [isLoading,setIsLoading] = useState(false);
- 
+
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // For multi-select (assignedDrivers)
     if (name === 'assignedDrivers') {
       const selectedOptions = Array.from(e.target.selectedOptions).map(opt => opt.value);
       setFormData(prev => ({ ...prev, assignedDrivers: selectedOptions }));
@@ -22,49 +22,61 @@ const AreaForm = ({ onSubmit }) => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Convert pincode to number
-    const areaData = {
-      ...formData,
-      areaPincode: Number(formData.areaPincode)
-    };
-    console.log('Submitting Area:', areaData);
-    if (onSubmit) onSubmit(areaData); // For API or parent component usage
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const areaData = {
+        ...formData,
+        areaPincode: Number(formData.areaPincode)
+      };
+      console.log('Submitting Area:', areaData);
+      if (onSubmit) await onSubmit(areaData);
+    } catch (err) {
+      setError('Failed to create area. Try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div>
-      <h2 className='font-medium text-center text-[1.2rem] text-green-600'>Create Area</h2>
-      <form onSubmit={handleSubmit}
-      className="flex flex-col gap-2"
-      >
+      <h2 className="text-xl font-semibold text-center text-green-600 mb-4">Create New Area</h2>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Area Name */}
         <div>
-          <label>Area Name:</label><br />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Area Name</label>
           <input
             type="text"
             name="areaName"
             value={formData.areaName}
             onChange={handleChange}
             required
-            placeholder='Enter name'
-            className='w-full bg-white focus:outline-green-600 p-2 rounded'
+            placeholder="Enter area name"
+            className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
+
+        {/* Area Location */}
         <div>
-          <label>Area Location:</label><br />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Area Location</label>
           <input
             type="text"
             name="areaLocation"
             value={formData.areaLocation}
             onChange={handleChange}
             required
-            placeholder='Enter location'
-            className='w-full bg-white focus:outline-green-600 p-2 rounded'
+            placeholder="Enter area location"
+            className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
           />
         </div>
+
+        {/* Area Pincode */}
         <div>
-          <label>Area Pincode:</label><br />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Area Pincode</label>
           <input
             type="number"
             name="areaPincode"
@@ -72,47 +84,42 @@ const AreaForm = ({ onSubmit }) => {
             onChange={handleChange}
             required
             placeholder="Enter pincode"
-            className='w-full bg-white focus:outline-green-600 p-2 rounded'
+            className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-green-500"
           />
         </div>
+
+        {/* Assigned Drivers */}
         <div>
-          <label>Assigned Drivers (Select Multiple):</label><br />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Assigned Drivers</label>
           <select
             name="assignedDrivers"
             multiple
             value={formData.assignedDrivers}
             onChange={handleChange}
-            className='w-full rounded focus:outline-green-600'
+            className="w-full border border-gray-300 rounded-lg p-2 h-32 bg-white focus:outline-none focus:ring-1 focus:ring-green-500"
           >
-            {/* Replace these options with real driver data fetched from API */}
-            <option value="driverId1"
-            className='border p-2 rounded bg-white'
-            >Driver 1</option>
-            <option value="driverId2"
-            className='border p-2 rounded bg-white'
-            >Driver 2</option>
-            <option value="driverId3"
-            className='border p-2 rounded bg-white focus:outline-green-600'
-            >Driver 3</option>
-            <option value="driverId3"
-            className='border p-2 rounded bg-white focus:outline-green-600'
-            >Driver 3</option>
-            <option value="driverId3"
-            className='border p-2 rounded bg-white focus:outline-green-600'
-            >Driver 3</option>
+            <option value="driverId1">Driver 1</option>
+            <option value="driverId2">Driver 2</option>
+            <option value="driverId3">Driver 3</option>
           </select>
+          <p className="text-xs text-gray-400 mt-1">Hold Ctrl (Cmd on Mac) to select multiple</p>
         </div>
 
-        <div>
-          <p className='text-red-500'>
-            {error}
-          </p>
-        </div>
+        {/* Error Message */}
+        {error && <p className="text-sm text-red-600">{error}</p>}
 
-        <button type="submit"
-        className="bg-green-500 w-full p-2 rounded cursor-pointer"
-        disabled={isLoading}
-        >{isLoading ? "Creating Area" : "Create Area"}</button>
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isLoading}
+          className={`w-full p-2 rounded-lg text-white font-medium ${
+            isLoading
+              ? 'bg-green-400 cursor-not-allowed'
+              : 'bg-green-600 hover:bg-green-700'
+          } transition duration-150`}
+        >
+          {isLoading ? "Creating Area..." : "Create Area"}
+        </button>
       </form>
     </div>
   );

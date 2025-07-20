@@ -39,7 +39,7 @@ function GarbageForm ({ onSubmit }) {
   };
 
   return (
-    <div>
+    <div className=''>
       <h2 className='text-green-700 text-center font-medium text-[1.2rem]'>Submit Garbage Request</h2>
       <form 
       className='flex flex-col gap-2'
@@ -52,7 +52,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.user}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder='Enter User ID'
           />
         </div>
@@ -64,7 +64,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.garbageType}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
           >
             <option value="">Select</option>
             <option value="Organic">Organic</option>
@@ -83,7 +83,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.state}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder='Enter State'
           />
         </div>
@@ -96,7 +96,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.district}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder="Enter District"
           />
         </div>
@@ -109,7 +109,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.taluk}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder="Enter Taluk"
           />
         </div>
@@ -122,7 +122,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.area}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder="Enter Area"
           />
         </div>
@@ -135,7 +135,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.landMark}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder='Enter Landmark'
           />
         </div>
@@ -148,7 +148,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.pincode}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder="Enter Pincode"
           />
         </div>
@@ -161,7 +161,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.depositedOn}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder="Enter Deposited date"
           />
         </div>
@@ -173,7 +173,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.description}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder='Enter Discription'
           />
         </div>
@@ -184,7 +184,7 @@ function GarbageForm ({ onSubmit }) {
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
           >
             <option value="Pending">Pending</option>
             <option value="Approved">Approved</option>
@@ -200,7 +200,7 @@ function GarbageForm ({ onSubmit }) {
             name="disposed"
             checked={formData.disposed}
             onChange={handleChange}
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none bg-white'
           />
         </div>
 
@@ -212,7 +212,7 @@ function GarbageForm ({ onSubmit }) {
             value={formData.weight}
             onChange={handleChange}
             required
-            className='w-full rounded p-2 focus:outline-green-600 bg-white'
+            className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder='Enter weight'
           />
         </div>
@@ -222,7 +222,7 @@ function GarbageForm ({ onSubmit }) {
         </div>
 
         <button 
-        className='w-full rounded p-2 cursor-pointer bg-green-500 hover:bg-green-600'
+        className='w-full rounded-lg p-2 cursor-pointer bg-green-500 hover:bg-green-600'
         type="submit">Submit Garbage</button>
       </form>
     </div>

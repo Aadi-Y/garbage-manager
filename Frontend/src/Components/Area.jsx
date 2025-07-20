@@ -1,15 +1,32 @@
 import Modal from "react-modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AreaForm from "../Forms/AreaForm";
 import { IoClose } from "react-icons/io5";
 import { FaPen } from "react-icons/fa6";
-import { IoMdTrash } from "react-icons/io";
-function Area() {
-  const [openModal, setOpenModal] = useState(true);
+import { FaTrash } from "react-icons/fa";
+import { FaAddressCard } from "react-icons/fa";
+import { FaUserGroup } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
+
+function Area({ roles }) {
+  const [openModal, setOpenModal] = useState(false);
+  const [role, setRole] = useState(null);
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
   }
+
+  function handleRoles() {
+    if (roles) {
+      setRole(roles);
+      return;
+    }
+    setRole("admin");
+  }
+
+  useEffect(() => {
+    handleRoles;
+  }, [role]);
 
   return (
     <>
@@ -18,74 +35,100 @@ function Area() {
         onRequestClose={handleCloseModal}
         style={{
           overlay: {
-            background: "rgba(0,0,0,0.5)",
+            background: "rgba(0, 0, 0, 0.4)",
+            backdropFilter: "blur(4px)",
           },
           content: {
-            width: "500px",
-            height: "auto",
-            borderRadius: "5px",
-            position: "relative",
-            overflowY: "auto",
+            background: "rgba(255, 255, 255, 0.9)",
+            borderRadius: "16px",
+            border: "none",
+            width: "90%",
+            maxWidth: "500px",
             margin: "auto",
-            background: "#e5e7eb",
-            zIndex: "1000px",
+            padding: "2rem",
+            position: "relative",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+            overflow: "auto",
           },
         }}
       >
-        <AreaForm />
-        <IoClose
+        <button
           onClick={handleCloseModal}
-          className="absolute top-5 right-2 text-[1.3rem] cursor-pointer text-gray-500"
-        />
+          className="absolute top-4 right-4 text-gray-600 hover:text-black transition text-2xl"
+        >
+          <IoClose />
+        </button>
+        <AreaForm />
       </Modal>
 
-      <section className="p-5  bg-gray-100 h-[100vh] ">
-        <h1 className="font-medium text-center text-[1.2rem] mb-10">Area List</h1>
-        <section className="bg-white w-100 rounded flex flex-col gap-2 p-3">
-          <div className="flex  justify-between">
-            <h1 className="font-medium ">Area 1</h1>
-            <h2>ID : 123498</h2>
-            <div>
-              <p>Jun 16 2025</p>
-            </div>
+      <section className="min-h-screen bg-gradient-to-br from-slate-100 to-white mt-5">
+        <h1 className="text-[1.2rem] font-semibold text-center text-slate-800 mb-8 pt-10">
+          Area Overview
+        </h1>
+
+        <div className="bg-white rounded-2xl shadow-lg p-6 w-100 space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl font-semibold text-slate-800">Area 1</h2>
+            <div className="text-sm text-slate-500">ID: 123498</div>
+            <div className="text-sm text-slate-500">📅 Jun 16, 2025</div>
           </div>
-          <div className="flex justify-between">
-            <div className="flex flex-col">
-              <h1 className="underline decoration-gray-500">Address : </h1>
-              <i className="text-[15px]">Boomanur</i>
-              <i className="text-[15px]">Near Kolathur</i>
-              <i className="text-[15px]">636303</i>
-            </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <h1 className="underline decoration-gray-500">
+              <h3 className="text-slate-600 font-medium mb-1 flex items-center gap-2">
+                <span>
+                  <FaAddressCard />
+                </span>{" "}
+                Address
+              </h3>
+              <p className="text-slate-700 text-sm">Boomanur</p>
+              <p className="text-slate-700 text-sm">Near Kolathur</p>
+              <p className="text-slate-700 text-sm">636303</p>
+            </div>
+
+            <div>
+              <h3 className="text-slate-600 font-medium mb-1 flex items-center gap-2">
+                <span>
+                  <FaUserGroup />
+                </span>{" "}
                 Assigned Drivers
-              </h1>
-              <ul>
+              </h3>
+              <ul className="list-disc list-inside text-slate-700 text-sm">
                 <li>Driver 1</li>
                 <li>Driver 2</li>
               </ul>
             </div>
           </div>
 
-          <div className="flex items-end justify-end gap-2">
-            <button className="bg-rose-500 p-2 rounded text-white hover:bg-rose-600 cursor-pointer">
-              <FaPen/>
-            </button>
-            <button className="bg-blue-400 p-2 rounded text-white hover:bg-blue-500 cursor-pointer">
-              <IoMdTrash/>
-            </button>
-          </div>
-        </section>
+          {role === "admin" && (
+            <div className="flex justify-end gap-4 pt-2">
+              <button
+                className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md"
+                aria-label="Edit"
+              >
+                <FaPen />
+                <span>Edit</span>
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md"
+                aria-label="Delete"
+              >
+                <FaTrash />
+                <span>Delete</span>
+              </button>
+            </div>
+          )}
+        </div>
       </section>
 
-      <div>
+      {role === "admin" && (
         <button
-          className="border p-2 rounded bg-green-500 border-none hover:bg-green-600 text-white fixed bottom-5 right-5 z-0 cursor-pointer"
           onClick={handleCloseModal}
+          className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow-lg transition-all text-sm font-medium tracking-wide flex items-center gap-2"
         >
-          ADD
+          <FaPlus className="text-[15px]" /> <span>Area</span>
         </button>
-      </div>
+      )}
     </>
   );
 }
