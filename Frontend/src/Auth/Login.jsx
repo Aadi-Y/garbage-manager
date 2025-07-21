@@ -11,7 +11,13 @@ function Login() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    try{
+      
+    }catch(error){
+      if(error && error.message){
+        console.error(error.message);
+      }
+    }
     console.log('Logging in with:', formData);
   };
 

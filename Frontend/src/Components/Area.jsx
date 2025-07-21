@@ -8,25 +8,12 @@ import { FaAddressCard } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 
-function Area({ roles }) {
+function Area({ personRole }) {
   const [openModal, setOpenModal] = useState(false);
-  const [role, setRole] = useState(null);
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
   }
-
-  function handleRoles() {
-    if (roles) {
-      setRole(roles);
-      return;
-    }
-    setRole("admin");
-  }
-
-  useEffect(() => {
-    handleRoles;
-  }, [role]);
 
   return (
     <>
@@ -100,7 +87,7 @@ function Area({ roles }) {
             </div>
           </div>
 
-          {role === "admin" && (
+          {personRole === "admin" && (
             <div className="flex justify-end gap-4 pt-2">
               <button
                 className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md"
@@ -121,7 +108,7 @@ function Area({ roles }) {
         </div>
       </section>
 
-      {role === "admin" && (
+      {personRole === "admin" && (
         <button
           onClick={handleCloseModal}
           className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow-lg transition-all text-sm font-medium tracking-wide flex items-center gap-2"

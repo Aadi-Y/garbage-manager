@@ -43,9 +43,9 @@ function Admin() {
 
         {/* Content Section */}
         <section className="ml-70 flex-1 p-5">
-          {activeTab === "Area" && <Area />}
-          {activeTab === "Garbage" && <Garbage roles={roles}/>}
-          {activeTab === "Driver" && <Driver />}
+          {activeTab === "Area" && <Area personRole={"admin"}/>}
+          {activeTab === "Garbage" && <Garbage personRole={"garbage"}/>}
+          {activeTab === "Driver" && <Driver personRole={"driver"}/>}
         </section>
       </section>
     </section>
