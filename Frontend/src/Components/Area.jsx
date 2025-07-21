@@ -49,7 +49,7 @@ function Area({ personRole }) {
       </Modal>
 
       <section className="min-h-screen bg-gradient-to-br from-slate-100 to-white mt-5">
-        <h1 className="text-[1.2rem] font-semibold text-center text-slate-800 mb-8 pt-10">
+        <h1 className="text-[1.2rem] font-semibold text-center text-slate-800 mb-3 pt-15">
           Area Overview
         </h1>
 
@@ -90,14 +90,14 @@ function Area({ personRole }) {
           {personRole === "admin" && (
             <div className="flex justify-end gap-4 pt-2">
               <button
-                className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md"
+                className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                 aria-label="Edit"
               >
                 <FaPen />
                 <span>Edit</span>
               </button>
               <button
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md"
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                 aria-label="Delete"
               >
                 <FaTrash />
@@ -111,7 +111,7 @@ function Area({ personRole }) {
       {personRole === "admin" && (
         <button
           onClick={handleCloseModal}
-          className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow-lg transition-all text-sm font-medium tracking-wide flex items-center gap-2"
+          className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow-lg transition-all text-sm font-medium tracking-wide flex items-center gap-2 cursor-pointer"
         >
           <FaPlus className="text-[15px]" /> <span>Area</span>
         </button>

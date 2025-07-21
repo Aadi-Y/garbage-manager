@@ -1,7 +1,7 @@
 import Modal from "react-modal";
 import GarbageForm from "../Forms/GarbageForm";
 import { IoClose } from "react-icons/io5";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { FaPen } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { FaWeight } from "react-icons/fa";
@@ -9,17 +9,27 @@ import { FaPlus } from "react-icons/fa6";
 import { AboutContext } from "../About/AboutState";
 import { useContext } from "react";
 import About from "../About/AboutGarbage";
+import { CgCalendarDates } from "react-icons/cg";
+import { FaAddressCard } from "react-icons/fa6";
 
 function Garbage({ personRole }) {
   const [openModal1, setOpenModal] = useState(false);
   const [selectDriver, setSelectDriver] = useState(null);
+  const [role, setRole] = useState("user");
   const { toggleModal } = useContext(AboutContext);
-  const context = useContext(AboutContext);
-  console.log(context.openModal);
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
   }
+
+  console.log(personRole);
+
+  useEffect(() => {
+    if (personRole) {
+      setRole(personRole);
+    }
+  }, [personRole]);
+
 
 
   function handleSelectDriver(event) {
@@ -28,6 +38,19 @@ function Garbage({ personRole }) {
     setSelectDriver(event.target.value);
   }
 
+  function handleGetGarbages(){
+    try{
+
+    }catch(error){
+      if(error?.message){
+        console.error("Error : " + error.message);
+      }
+    }
+  }
+
+  useEffect(()=>{
+    handleGetGarbages();
+  },[])
 
   return (
     <>
@@ -62,7 +85,7 @@ function Garbage({ personRole }) {
       </Modal>
       <section className={personRole === "user" ? `mt-15` : `mt-10`}>
         <section className="bg-slate-100 h-[100vh] pt-10">
-          <h1 className="font-semibold text-[1.2rem] text-center">
+          <h1 className="font-semibold text-[1.2rem] text-center mb-2">
             Garbage list
           </h1>
           <section className="p-2">
@@ -72,7 +95,8 @@ function Garbage({ personRole }) {
             >
               <div className="flex justify-between items-center py-2">
                 <p className="font-medium text-[1.2rem]">Organic</p>
-                <p className="text-[15px] text-gray-600">
+                <p className="text-[15px] text-gray-600 flex items-center gap-1">
+                  <span><CgCalendarDates/></span>{" "}
                   Created on : Jan 25 2025
                 </p>
               </div>
@@ -87,27 +111,33 @@ function Garbage({ personRole }) {
               <div>
                 <p className="flex items-center justify-start gap-2">
                   <span>
-                    <FaWeight />
+                    <FaWeight className="text-gray-600"/>
                   </span>
                   20 Kgs
                 </p>
               </div>
               <div>
-                <p>It is actually a organic waste</p>
+                <p>It is actually a organic waste....</p>
               </div>
 
-              {personRole === "user" && (
+              {role === "user" && (
                 <div className="flex justify-end gap-4 pt-2 mt-2">
                   <button
-                    className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md "
+                    className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                     aria-label="Edit"
+                    onClick={(event)=>{
+                    event.stopPropagation()
+                  }}
                   >
                     <FaPen />
                     <span>Edit</span>
                   </button>
                   <button
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md"
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                     aria-label="Delete"
+                    onClick={(event)=>{
+                    event.stopPropagation()
+                  }}
                   >
                     <FaTrash />
                     <span>Delete</span>
@@ -115,9 +145,13 @@ function Garbage({ personRole }) {
                 </div>
               )}
 
-              {personRole === "driver" && (
+              {role === "driver" && (
                 <div className="flex justify-end">
-                  <button className="border p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200">
+                  <button className="border p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200 shadow-md"
+                  onClick={(event)=>{
+                    event.stopPropagation()
+                  }}
+                  >
                     Completed
                   </button>
                 </div>
@@ -127,11 +161,11 @@ function Garbage({ personRole }) {
         </section>
       </section>
 
-      {personRole === "user" && (
+      {role === "user" && (
         <div>
           <button
             onClick={handleCloseModal}
-            className="bg-green-500 hover:bg-green-600 transition-all duration-200 p-2 text-white rounded-lg fixed bottom-5 right-5 cursor-pointer flex items-center gap-2"
+            className="bg-green-500 hover:bg-green-600 transition-all duration-200 p-2 text-white rounded-lg fixed bottom-5 right-5 cursor-pointer flex items-center gap-2 shadow-md"
           >
             <span>
               <FaPlus />

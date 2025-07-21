@@ -6,7 +6,6 @@ import Driver from "../Components/Driver";
 
 function Admin() {
   const [activeTab, setActiveTab] = useState("Area");
-  const [roles,setRoles] = useState("admin");
 
   return (
     <section className="flex flex-col">
@@ -44,8 +43,8 @@ function Admin() {
         {/* Content Section */}
         <section className="ml-70 flex-1 p-5">
           {activeTab === "Area" && <Area personRole={"admin"}/>}
-          {activeTab === "Garbage" && <Garbage personRole={"garbage"}/>}
-          {activeTab === "Driver" && <Driver personRole={"driver"}/>}
+          {activeTab === "Garbage" && <Garbage personRole={"admin"}/>}
+          {activeTab === "Driver" && <Driver personRole={"admin"}/>}
         </section>
       </section>
     </section>

@@ -3,6 +3,9 @@ import Modal from "react-modal";
 import { IoClose } from "react-icons/io5";
 import { AboutContext } from "./AboutState";
 import { useContext } from "react";
+import { FaAddressCard } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
+import { CgCalendarDates } from "react-icons/cg";
 function About() {
   const {openModal,toggleModal} = useContext(AboutContext);
 
@@ -32,7 +35,7 @@ function About() {
         <section>
           <div className="flex items-center justify-between py-3">
             <h1 className="font-medium text-[1.3rem]">Organic</h1>
-            <h2>Created on: Jan 25 2025</h2>
+            <h2 className="flex items-center gap-1"> <span><CgCalendarDates /></span>Created on: Jan 25 2025</h2>
           </div>
           <div>
             <p className=""><span className="font-medium">Deposited on:</span> Jan 24 2025</p>
@@ -52,7 +55,7 @@ function About() {
           </div>
 
           <div className="mt-5">
-            <h1 className="font-medium">Assigned Driver</h1>
+            <h1 className="font-medium flex items-center gap-2"><span><FaUser className="text-gray-600"/></span>Assigned Driver</h1>
             <div className="px-2">
               <p>
                 <span>Name: </span>Aadithya
@@ -64,8 +67,8 @@ function About() {
           </div>
 
           <div className="border p-2 rounded-md bg-slate-100 shadow-md border-none mt-5">
-            <h1 className="font-medium underline">Address : </h1>
-            <p className="flex flex-col px-3">
+            <h1 className="font-medium underline flex items-center gap-2"><span><FaAddressCard className="text-gray-600"/></span>Address : </h1>
+            <p className="flex flex-col px-9">
               <i>Boomanur,</i>
               <i>Kolathur,</i>
               <i>Mettur,</i>

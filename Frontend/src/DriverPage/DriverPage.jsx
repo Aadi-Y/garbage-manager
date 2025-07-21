@@ -4,7 +4,6 @@ import Area from "../Components/Area"
 import Driver from "../Components/Driver"
 function DriverPage() {
   const [activeTab, setActiveTab] = useState("area");
-  const [roles, setRoles] = useState("driver");
 
   function handleActiveTab(component){
     setActiveTab(component);
@@ -32,9 +31,9 @@ function DriverPage() {
           </nav>
 
           <section className="ml-80">
-            {activeTab === "garbage" && <Garbage roles={roles}/>}
-            {activeTab === "driver" && <Driver roles={roles}/>}
-            {activeTab === "area" && <Area/>}
+            {activeTab === "garbage" && <Garbage personRole={"driver"}/>}
+            {activeTab === "driver" && <Driver personRole={"driver"}/>}
+            {activeTab === "area" && <Area personRole={"driver"}/>}
           </section>
         </section>
       </section>

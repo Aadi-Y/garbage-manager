@@ -19,6 +19,26 @@ function Driver() {
     setOpenModal((prev) => !prev);
   }
 
+  function handleEditDriver(event){
+    try{
+      
+    }catch(error){
+      if(error && error.message){
+        console.error(error.message);
+      }
+    }
+  }
+
+  function handleDeleteDriver(event){
+    try{
+      
+    }catch(error){
+      if(error && error.message){
+        console.error(error.message);
+      }
+    }
+  }
+
   return (
     <>
       <Modal
@@ -86,6 +106,10 @@ function Driver() {
               <button
                 className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                 aria-label="Edit"
+                onClick={(event)=>{
+                  event.stopPropagation();
+                  handleEditDriver()
+                }}
               >
                 <FaPen />
                 <span>Edit</span>
@@ -93,13 +117,15 @@ function Driver() {
               <button
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                 aria-label="Delete"
+                onClick={(event)=>{
+                  event.stopPropagation()
+                  handleDeleteDriver()
+                }}
               >
                 <FaTrash />
                 <span>Delete</span>
               </button>
             </div>
-
-            
 
           </section>
         </section>

@@ -5,6 +5,8 @@ import { IoClose } from "react-icons/io5";
 import { MdOutlineConfirmationNumber } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaTruck } from "react-icons/fa";
+import { CgCalendarDates } from "react-icons/cg";
+import { FaAddressCard } from "react-icons/fa6";
 
 function AboutDriver() {
   const { openModal, toggleModal } = useContext(AboutContext);
@@ -56,7 +58,7 @@ function AboutDriver() {
                   <h1 className="font-medium text-[1.2rem]">Aadithya Y</h1>
                   <p>Driver Id : 12345</p>
                 </div>
-                <p>Joined on : Jan 25 2025</p>
+                <p className="flex items-center gap-2"><span><CgCalendarDates /></span>Joined on : Jan 25 2025</p>
               </div>
               <div className="border p-2 w-40 rounded bg-green-500 text-center border-none shadow-md text-white">
                 <p>Available</p>
@@ -80,7 +82,7 @@ function AboutDriver() {
             </div>
 
             <div>
-              <h1 className="font-medium underline">Address : </h1>
+              <h1 className="font-medium underline flex items-center gap-2"><span><FaAddressCard className="text-gray-600"/></span>Address : </h1>
               <div className="flex px-2">
                 <ul>
                   <li>
@@ -138,7 +140,7 @@ function AboutDriver() {
               </p>
               <p className="flex items-center gap-2">
                 <span>
-                  <FaTruck />
+                  <FaTruck className="text-gray-600"/>
                 </span>
                 Lorry
               </p>
