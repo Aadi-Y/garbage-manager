@@ -6,15 +6,20 @@ const authRouter = require("./routes/authRoute");
 const garbageRouter = require("./routes/garbageRoute");
 const driverRouter = require("./routes/driverRoute");
 const areaRouter = require("./routes/areaRoute");
+const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
+app.use(cors({
+    origin:"*"
+}));
 
 app.use("/api/auth", authRouter);
 app.use("/api/garbage", garbageRouter);
 app.use("/api/driver", driverRouter);
 app.use("/api/area", areaRouter);
+
 
 app.get("/", (req, res) => {
     res.status(200).json({

@@ -6,7 +6,8 @@ import { useContext } from "react";
 import { FaAddressCard } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { CgCalendarDates } from "react-icons/cg";
-function About() {
+import moment from "moment";
+function About({garbage}) {
   const {openModal,toggleModal} = useContext(AboutContext);
 
 //   function handleCloseModal() {
@@ -20,8 +21,8 @@ function About() {
         onRequestClose={toggleModal}
         style={{
           overlay: {
-            background: "rgba(0,0,0,0.5)",
-            backdropFilter: "blur(4px)",
+            background: "rgba(0,0,0,0.3)",
+            backdropFilter: "blur(2px)",
           },
           content: {
             width: "500px",
@@ -29,28 +30,28 @@ function About() {
             borderRadius: "2rem",
             margin:"auto",
             overflowY:"auto",
+            zIndex:"1000"
           },
         }}
       >
         <section>
           <div className="flex items-center justify-between py-3">
-            <h1 className="font-medium text-[1.3rem]">Organic</h1>
-            <h2 className="flex items-center gap-1"> <span><CgCalendarDates /></span>Created on: Jan 25 2025</h2>
+            <h1 className="font-medium text-[1.3rem]">{garbage?.garbageType}</h1>
+            <h2 className="flex items-center gap-1"> <span><CgCalendarDates /></span>Created on: {moment(garbage?.createdAt).format("DD-MMM-YYYY")}</h2>
           </div>
           <div>
-            <p className=""><span className="font-medium">Deposited on:</span> Jan 24 2025</p>
+            <p className=""><span className="font-medium">Deposited on:</span> {moment(garbage?.deposited).format("DD-MMM-YYYY")}</p>
           </div>
           <div>
-            <p><span className="font-medium">Status:</span> Pending</p>
+            <p><span className="font-medium">Status:</span> {garbage?.status}</p>
           </div>
           <div>
-            <p><span className="font-medium">Weight:</span> 20kg</p>
+            <p><span className="font-medium">Weight:</span> {garbage?.weight}</p>
           </div>
           <div>
             <h1 className="font-medium mt-5">Description: </h1>
             <p className="pl-2">
-              It is actually a organic waste that got deposited on boomanur near
-              kolathur
+              {garbage?.description}
             </p>
           </div>
 
@@ -69,11 +70,12 @@ function About() {
           <div className="border p-2 rounded-md bg-slate-100 shadow-md border-none mt-5">
             <h1 className="font-medium underline flex items-center gap-2"><span><FaAddressCard className="text-gray-600"/></span>Address : </h1>
             <p className="flex flex-col px-9">
-              <i>Boomanur,</i>
-              <i>Kolathur,</i>
-              <i>Mettur,</i>
-              <i>Salem,</i>
-              <i>636303</i>
+              <i>{garbage?.area},</i>
+              <i>{garbage?.landMark},</i>
+              <i>{garbage?.taluk},</i>
+              <i>{garbage?.district},</i>
+              <i>{garbage?.state},</i>
+              <i>{garbage?.pincode}</i>
             </p>
           </div>
         </section>

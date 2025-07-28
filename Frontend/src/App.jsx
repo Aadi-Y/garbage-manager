@@ -10,7 +10,8 @@ import "./App.css";
 import Navbar from "./Navbar/Navbar";
 import Admin from "./Admin/Admin";
 import DriverPage from "./DriverPage/DriverPage";
-
+import Modal from "react-modal";
+Modal.setAppElement("#root");
 function App() {
   return (
     <>

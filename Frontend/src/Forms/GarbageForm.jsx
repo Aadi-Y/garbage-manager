@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { FaPen } from "react-icons/fa6";
 import { IoMdTrash } from "react-icons/io";
+import {axiosInstance} from "../Utility/axiosInstance";
+import {apiPath} from "../Utility/apiPath";
 
-function GarbageForm ({ onSubmit }) {
+function GarbageForm ({ handleCloseModal,garbage,type,handleGetGarbages }) {
   const [formData, setFormData] = useState({
-    user: '', 
-    garbageType: '',
-    state: '',
-    district: '',
-    taluk: '',
-    area: '',
-    landMark: '',
-    pincode: '',
-    depositedOn: '',
-    description: '',
-    status: 'Pending',
-    disposed: false,
-    weight: ''
+    garbageType: garbage?.garbageType || "",
+    state: garbage?.state || "",
+    district: garbage?.district || "",
+    taluk: garbage?.taluk || "",
+    area: garbage?.area || "",
+    landMark: garbage?.landMark || "",
+    pincode: garbage?.pincode || "",
+    depositedOn: garbage?.depositedOn || "",
+    description: garbage?.description || "",
+    status: garbage?.status || 'Pending',
+    disposed: garbage?.disposed || false,
+    weight: garbage?.weight || 0
   });
 
   const [error,setError] = useState(null);
@@ -28,23 +29,60 @@ function GarbageForm ({ onSubmit }) {
     setFormData(prev => ({ ...prev, [name]: val }));
   };
 
-  const handleSubmit = (e) => {
+  //Adding the garbage
+  const handleGarbageCreation = async(e) => {
     e.preventDefault();
     const garbageData = {
       ...formData,
       pincode: Number(formData.pincode)
     };
     console.log('Submitting Garbage:', garbageData);
-    if (onSubmit) onSubmit(garbageData);
+    // if (onSubmit) onSubmit(garbageData);
+    try{
+      const response = await axiosInstance.post(apiPath.GARBAGE.CREATE,garbageData);
+
+      console.log(response);
+      if(response && response.data){
+        alert(response.data.message);
+        handleCloseModal();
+      }
+    }catch(error){
+      if(error && error.message){
+        consol.error(error.message);
+      }
+    }
   };
+
+  //Editing the garbage
+  const handleGarbageUpdation = async(e) =>{
+    e.preventDefault();
+    const garbageData = {
+      ...formData,
+      pincode: Number(formData.pincode)
+    };
+    try{
+      const response = await axiosInstance.put(apiPath.GARBAGE.UPDATE(garbage?._id),garbageData);
+
+      console.log(response);
+      if(response && response.data){
+        handleCloseModal();
+        alert(response.data.message);
+        handleGetGarbages();
+      }
+    }catch(error){
+      if(error?.message){
+        console.log("Error in Updation : ",error.message);
+      }
+    }
+  }
 
   return (
     <div className=''>
       <h2 className='text-green-700 text-center font-medium text-[1.2rem]'>Submit Garbage Request</h2>
       <form 
       className='flex flex-col gap-2'
-      onSubmit={handleSubmit}>
-        <div>
+      onSubmit={type === "edit" ? handleGarbageUpdation : handleGarbageCreation}>
+        {/* <div>
           <label>User ID:</label><br />
           <input
             type="text"
@@ -55,7 +93,7 @@ function GarbageForm ({ onSubmit }) {
             className='w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white'
             placeholder='Enter User ID'
           />
-        </div>
+        </div> */}
 
         <div>
           <label>Garbage Type:</label><br />
@@ -193,7 +231,7 @@ function GarbageForm ({ onSubmit }) {
           </select>
         </div>
 
-        <div className='flex'>
+        {/* <div className='flex'>
           <label>Disposed:</label><br />
           <input
             type="checkbox"
@@ -202,7 +240,7 @@ function GarbageForm ({ onSubmit }) {
             onChange={handleChange}
             className='w-full rounded-lg p-2 outline-none bg-white'
           />
-        </div>
+        </div> */}
 
         <div>
           <label>Weight (kg):</label><br />
@@ -223,7 +261,7 @@ function GarbageForm ({ onSubmit }) {
 
         <button 
         className='w-full rounded-lg p-2 cursor-pointer bg-green-500 hover:bg-green-600'
-        type="submit">Submit Garbage</button>
+        type="submit">{type === "edit" ? "Edit Garbage" : "Submit Garbage"}</button>
       </form>
     </div>
   );

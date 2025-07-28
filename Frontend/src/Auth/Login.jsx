@@ -1,18 +1,38 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import {apiPath} from "../Utility/apiPath";
+import { axiosInstance } from '../Utility/axiosInstance';
+import {useNavigate} from "react-router-dom";
 
 function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error,setError] = useState(null);
   const [isLoading,setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  function handleNavigate(role){
+    if(role === "User"){
+      navigate("/garbage");
+    }else if(role === "Admin"){
+      navigate("/admin");
+    }else {
+      navigate("/driverPage");
+    }
+  }
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
+    e.preventDefault();
     try{
-      
+      const response = await axiosInstance.post(apiPath.AUTH.LOGIN,formData);
+      if(response && response.data){
+        alert(response.data.message);
+        handleNavigate(response.data.user.role);
+        localStorage.setItem("token",response.data.token);
+      }
     }catch(error){
       if(error && error.message){
         console.error(error.message);

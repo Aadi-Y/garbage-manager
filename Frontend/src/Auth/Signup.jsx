@@ -1,23 +1,50 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import {apiPath} from "../Utility/apiPath";
+import { axiosInstance } from '../Utility/axiosInstance';
+import {useNavigate} from "react-router-dom";
 
 function Signup() {
   const [formData, setFormData] = useState({
-    name: '',
+    userName: '',
     email: '',
-    password: ''
+    password: '',
+    role:''
   });
   const [error,setError] = useState(null);
   const [isLoading,setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  function handleNavigate(role){
+    if(role === "User"){
+      navigate("/garbage");
+    }else if(role === "Admin"){
+      navigate("/admin");
+    }else {
+      navigate("/driverPage");
+    }
+  }
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log('Signing up with:', formData);
-    // Add signup logic here (e.g., API call)
+    try{
+      const response = await axiosInstance.post(apiPath.AUTH.REGISTER,formData);
+      if(response.data){
+        alert(response.data.message);
+        handleNavigate(response.data.user.role);
+        localStorage.setItem("token",response.data.token);
+      }
+
+      console.log(response);
+    }catch(error){
+      console.log(error);
+    }
   };
 
   return (
@@ -30,12 +57,12 @@ function Signup() {
           <label className='text-[18px]'>Name:</label><br />
           <input
             type="text"
-            name="name"
-            value={formData.name}
+            name="userName"
+            value={formData.userName}
             onChange={handleChange}
             required
             className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
-            placeholder='Enter name'
+            placeholder='Enter name' 
           />
         </div>
         <div>
@@ -60,6 +87,18 @@ function Signup() {
             required
             className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
             placeholder='Enter password'
+          />
+        </div>
+        <div>
+          <label className='text-[18px]'>Role:</label><br />
+          <input
+            type="text"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            required
+            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
+            placeholder='Enter Role'
           />
         </div>
         <div>
