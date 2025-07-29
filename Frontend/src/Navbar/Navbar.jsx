@@ -1,7 +1,34 @@
 import { BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import logo from "../assets/EcoClean-logo-transparent.png";
+import {axiosInstance} from "../Utility/axiosInstance";
+import {apiPath} from "../Utility/apiPath";
+import {useState, useEffect} from "react";
+
 function Navbar() {
+  const [userData,setUserData] = useState({});
+
+  const handleGetProfile = async() => {
+    try{
+      const response = await axiosInstance.get(apiPath.AUTH.GET_PROFILE);
+
+      console.log(response);
+
+      if(response && response.data){
+        setUserData(response.data.user);
+      }
+    }catch(error){
+      if(error?.message){
+        console.log(error.message);
+      }
+    }
+  }
+
+  useEffect(()=>{
+    handleGetProfile();
+  },[])
+
+  console.log(userData);
   return (
     <>
       <section className="w-[100vw] border bg-white shadow-lg border-none fixed top-0">

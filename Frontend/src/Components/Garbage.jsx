@@ -14,6 +14,7 @@ import { FaAddressCard } from "react-icons/fa6";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
 import moment from "moment";
+import { trimDescription } from "../Helper/helper";
 
 function Garbage({ personRole }) {
   const [openModal1, setOpenModal] = useState(false);
@@ -21,6 +22,7 @@ function Garbage({ personRole }) {
   const [role, setRole] = useState("user");
   const [garbages, setGarbages] = useState([]);
   const { toggleModal } = useContext(AboutContext);
+  const [garbageDescription,setGarbageDescription] = useState("");
 
   const [openDetails, setOpenDetails] = useState({
     isShown: false,
@@ -37,8 +39,6 @@ function Garbage({ personRole }) {
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
   }
-
-  console.log(personRole);
 
   useEffect(() => {
     if (personRole) {
@@ -64,18 +64,6 @@ function Garbage({ personRole }) {
     } catch (error) {
       if (error?.message) {
         console.error("Error in creation : " + error.message);
-      }
-    }
-  }
-
-  async function handleEditGarbage(id) {
-    try {
-      const response = await axiosInstance.put(apiPath.GARBAGE.UPDATE(id));
-
-      console.log(response);
-    } catch (error) {
-      if (error?.message) {
-        console.log("Error in updation : " + error.message);
       }
     }
   }
@@ -125,6 +113,13 @@ function Garbage({ personRole }) {
     handleViewDetails(item);
     toggleModal();
   }
+
+  function handleGarbageDescription(description){
+    setGarbageDescription(description);
+    const newDescription = trimDescription(description);
+    
+  }
+
 
   return (
     <>

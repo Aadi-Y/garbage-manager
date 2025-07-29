@@ -43,6 +43,11 @@ const driverSchema = new mongoose.Schema({
     currentLocation:{
         type:String,
         required:true
+    },
+    driverId:{
+        type:String,
+        required:true,
+        unique:true
     }
 })
 

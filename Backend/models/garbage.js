@@ -56,6 +56,11 @@ const garbageSchema = new mongoose.Schema({
     weight:{
         type:String,
         required:true
+    },
+    garbageId:{
+        type:String,
+        required:true,
+        unique:true
     }
 
 },

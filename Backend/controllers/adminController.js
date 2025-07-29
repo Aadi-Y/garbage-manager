@@ -157,7 +157,7 @@ async function handleRemoveGarbage(req, res) {
 // @access Private
 async function handleCreateArea(req, res) {
     try {
-        const { areaName, areaLocation, areaPincode } = req.body;
+        const { areaName, areaLocation, areaPincode,assignedDrivers } = req.body;
 
         if (!areaName) {
             return res.status(400).json({
@@ -177,6 +177,13 @@ async function handleCreateArea(req, res) {
             return res.status(400).json({
                 error: true,
                 message: "Please enter pincode"
+            })
+        }
+
+        if (assignedDrivers?.length === 0) {
+            return res.status(400).json({
+                error: true,
+                message: "Please assign driver"
             })
         }
 

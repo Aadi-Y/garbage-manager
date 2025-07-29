@@ -13,6 +13,7 @@ import { AboutContext } from "../About/AboutState";
 
 function Driver() {
   const [openModal1, setOpenModal] = useState(false);
+  const [drivers,setDrivers] = useState([]);
   const { toggleModal } = useContext(AboutContext);
 
   function handleCloseModal() {
@@ -28,7 +29,6 @@ function Driver() {
       }
     }
   }
-
   function handleDeleteDriver(event){
     try{
       
@@ -61,7 +61,7 @@ function Driver() {
           },
         }}
       >
-        <DriverForm />
+        <DriverForm handleCloseModal={handleCloseModal}/>
         <IoClose
           className="absolute top-5 right-2 text-2xl cursor-pointer"
           onClick={handleCloseModal}

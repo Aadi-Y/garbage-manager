@@ -13,9 +13,17 @@ const areaSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    areaId:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    // assignedDrivers:[{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:"Driver"
+    // }],
     assignedDrivers:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Driver"
+        type:String,
     }],
 })
 

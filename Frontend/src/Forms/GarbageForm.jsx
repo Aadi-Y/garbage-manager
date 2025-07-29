@@ -81,7 +81,7 @@ function GarbageForm ({ handleCloseModal,garbage,type,handleGetGarbages }) {
       <h2 className='text-green-700 text-center font-medium text-[1.2rem]'>Submit Garbage Request</h2>
       <form 
       className='flex flex-col gap-2'
-      onSubmit={type === "edit" ? handleGarbageUpdation : handleGarbageCreation}>
+      onSubmit={handleGarbageCreation}>
         {/* <div>
           <label>User ID:</label><br />
           <input

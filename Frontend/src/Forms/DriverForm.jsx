@@ -1,19 +1,23 @@
 import React, { useState } from "react";
+import { axiosInstance } from "../Utility/axiosInstance";
+import { apiPath } from "../Utility/apiPath";
 
-function DriverForm({ onSubmit }) {
+function DriverForm({ driver,type,handleCloseModal }) {
   const [formData, setFormData] = useState({
-    user: "", // You may populate this from a user list
-    name: "",
-    phoneNumber: "",
-    age: "",
-    licence: "",
-    aadharId: "",
-    vehicle: "",
-    vehicleNumber: "",
-    availability: false,
-    currentLocation: "",
-    assignedRequest: [], // You may populate this later from request data
+    name: driver?.name || "",
+    phoneNumber: driver?.phoneNumber || "",
+    age: driver?.age || "",
+    licence: driver?.licence || "",
+    aadharId: driver?.aadharId || "",
+    vehicle: driver?.vehicle || "",
+    vehicleNumber: driver?.vehicleNumber || "",
+    availability: driver?.availability || false,
+    currentLocation: driver?.currentLocation || "",
+    assignedRequest: driver?.assignedRequest || [], 
   });
+
+  const [error,setError] = useState("");
+  const [isLoading,setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -25,7 +29,7 @@ function DriverForm({ onSubmit }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleDriverCreation = async (e) => {
     e.preventDefault();
     const driverData = {
       ...formData,
@@ -33,8 +37,37 @@ function DriverForm({ onSubmit }) {
       aadharId: Number(formData.aadharId),
     };
     console.log("Submitting Driver:", driverData);
-    if (onSubmit) onSubmit(driverData); // Call parent handler if provided
+    setError(null);
+    setIsLoading(true);
+    try{
+      const response = await axiosInstance.post(apiPath.DRIVER.CREATE,driverData);
+
+      console.log(response);
+      if(response && response.data){
+        alert(response.data.message);
+        setIsLoading(false);
+        handleCloseModal();
+      }
+    }catch(error){
+      if(error && error.message){
+        setError(error.message);
+        console.error(error.message);
+      }
+    }finally{
+      setError(null);
+      setIsLoading(false);
+    }
   };
+
+  const handleDriverUpdation = (e) =>{
+    e.preventDefault();
+    const driverData = {
+      ...formData,
+      phoneNumber: Number(formData.phoneNumber),
+      aadharId: Number(formData.aadharId),
+    };
+    
+  }
 
   return (
     <div>
@@ -42,7 +75,7 @@ function DriverForm({ onSubmit }) {
         Create Driver
       </h2>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={type === "edit" ? handleDriverUpdation : handleDriverCreation}
         className="px-5 py-6 rounded flex flex-col gap-3"
       >
         {/* <div>
@@ -174,7 +207,7 @@ function DriverForm({ onSubmit }) {
         {/* Assigned Requests can be handled separately if needed */}
         <button
           type="submit"
-          className="p-2 rounded bg-green-500 hover:bg-green-600 w-full"
+          className="p-2 rounded bg-green-500 hover:bg-green-600 w-full cursor-pointer text-white"
         >
           Create Driver
         </button>

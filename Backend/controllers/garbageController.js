@@ -1,4 +1,13 @@
 const Garbage = require("../models/garbage");
+const generateId = require("../helper/generateID");
+
+async function handleAssignId(id = generateId()) {
+    const existing = await Garbage.findOne({ garbageId: id });
+    if (existing) {
+        return await handleAssignId(garbageId);
+    }
+    return id;
+}
 
 // @desc It is used to create a new garbage
 // @route POST /api/garbage/createGarbage
@@ -48,9 +57,11 @@ async function handleCreateGarbage(req, res) {
             description,
             status,
             weight,
+            garbageId : await handleAssignId(),
         }
 
         const garbage = await Garbage.create(garbageDetails);
+        
 
         res.status(201).json({
             error: false,
@@ -97,11 +108,12 @@ async function handleGetAllGarbage(req, res) {
     try {
 
         const garbages = await Garbage.find({});
+        
 
         res.status(200).json({
             error: false,
             message: "All garbage based on user is fetched",
-            garbages
+            garbages,
         });
     }
     catch (error) {
@@ -174,16 +186,16 @@ async function handleDeleteGarbage(req, res) {
     }
 }
 
-async function handleDisposeStatus(req,res){
-    try{
+async function handleDisposeStatus(req, res) {
+    try {
         const garbageId = req.params.id;
 
         const garbage = await Garbage.findById(garbageId);
 
-        if(!garbage){
+        if (!garbage) {
             return res.status(404).json({
-                error:true,
-                message:"Garbage not found"
+                error: true,
+                message: "Garbage not found"
             })
         }
 
@@ -192,14 +204,14 @@ async function handleDisposeStatus(req,res){
         await garbage.save();
 
         res.status(201).json({
-            error:false,
-            message:"Garbage disposed status changed"
+            error: false,
+            message: "Garbage disposed status changed"
         });
 
-    }catch(error){
+    } catch (error) {
         res.status(500).json({
-            error:true,
-            message:error.message
+            error: true,
+            message: error.message
         })
     }
 }

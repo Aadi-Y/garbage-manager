@@ -7,13 +7,44 @@ import { FaTrash } from "react-icons/fa";
 import { FaAddressCard } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
+import { axiosInstance } from "../Utility/axiosInstance";
+import { apiPath } from "../Utility/apiPath";
+import moment from "moment";
 
 function Area({ personRole }) {
   const [openModal, setOpenModal] = useState(false);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [areas, setAreas] = useState([]);
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
   }
+
+  async function handleGetAreaForAdmin() {
+    setError(null);
+    setIsLoading(true);
+    try {
+      const response = await axiosInstance.get(apiPath.AREA.GET);
+
+      if (response && response.data) {
+        setAreas(response?.data?.area);
+        setIsLoading(false);
+      }
+
+      console.log(response);
+    } catch (error) {
+      if (error && error.message) {
+        console.error(error.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    handleGetAreaForAdmin();
+  }, []);
 
   return (
     <>
@@ -45,7 +76,7 @@ function Area({ personRole }) {
         >
           <IoClose />
         </button>
-        <AreaForm />
+        <AreaForm handleCloseModal={handleCloseModal} />
       </Modal>
 
       <section className="min-h-screen bg-gradient-to-br from-slate-100 to-white mt-5">
@@ -106,6 +137,68 @@ function Area({ personRole }) {
             </div>
           )}
         </div>
+
+        <section>
+          {areas &&
+            areas.length > 0 &&
+            areas.map((area,index) => (
+              <div className="bg-white rounded-2xl shadow-lg p-6 w-100 space-y-6" key={index}>
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-semibold text-slate-800">
+                    Area {index}
+                  </h2>
+                  <div className="text-sm text-slate-500">ID: 123498</div>
+                  <div className="text-sm text-slate-500">📅 {moment(area?.createdAt).format("DD-MMM-YYYY")}</div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <h3 className="text-slate-600 font-medium mb-1 flex items-center gap-2">
+                      <span>
+                        <FaAddressCard />
+                      </span>{" "}
+                      Address
+                    </h3>
+                    <p className="text-slate-700 text-sm">{area?.areaName}</p>
+                    <p className="text-slate-700 text-sm">{area?.areaLocation}</p>
+                    <p className="text-slate-700 text-sm">{area?.pincode}</p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-slate-600 font-medium mb-1 flex items-center gap-2">
+                      <span>
+                        <FaUserGroup />
+                      </span>{" "}
+                      Assigned Drivers
+                    </h3>
+                    <ul className="list-disc list-inside text-slate-700 text-sm">
+                      <li>Driver 1</li>
+                      <li>Driver 2</li>
+                    </ul>
+                  </div>
+                </div>
+
+                {personRole === "admin" && (
+                  <div className="flex justify-end gap-4 pt-2">
+                    <button
+                      className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                      aria-label="Edit"
+                    >
+                      <FaPen />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                      aria-label="Delete"
+                    >
+                      <FaTrash />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+        </section>
       </section>
 
       {personRole === "admin" && (

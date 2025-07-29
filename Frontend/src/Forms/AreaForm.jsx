@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import {axiosInstance} from "../Utility/axiosInstance";
+import { apiPath } from '../Utility/apiPath';
 
-const AreaForm = ({ onSubmit }) => {
+const AreaForm = ({ onSubmit,type,handleCloseModal }) => {
   const [formData, setFormData] = useState({
     areaName: '',
     areaLocation: '',
@@ -22,7 +24,7 @@ const AreaForm = ({ onSubmit }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleAreaCreation = async (e) => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
@@ -33,19 +35,39 @@ const AreaForm = ({ onSubmit }) => {
         areaPincode: Number(formData.areaPincode)
       };
       console.log('Submitting Area:', areaData);
-      if (onSubmit) await onSubmit(areaData);
+      const response = await axiosInstance.post(apiPath.AREA.CREATE,formData);
+      console.log(response);
+      if(response && response.data){
+        setIsLoading(false);
+        alert(response.data.message);
+        handleCloseModal();
+      }
     } catch (err) {
-      setError('Failed to create area. Try again.');
+      setError("Failed to create area. Try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleAreaUpdation = async(e) => {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+
+    try{
+
+    }catch(error){
+      setError("Failed to update area. Try again.");
+    }finally{
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div>
       <h2 className="text-xl font-semibold text-center text-green-600 mb-4">Create New Area</h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={type === "edit" ? handleAreaUpdation : handleAreaCreation} className="space-y-4">
         {/* Area Name */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Area Name</label>

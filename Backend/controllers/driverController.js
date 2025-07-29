@@ -1,5 +1,14 @@
 const Driver = require("../models/driver");
 const Garbage = require("../models/garbage");
+const generateId = require("../helper/generateID");
+
+async function handleAssignId(id = generateId()){
+    const existing = await Driver.findOne({driverId:id});
+    if(existing){
+        return await handleAssignId(id);
+    }
+    return id;
+}
 
 // @desc It is used to create a new driver
 // @routes POST /api/driver/createDriver
@@ -37,7 +46,8 @@ async function handleCreateDriver(req, res) {
             vehicle,
             vehicleNumber,
             availability,
-            currentLocation
+            currentLocation,
+            driverId:await handleAssignId()
         }
 
         const driver = await Driver.create(driverDetails);
