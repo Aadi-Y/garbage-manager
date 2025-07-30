@@ -29,6 +29,15 @@ async function handleCreateDriver(req, res) {
 
         const { id } = req.user;
 
+        const existing = await Driver.findOne({userId:id});
+
+        if(existing){
+            return res.status(400).json({
+                error:true,
+                message:"Driver is aldready exist, Please login"
+            })
+        }
+
         if (!name || !phoneNumber || !age || !licence || !aadharId || !vehicle || !vehicleNumber || !availability || !currentLocation) {
             return res.status(400).json({
                 error: true,
@@ -37,7 +46,7 @@ async function handleCreateDriver(req, res) {
         }
 
         const driverDetails = {
-            user: id,
+            userId: id,
             name,
             phoneNumber,
             age,
@@ -72,10 +81,9 @@ async function handleGetDriver(req, res) {
     try {
         const { id } = req.user;
 
-        const driver = await Driver.find({ user: id })
+        const driver = await Driver.findOne({ userId: id })
             .populate("user")
             .exec();
-        ;
 
         if (!driver) {
             return res.status(404).json({
@@ -106,7 +114,7 @@ async function handleUpdateDriver(req, res) {
         const { id } = req.user;
         const driverId = req.params.id;
 
-        const driver = await Driver.findByIdAndUpdate({ _id: driverId, user: id }, { ...req.body });
+        const driver = await Driver.findByIdAndUpdate({ _id: driverId, userId: id }, { ...req.body });
 
         if (!driver) {
             return res.status(404).json({
@@ -138,7 +146,7 @@ async function handleDeleteDriver(req, res) {
         const { id } = req.user;
         const driverId = req.params.id;
 
-        const driver = await Driver.findByIdAndDelete({ _id: driverId, user: id });
+        const driver = await Driver.findByIdAndDelete({ _id: driverId, userId: id });
 
         if (!driver) {
             return res.status(404).json({

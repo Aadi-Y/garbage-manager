@@ -30,9 +30,9 @@ function Garbage({ personRole }) {
     data: null,
   });
 
-  const [openEdit, setOpenEdit] = useState({
+  const [openAddEdit, setOpenAddEdit] = useState({
     isShown: false,
-    type: "edit",
+    type: "add",
     data: null,
   });
 
@@ -76,14 +76,14 @@ function Garbage({ personRole }) {
   function handleViewDetails(item) {
     setOpenDetails({
       isShown: true,
-      type: "view",
+      type: "edit",
       data: item,
     });
   }
 
   //Modal for Edit Garbage
   function handleEditGarbage(item) {
-    setOpenEdit({
+    setOpenAddEdit({
       isShown: true,
       type: "edit",
       data: item,
@@ -148,8 +148,8 @@ function Garbage({ personRole }) {
       >
         <GarbageForm
           handleCloseModal={handleCloseModal}
-          garbage={openEdit.data}
-          type={openEdit.type}
+          garbage={openAddEdit.data}
+          type={openAddEdit.type}
           handleGetGarbages={handleGetGarbages}
         />
         <IoClose

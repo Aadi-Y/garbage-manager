@@ -16,7 +16,7 @@ export const apiPath = {
     },
     DRIVER:{
         CREATE:"/api/driver/createDriver",
-        GET_ALL:"/api/driver/getDriver",
+        GET_DRIVER:"/api/driver/getDriver",
         UPDATE:(id)=>`/api/driver/updateDriver/${id}`,
         DELETE:(id)=>`/api/driver/deleteDriver/${id}`
     },
@@ -24,8 +24,8 @@ export const apiPath = {
         CREATE:"/api/area/createArea",
         GET:"/api/area/getArea",
         GET_FOR_DRIVER:"/api/area/getAreaForDriver",
-        UPDATE:(id)=>`/api/area/updateDriver/${id}`,
-        DELETE:(id)=>`/api/area/deleteDriver/${id}`,
+        UPDATE:(id)=>`/api/area/updateArea/${id}`,
+        DELETE:(id)=>`/api/area/deleteArea/${id}`,
         ASSIGN_DRIVER:(id)=>`/api/area/assignDriver/${id}`,
         REMOVE_DRIVER:(id)=>`/api/area/removeDriver/${id}`,
         ASSIGN_GARBAGE:(id)=>`/api/area/assignGarbage/${id}`,

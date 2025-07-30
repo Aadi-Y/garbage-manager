@@ -16,6 +16,11 @@ function Area({ personRole }) {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [areas, setAreas] = useState([]);
+  const [openAddEdit,setOpenAddEdit] = useState({
+    isShown:false,
+    type:"add",
+    data:null
+  });
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
@@ -40,6 +45,27 @@ function Area({ personRole }) {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  async function handleAreaDelete(id){
+    try{
+      const response = await axiosInstance.delete(apiPath.AREA.DELETE(id));
+
+      console.log(response);
+    }catch(error){
+      if(error?.message){
+        console.log(error.message);
+      }
+    }
+  }
+
+  function handleAreaEdit(item){
+    setOpenAddEdit({
+      isShown:true,
+      type:"edit",
+      data:item
+    })
+    handleCloseModal();
   }
 
   useEffect(() => {
@@ -76,7 +102,7 @@ function Area({ personRole }) {
         >
           <IoClose />
         </button>
-        <AreaForm handleCloseModal={handleCloseModal} />
+        <AreaForm handleCloseModal={handleCloseModal} type={openAddEdit.type} area={openAddEdit.data}/>
       </Modal>
 
       <section className="min-h-screen bg-gradient-to-br from-slate-100 to-white mt-5">
@@ -84,7 +110,7 @@ function Area({ personRole }) {
           Area Overview
         </h1>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 w-100 space-y-6">
+        {/* <div className="bg-white rounded-2xl shadow-lg p-6 w-100 space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold text-slate-800">Area 1</h2>
             <div className="text-sm text-slate-500">ID: 123498</div>
@@ -123,6 +149,7 @@ function Area({ personRole }) {
               <button
                 className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                 aria-label="Edit"
+                
               >
                 <FaPen />
                 <span>Edit</span>
@@ -136,9 +163,9 @@ function Area({ personRole }) {
               </button>
             </div>
           )}
-        </div>
+        </div> */}
 
-        <section>
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {areas &&
             areas.length > 0 &&
             areas.map((area,index) => (
@@ -147,7 +174,7 @@ function Area({ personRole }) {
                   <h2 className="text-xl font-semibold text-slate-800">
                     Area {index}
                   </h2>
-                  <div className="text-sm text-slate-500">ID: 123498</div>
+                  <div className="text-sm text-slate-500">ID: {area.areaId}</div>
                   <div className="text-sm text-slate-500">📅 {moment(area?.createdAt).format("DD-MMM-YYYY")}</div>
                 </div>
 
@@ -183,6 +210,7 @@ function Area({ personRole }) {
                     <button
                       className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                       aria-label="Edit"
+                      onClick={()=>handleAreaEdit(area)}
                     >
                       <FaPen />
                       <span>Edit</span>
@@ -190,6 +218,7 @@ function Area({ personRole }) {
                     <button
                       className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                       aria-label="Delete"
+                      onClick={()=>handleAreaDelete(area._id)}
                     >
                       <FaTrash />
                       <span>Delete</span>

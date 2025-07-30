@@ -10,6 +10,9 @@ import AboutDriver from "../About/AboutDriver";
 import { FaPlus } from "react-icons/fa6";
 import { useContext } from "react";
 import { AboutContext } from "../About/AboutState";
+import { axiosInstance } from "../Utility/axiosInstance";
+import { apiPath } from "../Utility/apiPath";
+import {useEffect} from "react";
 
 function Driver() {
   const [openModal1, setOpenModal] = useState(false);
@@ -18,6 +21,18 @@ function Driver() {
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
+  }
+
+  async function handleGetDriver(){
+    try{
+      const response = await axiosInstance.get(apiPath.DRIVER.GET_DRIVER);
+      console.log(response);
+
+    }catch(error){
+      if(error?.message){
+        console.log(error?.message);
+      }
+    }
   }
 
   function handleEditDriver(event){
@@ -38,6 +53,10 @@ function Driver() {
       }
     }
   }
+
+  useEffect(()=>{
+    handleGetDriver();
+  },[]);
 
   return (
     <>

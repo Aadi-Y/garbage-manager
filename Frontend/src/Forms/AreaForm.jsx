@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import {axiosInstance} from "../Utility/axiosInstance";
 import { apiPath } from '../Utility/apiPath';
 
-const AreaForm = ({ onSubmit,type,handleCloseModal }) => {
+const AreaForm = ({type,handleCloseModal,area }) => {
   const [formData, setFormData] = useState({
-    areaName: '',
-    areaLocation: '',
-    areaPincode: '',
-    assignedDrivers: []
+    areaName: area?.areaName || '',
+    areaLocation: area?.areaLocation || '',
+    areaPincode: area?.areaPincode || '',
+    assignedDrivers: area?.assignedDrivers || []
   });
 
   const [error, setError] = useState(null);
@@ -54,8 +54,17 @@ const AreaForm = ({ onSubmit,type,handleCloseModal }) => {
     setError(null);
     setIsLoading(true);
 
-    try{
+    const areaData = {
+        ...formData,
+        areaPincode: Number(formData.areaPincode)
+      };
 
+    try{
+      const response = await axiosInstance.put(apiPath.AREA.UPDATE(area._id),areaData);
+      console.log(response);
+      if(response && response.data){
+        handleCloseModal();
+      }
     }catch(error){
       setError("Failed to update area. Try again.");
     }finally{
@@ -140,7 +149,7 @@ const AreaForm = ({ onSubmit,type,handleCloseModal }) => {
               : 'bg-green-600 hover:bg-green-700'
           } transition duration-150`}
         >
-          {isLoading ? "Creating Area..." : "Create Area"}
+          {type === "edit" ? (isLoading ? "Updating Area..." : "Update Area") : (isLoading ? "Creating Area..." : "Create Area")}
         </button>
       </form>
     </div>

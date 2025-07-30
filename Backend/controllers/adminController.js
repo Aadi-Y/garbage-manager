@@ -1,5 +1,14 @@
 const Area = require("../models/area");
 const Driver = require("../models/driver");
+const generateId = require("../helper/generateID");
+
+async function handleAssignId(id = generateId()){
+    const existing = await Area.findOne({areaId:id});
+    if(existing){
+        return await handleAssignDriver(id);
+    }
+    return id;
+}
 
 // @decr It is used to Assign Garbages to driver
 // @route POST /api/garbage/assignGarbage;
@@ -186,10 +195,13 @@ async function handleCreateArea(req, res) {
                 message: "Please assign driver"
             })
         }
-
-        const area = await Area.create({
-            ...req.body
-        })
+        const newArea = {
+            areaName,
+            areaLocation,
+            areaPincode,
+            areaId:await handleAssignId()
+        }
+        const area = await Area.create(newArea);
 
         res.status(201).json({
             error: false,
