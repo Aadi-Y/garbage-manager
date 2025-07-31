@@ -7,11 +7,18 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { FaTruck } from "react-icons/fa";
 import { CgCalendarDates } from "react-icons/cg";
 import { FaAddressCard } from "react-icons/fa6";
+import moment from "moment";
+import { useEffect } from "react";
 
-function AboutDriver() {
+function AboutDriver({ driver }) {
   const { openModal, toggleModal } = useContext(AboutContext);
   const [garbages, setGarbages] = useState([]);
   const [error, setError] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [role, setRole] = useState("admin");
+
+  console.log(openModal);
+  console.log(toggleModal);
 
   function handleSelectGarbage(event) {
     const selectedGarbage = event.target.value;
@@ -27,15 +34,29 @@ function AboutDriver() {
     }
   }
 
+  function handleDriver() {
+    setAddress(driver?.currectLocation);
+  }
+
+  useEffect(() => {
+    handleDriver();
+  }, [driver]);
+
+  function testing(e) {
+    e.preventDefault();
+    // console.log("testing");
+    toggleModal;
+  }
+
   return (
     <>
       <section>
         <Modal
           isOpen={openModal}
-          onRequestClose={toggleModal}
+          onRequestClose={{}}
           style={{
             overlay: {
-              background: "rbga(0,0,0,0.4)",
+              background: "rgba(0,0,0,0.4)",
               backdropFilter: "blur(4px)",
             },
             content: {
@@ -55,69 +76,88 @@ function AboutDriver() {
             <div>
               <div className="flex justify-between mb-5">
                 <div>
-                  <h1 className="font-medium text-[1.2rem]">Aadithya Y</h1>
-                  <p>Driver Id : 12345</p>
+                  <h1 className="font-medium text-[1.2rem]">
+                    {driver?.userId.userName || ""}
+                  </h1>
+                  <p>Driver Id : {driver?.driverId || ""}</p>
                 </div>
-                <p className="flex items-center gap-2"><span><CgCalendarDates /></span>Joined on : Jan 25 2025</p>
+                <p className="flex items-center gap-2">
+                  <span>
+                    <CgCalendarDates />
+                  </span>
+                  Joined on :{" "}
+                  {moment(driver?.userId.createdAt).format("DD MMM YYYY")}
+                </p>
               </div>
-              <div className="border p-2 w-40 rounded bg-green-500 text-center border-none shadow-md text-white">
-                <p>Available</p>
+              <div className={`border p-2 w-40 rounded text-center border-none shadow-md text-white ${driver?.availability ? "bg-green-600" : "bg-red-600"}`}>
+                <p>{driver?.availability ? "Available" : "Unavailable"}</p>
               </div>
             </div>
 
             <div>
               <h1 className="font-medium underline">Personal Info</h1>
               <p>
-                <span className="font-medium">Phone : </span>9898989898
+                <span className="font-medium">Phone : </span>
+                {driver?.phoneNumber || ""}
               </p>
               <p>
-                <span className="font-medium">Age :</span> 40 years old
+                <span className="font-medium">Age :</span> {driver?.age || 0}{" "}
+                years old
               </p>
               <p>
-                <span className="font-medium">Adhaar Id : </span>1400 2300 4500
+                <span className="font-medium">Adhaar Id : </span>
+                {driver?.aadharId || ""}
               </p>
               <p>
-                <span className="font-medium">Licence Id : </span>23904586
+                <span className="font-medium">Licence Id : </span>
+                {driver?.licence || ""}
               </p>
             </div>
 
             <div>
-              <h1 className="font-medium underline flex items-center gap-2"><span><FaAddressCard className="text-gray-600"/></span>Address : </h1>
+              <h1 className="font-medium underline flex items-center gap-2">
+                <span>
+                  <FaAddressCard className="text-gray-600" />
+                </span>
+                Address :{" "}
+              </h1>
               <div className="flex px-2">
                 <ul>
                   <li>
-                    <i className="text-gray-800">Boomanur</i>
+                    <i className="text-gray-800">{driver?.currentLocation}</i>
                   </li>
-                  <li>
+                  {/* <li>
                     <i className="text-gray-800">636303</i>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>
 
             <div className="flex items-center justify-between mb-5">
-              <div>
-                <h1 className="underline font-medium">Assign Garbage</h1>
-                <div className="flex gap-2">
-                  <select
-                    name=""
-                    id=""
-                    className="border rounded-md focus:outline-none focus:ring-1 focus:ring-green-500 border-gray-500"
-                    onChange={handleSelectGarbage}
-                  >
-                    <option value="">Select</option>
-                    <option value="garbageID1">Garbage 1</option>
-                    <option value="garbageID2">Garbage 2</option>
-                    <option value="garbageID3">Garbage 3</option>
-                  </select>
-                  <button
-                    onClick={handleAssignGarbage}
-                    className="border bg-green-500 rounded-md text-white p-1 transition-all duration-200 hover:bg-green-600 cursor-pointer"
-                  >
-                    Assign
-                  </button>
+              {role === "driver" && (
+                <div>
+                  <h1 className="underline font-medium">Assign Garbage</h1>
+                  <div className="flex gap-2">
+                    <select
+                      name=""
+                      id=""
+                      className="border rounded-md focus:outline-none focus:ring-1 focus:ring-green-500 border-gray-500"
+                      onChange={handleSelectGarbage}
+                    >
+                      <option value="">Select</option>
+                      <option value="garbageID1">Garbage 1</option>
+                      <option value="garbageID2">Garbage 2</option>
+                      <option value="garbageID3">Garbage 3</option>
+                    </select>
+                    <button
+                      onClick={handleAssignGarbage}
+                      className="border bg-green-500 rounded-md text-white p-1 transition-all duration-200 hover:bg-green-600 cursor-pointer"
+                    >
+                      Assign
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
               <div>
                 <h1 className="underline font-medium">Assigned Garbages</h1>
                 <ul>
@@ -140,21 +180,21 @@ function AboutDriver() {
               </p>
               <p className="flex items-center gap-2">
                 <span>
-                  <FaTruck className="text-gray-600"/>
+                  <FaTruck className="text-gray-600" />
                 </span>
-                Lorry
+                {driver?.vehicle}
               </p>
               <p className="flex items-center gap-2">
                 <span>
                   <MdOutlineConfirmationNumber />
                 </span>
-                TN 23 UI 1600
+                {driver?.vehicleNumber}
               </p>
             </div>
           </section>
 
           <IoClose
-            onClick={toggleModal}
+            onClick={testing}
             className="absolute top-3 right-3 text-[1.3rem] cursor-pointer flex justify-center items-center text-gray-600"
           />
         </Modal>

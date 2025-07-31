@@ -12,51 +12,80 @@ import { useContext } from "react";
 import { AboutContext } from "../About/AboutState";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
-import {useEffect} from "react";
+import { useEffect } from "react";
+import moment from "moment";
 
 function Driver() {
   const [openModal1, setOpenModal] = useState(false);
-  const [drivers,setDrivers] = useState([]);
+  const [drivers, setDrivers] = useState([]);
   const { toggleModal } = useContext(AboutContext);
+  const [disable ,setDisable] = useState(true);
+  
+  const [openDetails, setOpenDetails] = useState({
+    isShown: false,
+    type: "view",
+    data: null,
+  });
+
+  const [openAddEdit, setOpenAddEdit] = useState({
+    isShown: false,
+    type: "add",
+    data: null,
+  });
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
   }
 
-  async function handleGetDriver(){
-    try{
-      const response = await axiosInstance.get(apiPath.DRIVER.GET_DRIVER);
-      console.log(response);
+  useEffect(()=>{
+    drivers.length > 0 ? setDisable(true) : setDisable(false);
+  },[drivers]);
 
-    }catch(error){
-      if(error?.message){
+  async function handleGetDriver() {
+    try {
+      const response = await axiosInstance.get(apiPath.DRIVER.GET_DRIVER);
+      console.log(response.data.driver);
+
+      if (response && response.data) {
+        setDrivers(response.data.driver);
+      }
+    } catch (error) {
+      if (error?.message) {
         console.log(error?.message);
       }
     }
   }
 
-  function handleEditDriver(event){
-    try{
-      
-    }catch(error){
-      if(error && error.message){
-        console.error(error.message);
+  async function handleDeleteDriver(id) {
+    try {
+      const response = await axiosInstance.delete(apiPath.DRIVER.DELETE(id));
+
+      if(response && response.data){
+        alert(response.data.message);
+        handleGetDriver();
       }
-    }
-  }
-  function handleDeleteDriver(event){
-    try{
-      
-    }catch(error){
-      if(error && error.message){
+    } catch (error) {
+      if (error && error.message) {
         console.error(error.message);
       }
     }
   }
 
-  useEffect(()=>{
+  //Modal for Edit Garbage
+  function handleEditDriver(item) {
+    setOpenAddEdit({
+      isShown: true,
+      type: "edit",
+      data: item,
+    });
+    handleCloseModal();
+  }
+
+  useEffect(() => {
     handleGetDriver();
-  },[]);
+  }, []);
+
+  console.log(drivers);
 
   return (
     <>
@@ -80,7 +109,7 @@ function Driver() {
           },
         }}
       >
-        <DriverForm handleCloseModal={handleCloseModal}/>
+        <DriverForm handleCloseModal={handleCloseModal} type={openAddEdit.type} driver={openAddEdit.data} handleGetDriver={handleGetDriver}/>
         <IoClose
           className="absolute top-5 right-2 text-2xl cursor-pointer"
           onClick={handleCloseModal}
@@ -94,18 +123,21 @@ function Driver() {
               Driver List
             </h1>
           </div>
-          <section
+          {/* <section
             className="border w-100 px-5 py-6 bg-white rounded-xl border-none shadow-lg"
             onClick={toggleModal}
           >
             <div className="flex items-center justify-between mb-3">
               <h1 className="font-medium text-[1.1rem]">Aadithya Y</h1>
-              <p className="text-[15px] text-gray-600">Created on : Jan 25 2025</p>
+              <p className="text-[15px] text-gray-600">
+                Created on : Jan 25 2025
+              </p>
             </div>
             <div>
               <p className="flex items-center gap-2 text-gray-700">
-                <FaPhoneAlt className="text-black"/>
-                <span className="font-medium text-black">Phone : </span>9898989898
+                <FaPhoneAlt className="text-black" />
+                <span className="font-medium text-black">Phone : </span>
+                9898989898
               </p>
             </div>
             <div>
@@ -118,16 +150,17 @@ function Driver() {
             </div>
             <div>
               <p className="text-gray-600">
-                <span className="font-medium text-black">Vehicle no :</span> TN 25 IU 1890
+                <span className="font-medium text-black">Vehicle no :</span> TN
+                25 IU 1890
               </p>
             </div>
             <div className="flex justify-end gap-4 pt-2 mt-2">
               <button
                 className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                 aria-label="Edit"
-                onClick={(event)=>{
+                onClick={(event) => {
                   event.stopPropagation();
-                  handleEditDriver()
+                  handleEditDriver();
                 }}
               >
                 <FaPen />
@@ -136,24 +169,87 @@ function Driver() {
               <button
                 className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                 aria-label="Delete"
-                onClick={(event)=>{
-                  event.stopPropagation()
-                  handleDeleteDriver()
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleDeleteDriver();
                 }}
               >
                 <FaTrash />
                 <span>Delete</span>
               </button>
             </div>
+          </section> */}
 
-          </section>
+          {drivers &&
+            drivers.length > 0 &&
+            drivers.map((driver,index) => (
+              <section
+                className="border w-100 px-5 py-6 bg-white rounded-xl border-none shadow-lg"
+                onClick={toggleModal}
+                key={index}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <h1 className="font-medium text-[1.1rem]">{driver.userId.userName}</h1>
+                  <p className="text-[15px] text-gray-600">
+                    Joined on : {moment(driver?.createdAt).format("DD MMM YYYY")}
+                  </p>
+                </div>
+                <div>
+                  <p className="flex items-center gap-2 text-gray-700">
+                    <FaPhoneAlt className="text-black" />
+                    <span className="font-medium text-black">Phone : </span>
+                    {driver?.phoneNumber}
+                  </p>
+                </div>
+                <div>
+                  <p className="flex items-center gap-2">
+                    <span>
+                      <FaTruck />
+                    </span>
+                    {driver?.vehicle}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-600">
+                    <span className="font-medium text-black">Vehicle no :</span>{" "}
+                    {driver?.vehicleNumber}
+                  </p>
+                </div>
+                <div className="flex justify-end gap-4 pt-2 mt-2">
+                  <button
+                    className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                    aria-label="Edit"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleEditDriver(driver);
+                    }}
+                  >
+                    <FaPen />
+                    <span>Edit</span>
+                  </button>
+                  <button
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                    aria-label="Delete"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleDeleteDriver(driver?._id);
+                    }}
+                  >
+                    <FaTrash />
+                    <span>Delete</span>
+                  </button>
+                </div>
+                <AboutDriver driver={driver}/>
+              </section>
+            ))}
         </section>
       </section>
 
       <div>
         <button
           onClick={handleCloseModal}
-          className="bg-green-500 hover:bg-green-600 transition-all duration-200 p-2 text-white rounded-lg fixed bottom-5 right-5 cursor-pointer flex items-center gap-2"
+          disabled={disable}
+          className={`bg-green-500 transition-all duration-200 p-2 text-white rounded-lg fixed bottom-5 right-5 flex items-center gap-2 ${disable ? "cursor-not-allowed bg-green-600" : "cursor-pointer"}`}
         >
           <span>
             <FaPlus />
@@ -162,7 +258,7 @@ function Driver() {
         </button>
       </div>
 
-      <AboutDriver />
+      
     </>
   );
 }

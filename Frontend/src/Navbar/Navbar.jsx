@@ -4,9 +4,12 @@ import logo from "../assets/EcoClean-logo-transparent.png";
 import {axiosInstance} from "../Utility/axiosInstance";
 import {apiPath} from "../Utility/apiPath";
 import {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom"
 
 function Navbar() {
   const [userData,setUserData] = useState({});
+
+  const navigate = useNavigate();
 
   const handleGetProfile = async() => {
     try{
@@ -22,6 +25,12 @@ function Navbar() {
         console.log(error.message);
       }
     }
+  }
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
   }
 
   useEffect(()=>{
@@ -52,12 +61,14 @@ function Navbar() {
             </div>
             <div className="flex flex-col items-center">
               <h2>Aadithya</h2>
-              <h2 className="flex items-center gap-2 bg-green-500 text-white rounded-md p-1">
+              <button className="flex items-center gap-2 bg-green-500 text-white rounded-md p-1 cursor-pointer"
+              onClick={handleLogout}
+              >
                 <span>
                   <BiLogOut />
                 </span>
                 Logout
-              </h2>
+              </button>
             </div>
           </div>
         </section>

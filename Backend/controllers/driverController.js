@@ -79,10 +79,11 @@ async function handleCreateDriver(req, res) {
 // @access Private
 async function handleGetDriver(req, res) {
     try {
+        console.log(req.user);
         const { id } = req.user;
 
-        const driver = await Driver.findOne({ userId: id })
-            .populate("user")
+        const driver = await Driver.find({ userId: id })
+            .populate("userId")
             .exec();
 
         if (!driver) {
@@ -98,9 +99,29 @@ async function handleGetDriver(req, res) {
             driver
         })
     } catch (error) {
-        res.status(400).json({
+        res.status(500).json({
             error: true,
-            message: `Getting Driver : ${error.message}`
+            message: `Getting Single Driver : ${error.message}`
+        })
+    }
+}
+
+//@desc It is used to get all the drivers
+//routes GET /api/driver/getAllDrivers
+//access Private
+async function handleGetAllDriver(req,res){
+    try{
+        const drivers = await Driver.find();
+
+        res.status(200).json({
+            error:true,
+            message:"All drivers are fetched successfully",
+            drivers
+        });
+    }catch(error){
+        req.status(500).json({
+            error:true,
+            message:`Getting all the driver : ${error.message}`
         })
     }
 }
@@ -172,6 +193,7 @@ async function handleDeleteDriver(req, res) {
 module.exports = {
     handleCreateDriver,
     handleGetDriver,
+    handleGetAllDriver,
     handleUpdateDriver,
     handleDeleteDriver
 }

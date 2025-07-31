@@ -15,16 +15,16 @@ Modal.setAppElement("#root");
 function App() {
   return (
     <>
-      <Navbar />
       <Router>
+        <Navbar />
         <Routes>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/area" element={<Area />}></Route>
           <Route path="/garbage" element={<Garbage />}></Route>
           <Route path="/driver" element={<Driver />}></Route>
-          <Route path="/admin" element={<Admin/>}></Route>
-          <Route path="/driverPage" element={<DriverPage/>}></Route>
+          <Route path="/admin" element={<Admin />}></Route>
+          <Route path="/driverPage" element={<DriverPage />}></Route>
         </Routes>
       </Router>
     </>

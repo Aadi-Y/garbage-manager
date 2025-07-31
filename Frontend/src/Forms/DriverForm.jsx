@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
 
-function DriverForm({ driver,type,handleCloseModal }) {
+function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
   const [formData, setFormData] = useState({
     name: driver?.name || "",
     phoneNumber: driver?.phoneNumber || "",
@@ -47,6 +47,7 @@ function DriverForm({ driver,type,handleCloseModal }) {
         alert(response.data.message);
         setIsLoading(false);
         handleCloseModal();
+        handleGetDriver();
       }
     }catch(error){
       if(error && error.message){
@@ -59,14 +60,27 @@ function DriverForm({ driver,type,handleCloseModal }) {
     }
   };
 
-  const handleDriverUpdation = (e) =>{
+  const handleDriverUpdation = async (e) =>{
     e.preventDefault();
     const driverData = {
       ...formData,
       phoneNumber: Number(formData.phoneNumber),
       aadharId: Number(formData.aadharId),
     };
-    
+    try{
+      const response = await axiosInstance.put(apiPath.DRIVER.UPDATE(driver?._id),driverData);
+      console.log(response);
+
+      if(response && response.data){
+        alert(response.data.message);
+        handleCloseModal();
+        handleGetDriver();
+      }
+    }catch(error){
+      if(error?.message){
+        console.log(error?.message);
+      }
+    }
   }
 
   return (
@@ -187,9 +201,11 @@ function DriverForm({ driver,type,handleCloseModal }) {
             name="availability"
             checked={formData.availability}
             onChange={handleChange}
-            required
-            className="rounded-lg border-gray-500 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
+            className="rounded-lg border-gray-500 border focus:outline-none w-full p-2"
           />
+        </div>
+        <div>
+          <h6 className="text-sm text-gray-500">(*If Not available please leave empty)</h6>
         </div>
         <div>
           <label>Current Location</label>
@@ -209,7 +225,7 @@ function DriverForm({ driver,type,handleCloseModal }) {
           type="submit"
           className="p-2 rounded bg-green-500 hover:bg-green-600 w-full cursor-pointer text-white"
         >
-          Create Driver
+          {type === "edit" ? "Update Driver" : "Create Driver"}
         </button>
       </form>
     </div>
