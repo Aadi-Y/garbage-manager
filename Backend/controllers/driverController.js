@@ -111,7 +111,9 @@ async function handleGetDriver(req, res) {
 //access Private
 async function handleGetAllDriver(req,res){
     try{
-        const drivers = await Driver.find();
+        const drivers = await Driver.find()
+        .populate("userId")
+        .exec();
 
         res.status(200).json({
             error:true,

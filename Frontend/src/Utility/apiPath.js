@@ -17,6 +17,7 @@ export const apiPath = {
     DRIVER:{
         CREATE:"/api/driver/createDriver",
         GET_DRIVER:"/api/driver/getDriver",
+        GET_ALL_DRIVER:"/api/driver/getAllDrivers",
         UPDATE:(id)=>`/api/driver/updateDriver/${id}`,
         DELETE:(id)=>`/api/driver/deleteDriver/${id}`
     },

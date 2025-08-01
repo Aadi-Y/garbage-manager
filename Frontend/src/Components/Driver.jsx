@@ -56,6 +56,21 @@ function Driver() {
     }
   }
 
+  async function handleGetAllDrivers(){
+    try{
+      const response = await axiosInstance.get(apiPath.DRIVER.GET_ALL_DRIVER);
+      if(response && response.data){
+        setDrivers(response.data.drivers);
+      }
+
+      console.log(response);
+    }catch(error){
+      if(error?.message){
+        console.log(error?.message);
+      }
+    }
+  }
+
   async function handleDeleteDriver(id) {
     try {
       const response = await axiosInstance.delete(apiPath.DRIVER.DELETE(id));
@@ -83,6 +98,7 @@ function Driver() {
 
   useEffect(() => {
     handleGetDriver();
+    handleGetAllDrivers();
   }, []);
 
   console.log(drivers);
