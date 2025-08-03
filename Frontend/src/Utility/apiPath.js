@@ -8,8 +8,9 @@ export const apiPath = {
     },
     GARBAGE:{
         CREATE:"/api/garbage/createGarbage",
-        GET_ONE:(id)=>`/api/garbage/getOneGarbage/${id}`,
+        GET_USERS:"/api/garbage/getUserGarbage",
         GET_ALL:"/api/garbage/getAllGarbages",
+        GET_ALL_ID:"/api/garbage/getAllGarbageIds",
         UPDATE:(id)=>`/api/garbage/updateGarbage/${id}`,
         DELETE:(id)=>`/api/garbage/deleteGarbage/${id}`,
         DISPOSED:(id)=>`/api/garbage/disposeStatus${id}`,
@@ -30,6 +31,8 @@ export const apiPath = {
         ASSIGN_DRIVER:(id)=>`/api/area/assignDriver/${id}`,
         REMOVE_DRIVER:(id)=>`/api/area/removeDriver/${id}`,
         ASSIGN_GARBAGE:(id)=>`/api/area/assignGarbage/${id}`,
-        REMOVE_GARBAGE:()=>`/api/area/removeGarbage/${id}`
+        REMOVE_GARBAGE:()=>`/api/area/removeGarbage/${id}`,
+        GET_ASSIGNED_GARBAGES:(id)=>`/api/area/getAssignedGarbages/${id}`
+
     }
 }

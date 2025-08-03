@@ -20,6 +20,9 @@ function Driver() {
   const [drivers, setDrivers] = useState([]);
   const { toggleModal } = useContext(AboutContext);
   const [disable ,setDisable] = useState(true);
+  const {role} = useContext(AboutContext);
+
+  console.log(role);
   
   const [openDetails, setOpenDetails] = useState({
     isShown: false,
@@ -97,8 +100,8 @@ function Driver() {
   }
 
   useEffect(() => {
-    handleGetDriver();
-    handleGetAllDrivers();
+    role === "Driver" && handleGetDriver();
+    role === "Admin" && handleGetAllDrivers();
   }, []);
 
   console.log(drivers);

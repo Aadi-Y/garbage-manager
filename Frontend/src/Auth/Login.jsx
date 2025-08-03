@@ -33,10 +33,13 @@ function Login() {
         handleNavigate(response.data.user.role);
         localStorage.setItem("token",response.data.token);
       }
-    }catch(error){
-      if(error && error.message){
-        console.error(error.message);
+    }catch(err){
+      if(err && err.response){
+        setError(err.response.data.message);
+        console.error(err.response);
       }
+    }finally{
+      setError(null);
     }
     console.log('Logging in with:', formData);
   };
@@ -52,7 +55,6 @@ function Login() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            required
             placeholder='Enter email'
             className='w-full p-2 rounded-lg bg-white focus:outline-none border border-gray-500 focus:ring-1 focus:ring-green-500'
           />
@@ -64,11 +66,11 @@ function Login() {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            required
             placeholder='Enter password'
             className='w-full p-2 rounded-lg bg-white focus:outline-none border border-gray-500 focus:ring-1 focus:ring-green-500'
           />
         </div>
+        <p className='text-red-500'>{error}</p>
         <div>
             <p>Do not have an account? <Link to="/signup" className='decoration-green-500 underline'>Signup</Link></p>
         </div>

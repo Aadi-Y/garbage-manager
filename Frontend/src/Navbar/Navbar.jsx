@@ -53,14 +53,14 @@ function Navbar() {
               </p>
               <div>
                 <div className="hidden absolute bg-white top-20 right-15 shadow-md rounded px-6 py-4 group-hover:flex flex-col">
-                  <h1>Aadithya</h1>
-                  <p><span className="font-medium">User Id :</span> IC123</p>
-                  <p><span className="font-medium">Role :</span> User</p>
+                  <h1 className="font-medium">{userData.userName}</h1>
+                  <p><span className="font-medium">User Id :</span> {userData.userId}</p>
+                  <p><span className="font-medium">Role :</span> {userData.role}</p>
                 </div>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h2>Aadithya</h2>
+              <h2>{userData.userName}</h2>
               <button className="flex items-center gap-2 bg-green-500 text-white rounded-md p-1 cursor-pointer"
               onClick={handleLogout}
               >

@@ -2,52 +2,93 @@ const Area = require("../models/area");
 const Driver = require("../models/driver");
 const generateId = require("../helper/generateID");
 
-async function handleAssignId(id = generateId()){
-    const existing = await Area.findOne({areaId:id});
-    if(existing){
+async function handleAssignId(id = generateId()) {
+    const existing = await Area.findOne({ areaId: id });
+    if (existing) {
         return await handleAssignDriver(id);
     }
     return id;
 }
 
 // @decr It is used to Assign Garbages to driver
-// @route POST /api/garbage/assignGarbage;
+// @route PUT /api/garbage/assignGarbage;
 // @access Private
 async function handleAssignGarbage(req, res) {
     try {
         const { garbages } = req.body;
         const driverId = req.params.id;
 
-        const driver = await Driver.findByIdAndUpdate({ _id: driverId },
-            {$push: {assignedRequest: { $each: garbages } }}, 
-            {new: true,}
-        )
-            .populate("assignedRequest");
+        if (!Array.isArray(garbages)) {
+            return res.status(400).json({
+                error: true,
+                message: "`garbages` must be an array",
+            });
+        }
+
+        const driver = await Driver.findByIdAndUpdate(
+            { _id: driverId },
+            { $push: { assignedRequest: { $each: garbages } } },
+            { new: true }
+        ).populate("assignedRequest");
+
+        if (!driver) {
+            return res.status(404).json({
+                error: true,
+                message: "Driver not found",
+            });
+        }
+
+        res.status(201).json({
+            error: false,
+            message: "Garbage is assigned",
+            driver,
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: true,
+            message: error.message,
+        });
+    }
+}
+
+//@desc It is used to get all the assigned garbages Id
+//Route GET /api/area/getAssignedGarbages
+//Access Private
+async function handleGetAssignedGarbages(req, res) {
+    try {
+        const driverId = req.params.id;
+
+        // Find the driver by ID and get only the assignedRequest field
+        const driver = await Driver.findById(driverId).select("assignedRequest");
 
         if (!driver) {
             return res.status(404).json({
                 error: true,
                 message: "Driver not found"
-            })
+            });
         }
 
-        await driver.save();
+        const assignedGarbages = driver.assignedRequest;
 
-        res.status(201).json({
-            error: true,
-            message: "Garbage is assinged",
-            driver
-        })
+        const garbageIds = assignedGarbages.map(g => g._id || g);
+
+        res.status(200).json({
+            error: false,
+            message: "Assigned garbages fetched successfully",
+            garbageIds
+        });
     } catch (error) {
         res.status(500).json({
             error: true,
             message: error.message
-        })
+        });
     }
 }
 
+
+
 // @decr It is used to Assign drivers to area
-// @route POST /api/garbage/assignDriver;
+// @route PUT /api/garbage/assignDriver;
 // @access Private
 async function handleAssignDriver(req, res) {
     try {
@@ -88,7 +129,7 @@ async function handleAssignDriver(req, res) {
 }
 
 // @decr It is used to remove the assigned driver from area
-// @route POST /api/garbage/removeDriver;
+// @route PUT /api/garbage/removeDriver;
 // @access Private
 async function handleRemoveDriver(req, res) {
     try {
@@ -126,7 +167,7 @@ async function handleRemoveDriver(req, res) {
 
 
 // @decr It is used to remove assigned garbages from driver
-// @route POST /api/garbage/removeGarbage;
+// @route PUT /api/garbage/removeGarbage;
 // @access Private
 async function handleRemoveGarbage(req, res) {
     try {
@@ -166,7 +207,7 @@ async function handleRemoveGarbage(req, res) {
 // @access Private
 async function handleCreateArea(req, res) {
     try {
-        const { areaName, areaLocation, areaPincode,assignedDrivers } = req.body;
+        const { areaName, areaLocation, areaPincode, assignedDrivers } = req.body;
 
         if (!areaName) {
             return res.status(400).json({
@@ -199,7 +240,7 @@ async function handleCreateArea(req, res) {
             areaName,
             areaLocation,
             areaPincode,
-            areaId:await handleAssignId()
+            areaId: await handleAssignId()
         }
         const area = await Area.create(newArea);
 
@@ -327,5 +368,6 @@ module.exports = {
     handleUpdateArea,
     handleDeleteArea,
     handleGetArea,
-    handleGetForDriver
+    handleGetForDriver,
+    handleGetAssignedGarbages
 }

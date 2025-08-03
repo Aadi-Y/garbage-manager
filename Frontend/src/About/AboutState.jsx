@@ -13,7 +13,7 @@ function AboutState({children}){
 
     async function handleGetUser(){
         try{
-            const response = await axiosInstance.get(apiPath.DRIVER.GET_DRIVER);
+            const response = await axiosInstance.get(apiPath.AUTH.GET_PROFILE);
             if(response && response.data){
                 setRole(response.data.user.role);
             }

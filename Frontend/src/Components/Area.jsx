@@ -10,8 +10,10 @@ import { FaPlus } from "react-icons/fa6";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
 import moment from "moment";
+import { useContext } from "react";
+import { AboutContext } from "../About/AboutState";
 
-function Area({ personRole }) {
+function Area() {
   const [openModal, setOpenModal] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,6 +23,8 @@ function Area({ personRole }) {
     type:"add",
     data:null
   });
+
+  const {role} = useContext(AboutContext);
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
@@ -205,7 +209,7 @@ function Area({ personRole }) {
                   </div>
                 </div>
 
-                {personRole === "admin" && (
+                {role === "Admin" && (
                   <div className="flex justify-end gap-4 pt-2">
                     <button
                       className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
@@ -230,7 +234,7 @@ function Area({ personRole }) {
         </section>
       </section>
 
-      {personRole === "admin" && (
+      {role === "Admin" && (
         <button
           onClick={handleCloseModal}
           className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow-lg transition-all text-sm font-medium tracking-wide flex items-center gap-2 cursor-pointer"

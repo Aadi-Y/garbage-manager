@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         type:String,
         enum:["User","Admin","Driver"],
         required:true
+    },
+    userId:{
+        type:String,
+        requied:true
     }
 
 },

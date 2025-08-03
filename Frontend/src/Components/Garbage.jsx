@@ -16,13 +16,16 @@ import { apiPath } from "../Utility/apiPath";
 import moment from "moment";
 import { trimDescription } from "../Helper/helper";
 
-function Garbage({ personRole }) {
+function Garbage({}) {
   const [openModal1, setOpenModal] = useState(false);
   const [selectDriver, setSelectDriver] = useState(null);
-  const [role, setRole] = useState("user");
+  // const [role, setRole] = useState("");
   const [garbages, setGarbages] = useState([]);
   const { toggleModal } = useContext(AboutContext);
   const [garbageDescription,setGarbageDescription] = useState("");
+  const {role} = useContext(AboutContext);
+
+  console.log(role);
 
   const [openDetails, setOpenDetails] = useState({
     isShown: false,
@@ -40,11 +43,11 @@ function Garbage({ personRole }) {
     setOpenModal((prev) => !prev);
   }
 
-  useEffect(() => {
-    if (personRole) {
-      setRole(personRole);
-    }
-  }, [personRole]);
+  // useEffect(() => {
+  //   if (role) {
+  //     setRole(role);
+  //   }
+  // }, [role]);
 
   function handleSelectDriver(event) {
     console.log(event);
@@ -54,7 +57,7 @@ function Garbage({ personRole }) {
 
   async function handleGetGarbages() {
     try {
-      const response = await axiosInstance.get(apiPath.GARBAGE.GET_ALL);
+      const response = await axiosInstance.get(apiPath.GARBAGE.GET_S);
       console.log(response);
       console.log(response.data.garbages);
 
@@ -68,8 +71,24 @@ function Garbage({ personRole }) {
     }
   }
 
+  async function handleGetAllGarbages(){
+    try{
+      const response = await axiosInstance.get(apiPath.GARBAGE.GET_ALL);
+      if(response && response.data){
+        setGarbages(response.data.garbages);
+      }
+    }catch(error){
+      if(error?.message){
+        console.log(error?.message);
+      }
+    }
+  }
+
+
   useEffect(() => {
     handleGetGarbages();
+
+    role === "Admin" && handleGetAllGarbages();
   }, []);
 
   //Modal for About the Garbage
@@ -157,13 +176,13 @@ function Garbage({ personRole }) {
           className="absolute top-3 right-2 text-[1.3rem] cursor-pointer flex justify-center items-center text-gray-600"
         />
       </Modal>
-      <section className={personRole === "user" ? `mt-15` : `mt-10`}>
+      <section className={role === "User" ? `mt-15` : `mt-10`}>
         <section className="bg-slate-100 min-h-[100vh] h-auto pt-10">
           <h1 className="font-semibold text-[1.2rem] text-center mb-2">
             Garbage list
           </h1>
           <section className="p-2 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            <section
+            {/* <section
               className="bg-white rounded-2xl shadow-lg w-100 p-4"
               onClick={toggleModal}
             >
@@ -233,7 +252,7 @@ function Garbage({ personRole }) {
                   </button>
                 </div>
               )}
-            </section>
+            </section> */}
 
             {garbages &&
               garbages.length > 0 &&
@@ -277,7 +296,7 @@ function Garbage({ personRole }) {
                       <p>{garbage?.description}</p>
                     </div>
 
-                    {role === "user" && (
+                    {role === "User" && (
                       <div className="flex justify-end gap-4 pt-2 mt-2">
                         <button
                           className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
@@ -304,7 +323,7 @@ function Garbage({ personRole }) {
                       </div>
                     )}
 
-                    {role === "driver" && (
+                    {role === "Driver" && (
                       <div className="flex justify-end">
                         <button
                           className="border p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200 shadow-md"
@@ -324,7 +343,7 @@ function Garbage({ personRole }) {
         </section>
       </section>
 
-      {role === "user" && (
+      {role === "User" && (
         <div>
           <button
             onClick={handleCloseModal}

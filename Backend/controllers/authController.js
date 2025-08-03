@@ -1,6 +1,16 @@
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const generateId = require("../helper/generateID");
+
+async function handleAssignId(id=generateId()){
+    const existing = await User.findOne({userId:id});
+    if(existing){
+        return await handleAssignId(id);
+    }
+
+    return id;
+}
 
 function generateToken(userId) {
     return jwt.sign({ id: userId },
@@ -85,7 +95,8 @@ async function handleRegister(req, res) {
             userName,
             email,
             password: hashedPassword,
-            role
+            role,
+            userId: await handleAssignId()
             // profileIamgeUrl
         }
 

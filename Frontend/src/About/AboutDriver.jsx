@@ -9,28 +9,65 @@ import { CgCalendarDates } from "react-icons/cg";
 import { FaAddressCard } from "react-icons/fa6";
 import moment from "moment";
 import { useEffect } from "react";
+import { axiosInstance } from "../Utility/axiosInstance";
+import { apiPath } from "../Utility/apiPath";
+import { IoMdRemove } from "react-icons/io";
 
 function AboutDriver({ driver }) {
-  const { openModal, toggleModal } = useContext(AboutContext);
+  const { openModal, toggleModal, role } = useContext(AboutContext);
   const [garbages, setGarbages] = useState([]);
+  const [garbageIds, setGarbageIds] = useState([]);
+  const [assignedRequest, setAssignedRequest] = useState([]);
   const [error, setError] = useState(null);
+  const [removeGarbage, setRemoveGarbage] = useState(null);
   const [address, setAddress] = useState(null);
-  const [role, setRole] = useState("admin");
 
-  console.log(openModal);
-  console.log(toggleModal);
+  // console.log(openModal);
+  // console.log(toggleModal);
 
   function handleSelectGarbage(event) {
     const selectedGarbage = event.target.value;
     setGarbages((prev) => [...prev, selectedGarbage]);
   }
 
-  async function handleAssignGarbage() {
+  async function handleAssignGarbage(e) {
+    e.preventDefault();
+
+    if (!Array.isArray(garbages) || garbages.length === 0) {
+      setError("Please select at least one garbage ID to assign.");
+      return;
+    }
+
     try {
-      console.log(garbages);
+      const response = await axiosInstance.put(
+        apiPath.AREA.ASSIGN_GARBAGE(driver._id),
+        { garbages }
+      );
+
+      console.log(response);
+      if (response && response.data) {
+        alert(response.data.message);
+      }
     } catch (error) {
-      console.log("Error in AboutDriver : ", error.message);
-      setError("Enable to assign please try again");
+      console.error("Error in AboutDriver:", error.message);
+      setError("Unable to assign, please try again");
+    }
+  }
+
+  async function handleGetAllAssignedGarbages() {
+    try {
+      const response = await axiosInstance.get(
+        apiPath.AREA.GET_ASSIGNED_GARBAGES(driver._id)
+      );
+
+      console.log(response);
+      if (response && response.data) {
+        setAssignedRequest(response.data.garbageIds);
+      }
+    } catch (error) {
+      if (error && error.data) {
+        console.log(error.data.response);
+      }
     }
   }
 
@@ -38,9 +75,54 @@ function AboutDriver({ driver }) {
     setAddress(driver?.currectLocation);
   }
 
+  async function handleGetAllGarbageIds() {
+    try {
+      const response = await axiosInstance.get(apiPath.GARBAGE.GET_ALL_ID);
+
+      console.log(response);
+      if (response && response.data) {
+        setGarbageIds(response.data.garbageIds);
+      }
+    } catch (error) {
+      if (error?.message) {
+        console.log(error?.message);
+      }
+    }
+  }
+
+  async function handleRemoveAssignedGarbages(e, garbage) {
+    e.preventDefault(); 
+
+    console.log("Remove Id:", garbage);
+
+    try {
+      const response = await axiosInstance.put(
+        apiPath.AREA.REMOVE_GARBAGE(driver._id), 
+        { garbageId:garbage }
+      );
+
+      console.log("Successfully removed:", response.data);
+      
+    } catch (error) {
+      if (error.response && error.response.data) {
+        console.error(
+          "Error removing garbage:",
+          error.response.data.message || error.response.data
+        );
+      } else {
+        console.error("Unexpected error:", error.message);
+      }
+    }
+  }
+
   useEffect(() => {
     handleDriver();
   }, [driver]);
+
+  useEffect(() => {
+    handleGetAllGarbageIds();
+    handleGetAllAssignedGarbages();
+  }, []);
 
   function testing(e) {
     e.preventDefault();
@@ -48,11 +130,14 @@ function AboutDriver({ driver }) {
     toggleModal;
   }
 
+  // console.log(driver._id);
+  // console.log(assignedRequest);
+
   return (
     <>
       <section>
         <Modal
-          isOpen={openModal}
+          isOpen={true}
           onRequestClose={{}}
           style={{
             overlay: {
@@ -89,7 +174,11 @@ function AboutDriver({ driver }) {
                   {moment(driver?.userId.createdAt).format("DD MMM YYYY")}
                 </p>
               </div>
-              <div className={`border p-2 w-40 rounded text-center border-none shadow-md text-white ${driver?.availability ? "bg-green-600" : "bg-red-600"}`}>
+              <div
+                className={`border p-2 w-40 rounded text-center border-none shadow-md text-white ${
+                  driver?.availability ? "bg-green-600" : "bg-red-600"
+                }`}
+              >
                 <p>{driver?.availability ? "Available" : "Unavailable"}</p>
               </div>
             </div>
@@ -133,8 +222,8 @@ function AboutDriver({ driver }) {
               </div>
             </div>
 
-            <div className="flex items-center justify-between mb-5">
-              {role === "driver" && (
+            <div className="flex items-start justify-between mb-5 flex-col gap-3">
+              {role === "Admin" && (
                 <div>
                   <h1 className="underline font-medium">Assign Garbage</h1>
                   <div className="flex gap-2">
@@ -145,12 +234,13 @@ function AboutDriver({ driver }) {
                       onChange={handleSelectGarbage}
                     >
                       <option value="">Select</option>
-                      <option value="garbageID1">Garbage 1</option>
-                      <option value="garbageID2">Garbage 2</option>
-                      <option value="garbageID3">Garbage 3</option>
+                      {garbageIds.length > 0 &&
+                        garbageIds.map((id, index) => (
+                          <option value={id}>Garbage {index + 1}</option>
+                        ))}
                     </select>
                     <button
-                      onClick={handleAssignGarbage}
+                      onClick={(event) => handleAssignGarbage(event)}
                       className="border bg-green-500 rounded-md text-white p-1 transition-all duration-200 hover:bg-green-600 cursor-pointer"
                     >
                       Assign
@@ -161,9 +251,25 @@ function AboutDriver({ driver }) {
               <div>
                 <h1 className="underline font-medium">Assigned Garbages</h1>
                 <ul>
-                  <li>
-                    <span className="font-medium">Garbage Id : </span>1234
-                  </li>
+                  {assignedRequest.length > 0 ? (
+                    assignedRequest.map((garbage, index) => (
+                      <li className="flex items-center gap-3">
+                        <span className="font-medium">Garbage Id : </span>
+                        {garbage}
+
+                        <button
+                          className="h-5 w-5 bg-red-500 text-white flex items-center justify-center rounded cursor-pointer hover:bg-red-400"
+                          onClick={(e) =>
+                            handleRemoveAssignedGarbages(e, garbage)
+                          }
+                        >
+                          <IoMdRemove />
+                        </button>
+                      </li>
+                    ))
+                  ) : (
+                    <p>No Assigned</p>
+                  )}
                 </ul>
               </div>
             </div>

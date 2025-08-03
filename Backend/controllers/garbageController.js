@@ -57,11 +57,11 @@ async function handleCreateGarbage(req, res) {
             description,
             status,
             weight,
-            garbageId : await handleAssignId(),
+            garbageId: await handleAssignId(),
         }
 
         const garbage = await Garbage.create(garbageDetails);
-        
+
 
         res.status(201).json({
             error: false,
@@ -80,12 +80,11 @@ async function handleCreateGarbage(req, res) {
 // @desc It is used to get single garbage
 // @route POST /api/garbage/getSingleGarbage
 // @access Private
-async function handleGetSingleGarbage(req, res) {
+async function handleGetUserGarbage(req, res) {
     try {
-        const garbageId = await req.params.id;
         const { id } = req.user;
 
-        const garbages = await Garbage.findById({ user: id, _id: garbageId });
+        const garbages = await Garbage.find({ user: id });
 
         res.status(200).json({
             error: false,
@@ -108,12 +107,35 @@ async function handleGetAllGarbage(req, res) {
     try {
 
         const garbages = await Garbage.find({});
-        
+
 
         res.status(200).json({
             error: false,
             message: "All garbage based on user is fetched",
             garbages,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            error: true,
+            message: error.message
+        })
+    }
+}
+
+// @desc It is used to get all the garbages ID
+// @route POST /api/garbage/getAllGarbageId
+// @access Private
+async function handleGetAllGarbageIds(req, res) {
+    try {
+
+        const garbages = await Garbage.find({}).select("-garbageId _id");
+        const garbageIds = garbages.map(g => g._id);
+
+        res.status(200).json({
+            error: false,
+            message: "All garbage Ids are fetched",
+            garbageIds,
         });
     }
     catch (error) {
@@ -220,7 +242,8 @@ module.exports = {
     handleCreateGarbage,
     handleDeleteGarbage,
     handleUpdateGarbage,
-    handleGetSingleGarbage,
+    handleGetUserGarbage,
     handleGetAllGarbage,
     handleDisposeStatus,
+    handleGetAllGarbageIds
 }
