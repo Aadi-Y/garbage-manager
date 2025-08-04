@@ -376,6 +376,23 @@ async function handleDeleteArea(req, res) {
     }
 }
 
+async function handleGetAllDriverId(req,res){
+    try{
+        const availableIds = await Driver.find({}).select("driverId");
+        const driverId = availableIds?.map(d => d.driverId);
+
+        res.status(200).json({
+            error:true,
+            message:"All the driver id are fetched",
+            driverId
+        });
+    }catch(error){
+        res.status(500).json({
+            error:true,
+            message:error.message
+        })
+    }
+}
 
 module.exports = {
     handleAssignDriver,
@@ -387,5 +404,6 @@ module.exports = {
     handleDeleteArea,
     handleGetArea,
     handleGetForDriver,
-    handleGetAssignedGarbages
+    handleGetAssignedGarbages,
+    handleGetAllDriverId
 }

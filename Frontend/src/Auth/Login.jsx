@@ -38,8 +38,6 @@ function Login() {
         setError(err.response.data.message);
         console.error(err.response);
       }
-    }finally{
-      setError(null);
     }
     console.log('Logging in with:', formData);
   };
@@ -49,34 +47,34 @@ function Login() {
       <h2 className='text-2xl font-medium text-green-600'>Login</h2>
       <form onSubmit={handleSubmit} className="px-4 py-5 rounded-lg w-95 sm:w-100 flex flex-col gap-2 bg-white shadow-lg">
         <div>
-          <label className='text-[18px]'>Email:</label><br />
+          <label className='text-md text-gray-700 font-medium mb-1'>Email:</label><br />
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             placeholder='Enter email'
-            className='w-full p-2 rounded-lg bg-white focus:outline-none border border-gray-500 focus:ring-1 focus:ring-green-500'
+            className='w-full p-2 rounded-lg bg-white focus:outline-none border border-gray-300 focus:ring-1 focus:ring-green-500'
           />
         </div>
         <div>
-          <label className='text-[18px]'>Password:</label><br />
+          <label className='text-md mb-1 bold text-gray-700 font-medium'>Password:</label><br />
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             placeholder='Enter password'
-            className='w-full p-2 rounded-lg bg-white focus:outline-none border border-gray-500 focus:ring-1 focus:ring-green-500'
+            className='w-full p-2 rounded-lg bg-white focus:outline-none border border-gray-300 focus:ring-1 focus:ring-green-500'
           />
         </div>
         <p className='text-red-500'>{error}</p>
         <div>
-            <p>Do not have an account? <Link to="/signup" className='decoration-green-500 underline'>Signup</Link></p>
+            <p className='text-md text-gray-700'>Do not have an account? <Link to="/signup" className='decoration-green-500 underline'>Signup</Link></p>
         </div>
         <button type="submit"
         disabled={isLoading}
-        className="border w-full p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200"
+        className="border w-full p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200 font-semibold"
         >{isLoading ? "Logging In" : "Login"}</button>
       </form>
     </div>

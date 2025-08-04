@@ -104,7 +104,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div> */}
         <div>
-          <label>Name</label>
+          <label className='text-md font-medium mb-1 text-gray-700'>Name</label>
           <br />
           <input
             type="text"
@@ -117,7 +117,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label>Phone Number</label>
+          <label className='text-md font-medium mb-1 text-gray-700'>Phone Number</label>
           <br />
           <input
             type="number"
@@ -130,7 +130,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label>Age</label>
+          <label className='text-md font-medium mb-1 text-gray-700'>Age</label>
           <br />
           <input
             type="text"
@@ -143,7 +143,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label>Licence Number</label>
+          <label className='text-md font-medium mb-1 text-gray-700'>Licence Number</label>
           <br />
           <input
             type="text"
@@ -156,7 +156,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label>Aadhar ID</label>
+          <label className='text-md font-medium mb-1 text-gray-700'>Aadhar ID</label>
           <br />
           <input
             type="number"
@@ -169,7 +169,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label>Vehicle Type</label>
+          <label className='text-md font-medium mb-1 text-gray-700'>Vehicle Type</label>
           <br />
           <input
             type="text"
@@ -182,7 +182,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label>Vehicle Number</label>
+          <label className='text-md font-medium mb-1 text-gray-700'>Vehicle Number</label>
           <br />
           <input
             type="text"
@@ -195,7 +195,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div className="flex">
-          <label>Availability:</label>
+          <label className='text-md font-medium mb-1 text-gray-700'>Availability</label>
           <input
             type="checkbox"
             name="availability"
@@ -208,7 +208,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           <h6 className="text-sm text-gray-500">(*If Not available please leave empty)</h6>
         </div>
         <div>
-          <label>Current Location</label>
+          <label className='text-md font-medium mb-1 text-gray-700'>Current Location</label>
           <br />
           <textarea
             type="text"

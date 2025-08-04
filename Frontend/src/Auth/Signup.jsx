@@ -54,50 +54,50 @@ function Signup() {
       className="w-100 flex flex-col gap-2 px-4 py-5 bg-white rounded-lg shadow-lg"
       >
         <div>
-          <label className='text-[18px]'>Name:</label><br />
+          <label className='text-md font-medium mb-1 inline-block text-gray-700'>Name:</label><br />
           <input
             type="text"
             name="userName"
             value={formData.userName}
             onChange={handleChange}
             required
-            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
+            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-300 rounded-lg p-2 bg-white'
             placeholder='Enter name' 
           />
         </div>
         <div>
-          <label className='text-[18px]'>Email:</label><br />
+          <label className='text-md font-medium mb-1 inline-block text-gray-700'>Email:</label><br />
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
-            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
+            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-300 rounded-lg p-2 bg-white'
             placeholder='Enter email'
           />
         </div>
         <div>
-          <label className='text-[18px]'>Password:</label><br />
+          <label className='text-md font-medium mb-1 inline-block text-gray-700'>Password:</label><br />
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
-            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
+            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-300 rounded-lg p-2 bg-white'
             placeholder='Enter password'
           />
         </div>
         <div>
-          <label className='text-[18px]'>Role:</label><br />
+          <label className='text-md font-medium mb-1 inline-block text-gray-700'>Role:</label><br />
           <input
             type="text"
             name="role"
             value={formData.role}
             onChange={handleChange}
             required
-            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-500 rounded-lg p-2 bg-white'
+            className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-300 rounded-lg p-2 bg-white'
             placeholder='Enter Role'
           />
         </div>
@@ -105,11 +105,11 @@ function Signup() {
             <p className='text-red-600'>{error}</p>
         </div>
         <div>
-            <p>Aldready have an account? <Link to="/login" className="underline decoration-green-500">Login</Link></p>
+            <p className='text-gray-700'>Aldready have an account? <Link to="/login" className="underline decoration-green-500">Login</Link></p>
         </div>
         <button type="submit"
         disabled={isLoading}
-        className='border w-full outline-none focus:border-green-600 rounded-lg p-2 bg-green-500  text-white hover:bg-green-600 cursor-pointer transition-all duration-200'
+        className='border w-full outline-none focus:border-green-600 rounded-lg p-2 bg-green-500  text-white hover:bg-green-600 cursor-pointer transition-all duration-200 font-medium'
         >{isLoading ? "Signing up" : "Signup"}</button>
       </form>
     </div>
