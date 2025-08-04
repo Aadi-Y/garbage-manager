@@ -15,34 +15,50 @@ async function handleAssignId(id = generateId()) {
 // @access Private
 async function handleAssignGarbage(req, res) {
     try {
-        const { garbages } = req.body;
+        const { garbages } = req.body; 
         const driverId = req.params.id;
 
-        if (!Array.isArray(garbages)) {
+        if (!garbages) {
             return res.status(400).json({
                 error: true,
-                message: "`garbages` must be an array",
+                message: "Garbage ID do not null or duplicate",
             });
         }
 
-        const driver = await Driver.findByIdAndUpdate(
-            { _id: driverId },
-            { $push: { assignedRequest: { $each: garbages } } },
-            { new: true }
-        ).populate("assignedRequest");
+        const driver = await Driver.findById(driverId);
 
         if (!driver) {
             return res.status(404).json({
                 error: true,
-                message: "Driver not found",
+                message: "Driver not found.",
             });
         }
 
+        // Check for duplicates
+        const alreadyAssigned = driver.assignedRequest.some(
+            id => id.toString() === garbages
+        );
+
+        if (alreadyAssigned) {
+            return res.status(400).json({
+                error: true,
+                message: "Garbage ID is already assigned to the driver.",
+                driver,
+            });
+        }
+
+        // Add the new garbage ID
+        driver.assignedRequest.push(garbages);
+        await driver.save();
+
+        await driver.populate("assignedRequest");
+
         res.status(201).json({
             error: false,
-            message: "Garbage is assigned",
+            message: "Garbage assigned successfully.",
             driver,
         });
+
     } catch (error) {
         res.status(500).json({
             error: true,
@@ -50,6 +66,7 @@ async function handleAssignGarbage(req, res) {
         });
     }
 }
+
 
 //@desc It is used to get all the assigned garbages Id
 //Route GET /api/area/getAssignedGarbages
@@ -70,12 +87,12 @@ async function handleGetAssignedGarbages(req, res) {
 
         const assignedGarbages = driver.assignedRequest;
 
-        const garbageIds = assignedGarbages.map(g => g._id || g);
+        const garbageIds = assignedGarbages.map(g => g);
 
         res.status(200).json({
             error: false,
             message: "Assigned garbages fetched successfully",
-            garbageIds
+            garbageIds,
         });
     } catch (error) {
         res.status(500).json({
@@ -183,9 +200,10 @@ async function handleRemoveGarbage(req, res) {
             });
         }
 
-        driver.assignedRequest = driver.assignedRequest.filter(
-            (id) => id.toString() !== garbageId
-        );
+        driver.assignedRequest = driver.assignedRequest
+            .filter(id => id)
+            .filter(id => id.toString() !== garbageId);
+
 
         await driver.save();
 

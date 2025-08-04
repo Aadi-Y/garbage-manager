@@ -85,12 +85,12 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
 
   return (
     <div>
-      <h2 className="font-medium text-center my-2 text-[1.3rem] text-green-600">
-        Create Driver
+      <h2 className="text-xl font-semibold text-center text-green-600 mb-4">
+        Create New Driver
       </h2>
       <form
         onSubmit={type === "edit" ? handleDriverUpdation : handleDriverCreation}
-        className="px-5 py-6 rounded flex flex-col gap-3"
+        className="space-y-4"
       >
         {/* <div>
           <label>User ID:</label><br />
@@ -113,7 +113,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
             onChange={handleChange}
             required
             placeholder="Enter name"
-            className="rounded-lg border-gray-500 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
+            className="rounded-lg border-gray-300 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
           />
         </div>
         <div>
@@ -126,7 +126,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
             onChange={handleChange}
             required
             placeholder="Enter phone number"
-            className="rounded-lg border-gray-500 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
+            className="rounded-lg border-gray-300 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
           />
         </div>
         <div>
@@ -139,7 +139,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
             onChange={handleChange}
             required
             placeholder="Enter age"
-            className="rounded-lg border-gray-500 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
+            className="rounded-lg border-gray-300 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
           />
         </div>
         <div>
@@ -152,7 +152,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
             onChange={handleChange}
             required
             placeholder="Enter Licence number"
-            className="rounded-lg border-gray-500 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
+            className="rounded-lg border-gray-300 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
           />
         </div>
         <div>
@@ -165,7 +165,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
             onChange={handleChange}
             required
             placeholder="Enter Aadhar ID"
-            className="rounded-lg border-gray-500 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
+            className="rounded-lg border-gray-300 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
           />
         </div>
         <div>
@@ -178,7 +178,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
             onChange={handleChange}
             required
             placeholder="Enter Vehicle Type"
-            className="rounded-lg border-gray-500 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
+            className="rounded-lg border-gray-300 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
           />
         </div>
         <div>
@@ -191,7 +191,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
             onChange={handleChange}
             required
             placeholder="Enter Vehicle Number"
-            className="rounded-lg border-gray-500 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
+            className="rounded-lg border-gray-300 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
           />
         </div>
         <div className="flex">
@@ -201,7 +201,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
             name="availability"
             checked={formData.availability}
             onChange={handleChange}
-            className="rounded-lg border-gray-500 border focus:outline-none w-full p-2"
+            className="rounded-lg border-gray-300 border focus:outline-none w-full p-2"
           />
         </div>
         <div>
@@ -217,7 +217,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
             onChange={handleChange}
             required
             placeholder="Enter Location"
-            className="rounded-lg border-gray-500 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
+            className="rounded-lg border-gray-300 border focus:outline-none focus:ring-1 focus:ring-green-500 w-full p-2"
           />
         </div>
         {/* Assigned Requests can be handled separately if needed */}

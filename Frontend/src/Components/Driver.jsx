@@ -114,6 +114,7 @@ function Driver() {
         style={{
           overlay: {
             background: "rgba(0,0,0,0.5)",
+            backdropFilter:"blur(4px)"
           },
           content: {
             height: "600px",
@@ -123,7 +124,7 @@ function Driver() {
             position: "relative",
             margin: "auto",
             overflowY: "auto",
-            background: "rgba(255,255,255,0.9)",
+            background: "rgba(255,255,255,1)",
             boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
           },
         }}

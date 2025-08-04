@@ -15,7 +15,7 @@ import { IoMdRemove } from "react-icons/io";
 
 function AboutDriver({ driver }) {
   const { openModal, toggleModal, role } = useContext(AboutContext);
-  const [garbages, setGarbages] = useState([]);
+  const [garbages, setGarbages] = useState(null);
   const [garbageIds, setGarbageIds] = useState([]);
   const [assignedRequest, setAssignedRequest] = useState([]);
   const [error, setError] = useState(null);
@@ -27,17 +27,13 @@ function AboutDriver({ driver }) {
 
   function handleSelectGarbage(event) {
     const selectedGarbage = event.target.value;
-    setGarbages((prev) => [...prev, selectedGarbage]);
+    if (selectedGarbage === "") return;
+    setGarbages(selectedGarbage);
   }
 
   async function handleAssignGarbage(e) {
     e.preventDefault();
-
-    if (!Array.isArray(garbages) || garbages.length === 0) {
-      setError("Please select at least one garbage ID to assign.");
-      return;
-    }
-
+    console.log(garbages);
     try {
       const response = await axiosInstance.put(
         apiPath.AREA.ASSIGN_GARBAGE(driver._id),
@@ -47,10 +43,14 @@ function AboutDriver({ driver }) {
       console.log(response);
       if (response && response.data) {
         alert(response.data.message);
+        handleGetAllAssignedGarbages();
+        setGarbages(null);
+        setError(null);
       }
     } catch (error) {
+      console.log(error);
       console.error("Error in AboutDriver:", error.message);
-      setError("Unable to assign, please try again");
+      setError(error.response.data.message);
     }
   }
 
@@ -91,18 +91,20 @@ function AboutDriver({ driver }) {
   }
 
   async function handleRemoveAssignedGarbages(e, garbage) {
-    e.preventDefault(); 
+    e.preventDefault();
 
     console.log("Remove Id:", garbage);
 
     try {
       const response = await axiosInstance.put(
-        apiPath.AREA.REMOVE_GARBAGE(driver._id), 
-        { garbageId:garbage }
+        apiPath.AREA.REMOVE_GARBAGE(driver._id),
+        { garbageId: garbage }
       );
 
-      console.log("Successfully removed:", response.data);
-      
+      if (response && response.data) {
+        alert(response.data.message);
+        handleGetAllAssignedGarbages();
+      }
     } catch (error) {
       if (error.response && error.response.data) {
         console.error(
@@ -137,7 +139,7 @@ function AboutDriver({ driver }) {
     <>
       <section>
         <Modal
-          isOpen={true}
+          isOpen={openModal}
           onRequestClose={{}}
           style={{
             overlay: {
@@ -228,15 +230,15 @@ function AboutDriver({ driver }) {
                   <h1 className="underline font-medium">Assign Garbage</h1>
                   <div className="flex gap-2">
                     <select
-                      name=""
-                      id=""
                       className="border rounded-md focus:outline-none focus:ring-1 focus:ring-green-500 border-gray-500"
                       onChange={handleSelectGarbage}
                     >
                       <option value="">Select</option>
                       {garbageIds.length > 0 &&
                         garbageIds.map((id, index) => (
-                          <option value={id}>Garbage {index + 1}</option>
+                          <option key={id} value={id}>
+                            Garbage {index + 1}
+                          </option>
                         ))}
                     </select>
                     <button
@@ -246,6 +248,12 @@ function AboutDriver({ driver }) {
                       Assign
                     </button>
                   </div>
+
+                  {error && (
+                    <div>
+                      <p className="text-red-500">{error}</p>
+                    </div>
+                  )}
                 </div>
               )}
               <div>
@@ -257,14 +265,16 @@ function AboutDriver({ driver }) {
                         <span className="font-medium">Garbage Id : </span>
                         {garbage}
 
-                        <button
-                          className="h-5 w-5 bg-red-500 text-white flex items-center justify-center rounded cursor-pointer hover:bg-red-400"
-                          onClick={(e) =>
-                            handleRemoveAssignedGarbages(e, garbage)
-                          }
-                        >
-                          <IoMdRemove />
-                        </button>
+                        {role === "Admin" && (
+                          <button
+                            className="h-5 w-5 bg-red-500 text-white flex items-center justify-center rounded cursor-pointer hover:bg-red-400"
+                            onClick={(e) =>
+                              handleRemoveAssignedGarbages(e, garbage)
+                            }
+                          >
+                            <IoMdRemove />
+                          </button>
+                        )}
                       </li>
                     ))
                   ) : (
@@ -273,12 +283,6 @@ function AboutDriver({ driver }) {
                 </ul>
               </div>
             </div>
-
-            {error && (
-              <div>
-                <p className="text-red-500">{error}</p>
-              </div>
-            )}
 
             <div className="border p-2 rounded bg-slate-200 shadow-lg border-none">
               <p>
