@@ -44,6 +44,9 @@ function Signup() {
       console.log(response);
     }catch(error){
       console.log(error);
+      if(error.response){
+        setError(error.response.data.message);
+      }
     }
   };
 
@@ -60,7 +63,6 @@ function Signup() {
             name="userName"
             value={formData.userName}
             onChange={handleChange}
-            required
             className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-300 rounded-lg p-2 bg-white'
             placeholder='Enter name' 
           />
@@ -72,7 +74,6 @@ function Signup() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            required
             className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-300 rounded-lg p-2 bg-white'
             placeholder='Enter email'
           />
@@ -84,7 +85,6 @@ function Signup() {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            required
             className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-300 rounded-lg p-2 bg-white'
             placeholder='Enter password'
           />
@@ -96,7 +96,6 @@ function Signup() {
             name="role"
             value={formData.role}
             onChange={handleChange}
-            required
             className='w-full focus:outline-none focus:ring-1 focus:ring-green-500 border border-gray-300 rounded-lg p-2 bg-white'
             placeholder='Enter Role'
           />

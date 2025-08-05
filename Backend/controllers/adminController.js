@@ -109,41 +109,41 @@ async function handleGetAssignedGarbages(req, res) {
 // @access Private
 async function handleAssignDriver(req, res) {
     try {
-        const { drivers } = req.body;
+        const { driverId } = req.body;
         const areaId = req.params.id;
 
-        const area = await Area.findById({ _id: areaId });
+        const area = await Area.findById(areaId);
 
         if (!area) {
             return res.status(404).json({
                 error: true,
                 message: "Area not found"
-            })
+            });
         }
-        const driversDoc = await Promise.all(
-            drivers.map((driverId) => {
-                return driverId
-            })
-        )
 
-        area.assignedDrivers = driversDoc;
-        area.save();
+        // Avoid duplicate assignments
+        if (!area.assignedDrivers.includes(driverId)) {
+            area.assignedDrivers.push(driverId);
+            await area.save();
+        }
 
         const populatedArea = await Area.findById(areaId)
             .populate("assignedDrivers");
 
         res.status(201).json({
             error: false,
-            message: "Driver is assigned",
-            populatedArea
-        })
+            message: "Driver assigned successfully",
+            area: populatedArea
+        });
+
     } catch (error) {
         res.status(500).json({
             error: true,
             message: error.message
-        })
+        });
     }
 }
+
 
 // @decr It is used to remove the assigned driver from area
 // @route PUT /api/garbage/removeDriver;
@@ -248,17 +248,18 @@ async function handleCreateArea(req, res) {
             })
         }
 
-        if (assignedDrivers?.length === 0) {
-            return res.status(400).json({
-                error: true,
-                message: "Please assign driver"
-            })
-        }
+        // if (assignedDrivers?.length === 0) {
+        //     return res.status(400).json({
+        //         error: true,
+        //         message: "Please assign driver"
+        //     })
+        // }
         const newArea = {
             areaName,
             areaLocation,
             areaPincode,
-            areaId: await handleAssignId()
+            areaId: await handleAssignId(),
+            assignedDrivers:[]
         }
         const area = await Area.create(newArea);
 
@@ -281,7 +282,9 @@ async function handleCreateArea(req, res) {
 // @access Private
 async function handleGetArea(req, res) {
     try {
-        const area = await Area.find({});
+        const area = await Area.find({})
+        .populate("assignedDrivers")
+        .exec();
 
         res.status(200).json({
             error: false,
@@ -297,12 +300,20 @@ async function handleGetArea(req, res) {
 }
 
 // @decr It is used to get all the assinged areas
-// @route POST /api/garbage/getAreaForDriver;
+// @route GET /api/garbage/getAreaForDriver;
 // @access Private
-async function handleGetForDriver() {
+async function handleGetForDriver(req,res) {
     try {
         const { id } = req.user;
-        const area = Area.findById({ id });
+        const area = await Area.find({assignedDrivers:id})
+        .populate("assignedDrivers");
+
+        if(!area || area.length === 0){
+            return res.status(400).json({
+                error:true,
+                message:"No area is assigned to you"
+            })
+        }
 
         res.status(200).json({
             error: false,
@@ -379,7 +390,7 @@ async function handleDeleteArea(req, res) {
 async function handleGetAllDriverId(req,res){
     try{
         const availableIds = await Driver.find({}).select("driverId");
-        const driverId = availableIds?.map(d => d.driverId);
+        const driverId = availableIds;
 
         res.status(200).json({
             error:true,

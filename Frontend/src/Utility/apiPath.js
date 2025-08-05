@@ -32,7 +32,8 @@ export const apiPath = {
         REMOVE_DRIVER:(id)=>`/api/area/removeDriver/${id}`,
         ASSIGN_GARBAGE:(id)=>`/api/area/assignGarbage/${id}`,
         REMOVE_GARBAGE:(id)=>`/api/area/removeGarbage/${id}`,
-        GET_ASSIGNED_GARBAGES:(id)=>`/api/area/getAssignedGarbages/${id}`
+        GET_ASSIGNED_GARBAGES:(id)=>`/api/area/getAssignedGarbages/${id}`,
+        GET_ALL_DRIVER_ID:`/api/area/getAllDriverId`
 
     }
 }

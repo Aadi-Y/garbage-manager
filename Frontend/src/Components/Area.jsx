@@ -18,13 +18,13 @@ function Area() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [areas, setAreas] = useState([]);
-  const [openAddEdit,setOpenAddEdit] = useState({
-    isShown:false,
-    type:"add",
-    data:null
+  const [openAddEdit, setOpenAddEdit] = useState({
+    isShown: false,
+    type: "add",
+    data: null,
   });
 
-  const {role} = useContext(AboutContext);
+  const { role } = useContext(AboutContext);
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);
@@ -43,32 +43,32 @@ function Area() {
 
       console.log(response);
     } catch (error) {
-      if (error && error.message) {
-        console.error(error.message);
+      if (error && error.response) {
+        console.error(error.response.data.message);
       }
     } finally {
       setIsLoading(false);
     }
   }
 
-  async function handleAreaDelete(id){
-    try{
+  async function handleAreaDelete(id) {
+    try {
       const response = await axiosInstance.delete(apiPath.AREA.DELETE(id));
 
       console.log(response);
-    }catch(error){
-      if(error?.message){
+    } catch (error) {
+      if (error?.message) {
         console.log(error.message);
       }
     }
   }
 
-  function handleAreaEdit(item){
+  function handleAreaEdit(item) {
     setOpenAddEdit({
-      isShown:true,
-      type:"edit",
-      data:item
-    })
+      isShown: true,
+      type: "edit",
+      data: item,
+    });
     handleCloseModal();
   }
 
@@ -106,7 +106,12 @@ function Area() {
         >
           <IoClose />
         </button>
-        <AreaForm handleCloseModal={handleCloseModal} type={openAddEdit.type} area={openAddEdit.data}/>
+        <AreaForm
+          handleCloseModal={handleCloseModal}
+          handleGetAreaForAdmin={handleGetAreaForAdmin}
+          type={openAddEdit.type}
+          area={openAddEdit.data}
+        />
       </Modal>
 
       <section className="min-h-screen bg-gradient-to-br from-slate-100 to-white mt-5">
@@ -172,14 +177,21 @@ function Area() {
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {areas &&
             areas.length > 0 &&
-            areas.map((area,index) => (
-              <div className="bg-white rounded-2xl shadow-lg p-6 w-100 space-y-6" key={index}>
+            areas.map((area, index) => (
+              <div
+                className="bg-white rounded-2xl shadow-lg p-6 w-100 space-y-6"
+                key={index}
+              >
                 <div className="flex justify-between items-center">
                   <h2 className="text-xl font-semibold text-slate-800">
                     Area {index}
                   </h2>
-                  <div className="text-sm text-slate-500">ID: {area.areaId}</div>
-                  <div className="text-sm text-slate-500">📅 {moment(area?.createdAt).format("DD-MMM-YYYY")}</div>
+                  <div className="text-sm text-slate-500">
+                    ID: {area.areaId}
+                  </div>
+                  <div className="text-sm text-slate-500">
+                    📅 {moment(area?.createdAt).format("DD-MMM-YYYY")}
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -191,7 +203,9 @@ function Area() {
                       Address
                     </h3>
                     <p className="text-slate-700 text-sm">{area?.areaName}</p>
-                    <p className="text-slate-700 text-sm">{area?.areaLocation}</p>
+                    <p className="text-slate-700 text-sm">
+                      {area?.areaLocation}
+                    </p>
                     <p className="text-slate-700 text-sm">{area?.pincode}</p>
                   </div>
 
@@ -203,8 +217,15 @@ function Area() {
                       Assigned Drivers
                     </h3>
                     <ul className="list-disc list-inside text-slate-700 text-sm">
-                      <li>Driver 1</li>
-                      <li>Driver 2</li>
+                      {area.assignedDrivers.length !== 0 ? (
+                        area.assignedDrivers.map((driver, index) => (
+                          <li key={index}>
+                            {driver.driverId}
+                          </li>
+                        ))
+                      ) : (
+                        <p>No driver assigned</p>
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -214,7 +235,7 @@ function Area() {
                     <button
                       className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                       aria-label="Edit"
-                      onClick={()=>handleAreaEdit(area)}
+                      onClick={() => handleAreaEdit(area)}
                     >
                       <FaPen />
                       <span>Edit</span>
@@ -222,7 +243,7 @@ function Area() {
                     <button
                       className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
                       aria-label="Delete"
-                      onClick={()=>handleAreaDelete(area._id)}
+                      onClick={() => handleAreaDelete(area._id)}
                     >
                       <FaTrash />
                       <span>Delete</span>
