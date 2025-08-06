@@ -24,6 +24,7 @@ function Garbage({}) {
   const { toggleModal } = useContext(AboutContext);
   const [garbageDescription,setGarbageDescription] = useState("");
   const {role} = useContext(AboutContext);
+  const [error,setError] = useState("");
 
   console.log(role);
 
@@ -84,11 +85,24 @@ function Garbage({}) {
     }
   }
 
+  async function handleGetAllGarbagesForDriver(){
+    try{
+      const response = await 
+    }catch(error){
+      console.log(error);
+      if(error && error.response){
+        setError(error.response.data.message);
+      }
+    }
+  }
+
 
   useEffect(() => {
-    handleGetGarbages();
+    role === "User" && handleGetGarbages();
 
     role === "Admin" && handleGetAllGarbages();
+
+    role === "Driver" && handleGetAllGarbagesForDriver();
   }, []);
 
   //Modal for About the Garbage
@@ -136,7 +150,6 @@ function Garbage({}) {
   function handleGarbageDescription(description){
     setGarbageDescription(description);
     const newDescription = trimDescription(description);
-    
   }
 
 

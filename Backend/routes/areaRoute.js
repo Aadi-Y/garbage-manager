@@ -8,7 +8,7 @@ const {
     handleUpdateArea,
     handleDeleteArea,
     handleGetArea,
-    handleGetForDriver,
+    handleGetAreaForDriver,
     handleGetAssignedGarbages,
     handleGetAllDriverId
 } = require("../controllers/adminController");
@@ -20,7 +20,7 @@ const router = express.Router();
 router.post("/createArea", protect, roleAuthentication(["Admin"]), handleCreateArea);
 router.get("/getArea", protect, roleAuthentication(["Admin", "Driver"]), handleGetArea);
 router.get("/getAssignedGarbages/:id", protect, roleAuthentication(["Admin", "Driver"]), handleGetAssignedGarbages);
-router.get("/getAreaForDriver", protect, roleAuthentication(["Admin", "Driver"]), handleGetForDriver);
+router.get("/getAreaForDriver", protect, roleAuthentication(["Admin", "Driver"]), handleGetAreaForDriver);
 router.put("/updateArea/:id", protect, roleAuthentication(["Admin"]), handleUpdateArea);
 router.delete("/deleteArea/:id", protect, roleAuthentication(["Admin"]), handleDeleteArea);
 router.put("/assignDriver/:id", protect, roleAuthentication(["Admin"]), handleAssignDriver);

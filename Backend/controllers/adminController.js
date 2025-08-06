@@ -302,7 +302,7 @@ async function handleGetArea(req, res) {
 // @decr It is used to get all the assinged areas
 // @route GET /api/garbage/getAreaForDriver;
 // @access Private
-async function handleGetForDriver(req,res) {
+async function handleGetAreaForDriver(req,res) {
     try {
         const { id } = req.user;
         const area = await Area.find({assignedDrivers:id})
@@ -405,6 +405,17 @@ async function handleGetAllDriverId(req,res){
     }
 }
 
+async function handleGetGarbagesForDriver(req,res){
+    try{
+        
+    }catch(error){
+        res.status(500).json({
+            error:true,
+            message:error.message
+        })
+    }
+}
+
 module.exports = {
     handleAssignDriver,
     handleAssignGarbage,
@@ -414,7 +425,7 @@ module.exports = {
     handleUpdateArea,
     handleDeleteArea,
     handleGetArea,
-    handleGetForDriver,
+    handleGetAreaForDriver,
     handleGetAssignedGarbages,
     handleGetAllDriverId
 }

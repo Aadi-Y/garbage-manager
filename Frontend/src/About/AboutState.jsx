@@ -6,7 +6,7 @@ export const AboutContext = createContext(null);
 function AboutState({children}){
     const [openModal,setOpenModal] = useState(false);
     const [role,setRole] = useState(null);
-
+    const [user,setUser] = useState({});
     function toggleModal(){
         setOpenModal(prev => !prev);
     }
@@ -15,6 +15,7 @@ function AboutState({children}){
         try{
             const response = await axiosInstance.get(apiPath.AUTH.GET_PROFILE);
             if(response && response.data){
+                setUser(response.data.user);
                 setRole(response.data.user.role);
             }
 
@@ -30,7 +31,7 @@ function AboutState({children}){
     },[]);
 
     return(<>
-        <AboutContext.Provider value={{openModal,setOpenModal,toggleModal,role}}>
+        <AboutContext.Provider value={{openModal,setOpenModal,toggleModal,role,user}}>
             {children}
         </AboutContext.Provider>
     </>)
