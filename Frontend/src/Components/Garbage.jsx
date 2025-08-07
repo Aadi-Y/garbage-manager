@@ -226,7 +226,7 @@ function Garbage({}) {
           <h1 className="font-semibold text-[1.2rem] text-center mb-2">
             Garbage list
           </h1>
-          <section className="p-2 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <section className=" grid lg:grid-cols-3 gap-x-5 grid-col-1 md:grid-cols-2 gap-y-5 pr-5">
             {/* <section
               className="bg-white rounded-2xl shadow-lg w-100 p-4"
               onClick={toggleModal}
@@ -302,9 +302,9 @@ function Garbage({}) {
             {garbages &&
               garbages.length > 0 &&
               garbages.map((garbage,index) => (
-                <>
+                <section className="">
                   <section
-                    className="bg-white rounded-2xl shadow-lg w-100 p-4"
+                    className="bg-white rounded-2xl shadow-lg p-4"
                     onClick={() => handleViewDetailsAndToggle(garbage)}
                     key={index}
                   >
@@ -386,7 +386,7 @@ function Garbage({}) {
                     )}
                   </section>
                   <About garbage={openDetails.data} />
-                </>
+                </section>
               ))}
           </section>
         </section>

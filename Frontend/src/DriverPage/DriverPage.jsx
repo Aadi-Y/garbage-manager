@@ -10,9 +10,9 @@ function DriverPage() {
   }
   return (
     <>
-      <section className="mt-10 bg-slate-100 min-h-screen">
+      <section className="mt-10 min-h-screen bg-slate-100">
         <section className="pt-0">
-          <nav className="min-h-screen border w-70 pt-5 mt-10 fixed bg-white border-none shadow-lg rounded flex flex-col gap-2 p-2">
+          <nav className="min-h-screen border lg:w-70 md:w-55 pt-5 mt-10 fixed bg-white border-none shadow-lg rounded flex flex-col gap-2 p-2">
             <li className={`list-none text-center p-3 cursor-pointer rounded text-white transition-all duration-200 ${activeTab === "area" ? "bg-green-600": "bg-green-500 hover:bg-green-600"}`}
             onClick={()=>handleActiveTab("area")}
             >
@@ -30,7 +30,7 @@ function DriverPage() {
             </li>
           </nav>
 
-          <section className="ml-80">
+          <section className="lg:ml-80 md:ml-60">
             {activeTab === "garbage" && <Garbage personRole={"driver"}/>}
             {activeTab === "driver" && <Driver personRole={"driver"}/>}
             {activeTab === "area" && <Area personRole={"driver"}/>}
