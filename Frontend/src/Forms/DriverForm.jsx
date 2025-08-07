@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
+import toast from "react-hot-toast";
 
 function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
   const [formData, setFormData] = useState({
@@ -44,15 +45,15 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
 
       console.log(response);
       if(response && response.data){
-        alert(response.data.message);
+        toast.success(response.data.message);
         setIsLoading(false);
         handleCloseModal();
         handleGetDriver();
       }
     }catch(error){
-      if(error && error.message){
-        setError(error.message);
-        console.error(error.message);
+      if(error && error.response){
+        setError(error.response.data.message);
+        console.error(error);
       }
     }finally{
       setError(null);
@@ -72,13 +73,14 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
       console.log(response);
 
       if(response && response.data){
-        alert(response.data.message);
+        toast.success(response.data.message);
         handleCloseModal();
         handleGetDriver();
       }
     }catch(error){
-      if(error?.message){
-        console.log(error?.message);
+      if(error?.response){
+        toast.error(response.data.message);
+        console.log(error?.response);
       }
     }
   }

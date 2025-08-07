@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {apiPath} from "../Utility/apiPath";
 import { axiosInstance } from '../Utility/axiosInstance';
 import {useNavigate} from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -36,7 +37,7 @@ function Signup() {
     try{
       const response = await axiosInstance.post(apiPath.AUTH.REGISTER,formData);
       if(response.data){
-        alert(response.data.message);
+        toast.success(response.data.message);
         handleNavigate(response.data.user.role);
         localStorage.setItem("token",response.data.token);
       }

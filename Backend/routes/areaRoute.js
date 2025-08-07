@@ -10,7 +10,8 @@ const {
     handleGetArea,
     handleGetAreaForDriver,
     handleGetAssignedGarbages,
-    handleGetAllDriverId
+    handleGetAllDriverId,
+    handleGetGarbagesForDriver
 } = require("../controllers/adminController");
 const { protect } = require("../middleware/protect");
 const { roleAuthentication } = require("../middleware/roleMiddleware");
@@ -28,6 +29,7 @@ router.put("/removeDriver/:id", protect, roleAuthentication(["Admin"]), handleRe
 router.put("/assignGarbage/:id", protect, roleAuthentication(["Admin"]), handleAssignGarbage);
 router.put("/removeGarbage/:id", protect, roleAuthentication(["Admin"]), handleRemoveGarbage);
 router.get("/getAllDriverId", protect, roleAuthentication(["Admin"]), handleGetAllDriverId);
+router.get("/getGarbageForDriver",protect,roleAuthentication(["Admin","Driver"]),handleGetGarbagesForDriver);
 
 
 

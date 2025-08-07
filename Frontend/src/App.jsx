@@ -11,12 +11,15 @@ import Navbar from "./Navbar/Navbar";
 import Admin from "./Admin/Admin";
 import DriverPage from "./DriverPage/DriverPage";
 import Modal from "react-modal";
+import {Toaster} from "react-hot-toast";
 Modal.setAppElement("#root");
+
 function App() {
   return (
     <>
       <Router>
         <Navbar />
+        <Toaster position="top-right" reverseOrder={false}/>
         <Routes>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>

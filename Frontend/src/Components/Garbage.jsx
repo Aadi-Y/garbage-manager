@@ -15,6 +15,7 @@ import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
 import moment from "moment";
 import { trimDescription } from "../Helper/helper";
+import toast from "react-hot-toast";
 
 function Garbage({}) {
   const [openModal1, setOpenModal] = useState(false);
@@ -22,9 +23,9 @@ function Garbage({}) {
   // const [role, setRole] = useState("");
   const [garbages, setGarbages] = useState([]);
   const { toggleModal } = useContext(AboutContext);
-  const [garbageDescription,setGarbageDescription] = useState("");
-  const {role} = useContext(AboutContext);
-  const [error,setError] = useState("");
+  const [garbageDescription, setGarbageDescription] = useState("");
+  const { role } = useContext(AboutContext);
+  const [error, setError] = useState("");
 
   console.log(role);
 
@@ -66,44 +67,52 @@ function Garbage({}) {
         setGarbages(response.data.garbages);
       }
     } catch (error) {
-      if (error?.message) {
-        console.error("Error in creation : " + error.message);
+      if (error?.response) {
+        console.error("Error in creation : " + error.response);
       }
     }
   }
 
-  async function handleGetAllGarbages(){
-    try{
+  async function handleGetAllGarbages() {
+    try {
       const response = await axiosInstance.get(apiPath.GARBAGE.GET_ALL);
-      if(response && response.data){
+      console.log(response.data.garbages);
+      if (response && response.data) {
         setGarbages(response.data.garbages);
       }
-    }catch(error){
-      if(error?.message){
-        console.log(error?.message);
+    } catch (error) {
+      if (error?.response) {
+        console.log(error?.response);
       }
     }
   }
+
+  // async function handleGetAllGarbagesForDriver(){
+  //   try{
+  //     const response = await
+  //   }catch(error){
+  //     console.log(error);
+  //     if(error && error.response){
+  //       setError(error.response.data.message);
+  //     }
+  //   }
+  // }
 
   async function handleGetAllGarbagesForDriver(){
     try{
-      const response = await 
+      const response = await axiosInstance.get(apiPath.AREA.GET_ALL_GARBAGE_DRIVER);
+
+      console.log(response);
+      if(response){
+        setGarbages(response.data.garbages);
+      }
     }catch(error){
       console.log(error);
       if(error && error.response){
-        setError(error.response.data.message);
+        console.log(error.response);
       }
     }
   }
-
-
-  useEffect(() => {
-    role === "User" && handleGetGarbages();
-
-    role === "Admin" && handleGetAllGarbages();
-
-    role === "Driver" && handleGetAllGarbagesForDriver();
-  }, []);
 
   //Modal for About the Garbage
   function handleViewDetails(item) {
@@ -126,18 +135,19 @@ function Garbage({}) {
 
   //Garbage Deletion
   const handleGarbageDelete = async (id) => {
-    try{
+    try {
       const response = await axiosInstance.delete(apiPath.GARBAGE.DELETE(id));
 
       console.log(response);
 
-      if(response && response.data){
-        alert(response.data.message);
+      if (response && response.data) {
+        toast.success(response.data.message);
         handleGetGarbages();
       }
-    }catch(error){
-      if(error && error.message){
-        console.log("Error in Deletion : ",error.message);
+    } catch (error) {
+      if (error && error.response) {
+        console.log("Error in Deletion : ", error.response);
+        toast.error(error.response.data.message);
       }
     }
   };
@@ -147,11 +157,33 @@ function Garbage({}) {
     toggleModal();
   }
 
-  function handleGarbageDescription(description){
+  function handleGarbageDescription(description) {
     setGarbageDescription(description);
     const newDescription = trimDescription(description);
   }
 
+  async function handleDisposeGarbage(garbageId){
+    try{
+      const response = await axiosInstance.put(apiPath.GARBAGE.DISPOSED(garbageId));
+
+      console.log(response);
+      if(response){
+        toast.success(response.data.message);
+        role === "Driver" && handleGetAllGarbagesForDriver();
+      }
+    }catch(error){
+      console.log(error);
+      if(error?.response){
+        setError(error.response.data.message);
+      }
+    }
+  }
+
+  useEffect(() => {
+    role === "User" && handleGetGarbages();
+    role === "Admin" && handleGetAllGarbages();
+    role === "Driver" && handleGetAllGarbagesForDriver();
+  }, []);
 
   return (
     <>
@@ -269,11 +301,12 @@ function Garbage({}) {
 
             {garbages &&
               garbages.length > 0 &&
-              garbages.map((garbage) => (
+              garbages.map((garbage,index) => (
                 <>
                   <section
                     className="bg-white rounded-2xl shadow-lg w-100 p-4"
                     onClick={() => handleViewDetailsAndToggle(garbage)}
+                    key={index}
                   >
                     <div className="flex justify-between items-center py-2">
                       <p className="font-medium text-[1.2rem]">
@@ -302,7 +335,7 @@ function Garbage({}) {
                         <span>
                           <FaWeight className="text-gray-600" />
                         </span>
-                        {garbage?.weight} {garbage?.weight > 1 ? "Kgs" : "Kg"} 
+                        {garbage?.weight} {garbage?.weight > 1 ? "Kgs" : "Kg"}
                       </p>
                     </div>
                     <div>
@@ -339,12 +372,15 @@ function Garbage({}) {
                     {role === "Driver" && (
                       <div className="flex justify-end">
                         <button
-                          className="border p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200 shadow-md"
+                          className={`border p-2 rounded-lg text-white cursor-pointer transition-all duration-200 shadow-md ${garbage?.disposed === true ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}`}
                           onClick={(event) => {
                             event.stopPropagation();
+                            handleDisposeGarbage(garbage?._id);
                           }}
                         >
-                          Completed
+                          {
+                            garbage?.disposed ? <p>Completed</p> : <p>Not Completed</p>
+                          }
                         </button>
                       </div>
                     )}

@@ -20,8 +20,8 @@ function AboutState({children}){
             }
 
         }catch(error){
-            if(error?.message){
-                console.error(error?.message);
+            if(error?.response){
+                console.error(error?.response);
             }
         }
     }

@@ -59,10 +59,9 @@ const garbageSchema = new mongoose.Schema({
     },
     garbageId:{
         type:String,
-        required:true,
+        // required:true,
         unique:true
     }
-
 },
 {
     timestamps:true

@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
 import { IoMdRemove } from "react-icons/io";
+import toast from "react-hot-toast";
 
 function AboutDriver({ driver }) {
   const { openModal, toggleModal, role } = useContext(AboutContext);
@@ -42,7 +43,7 @@ function AboutDriver({ driver }) {
 
       console.log(response);
       if (response && response.data) {
-        alert(response.data.message);
+        toast.success(response.data.message);
         handleGetAllAssignedGarbages();
         setGarbages(null);
         setError(null);
@@ -84,16 +85,14 @@ function AboutDriver({ driver }) {
         setGarbageIds(response.data.garbageIds);
       }
     } catch (error) {
-      if (error?.message) {
-        console.log(error?.message);
+      if (error?.response) {
+        console.log(error.response);
       }
     }
   }
 
   async function handleRemoveAssignedGarbages(e, garbage) {
     e.preventDefault();
-
-    console.log("Remove Id:", garbage);
 
     try {
       const response = await axiosInstance.put(

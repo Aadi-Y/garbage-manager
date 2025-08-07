@@ -53,8 +53,8 @@ function Driver() {
         setDrivers(response.data.driver);
       }
     } catch (error) {
-      if (error?.message) {
-        console.log(error?.message);
+      if (error?.response) {
+        console.log(error?.response);
       }
     }
   }
@@ -65,11 +65,9 @@ function Driver() {
       if(response && response.data){
         setDrivers(response.data.drivers);
       }
-
-      console.log(response);
     }catch(error){
-      if(error?.message){
-        console.log(error?.message);
+      if(error?.response){
+        console.log(error?.response);
       }
     }
   }
@@ -79,12 +77,13 @@ function Driver() {
       const response = await axiosInstance.delete(apiPath.DRIVER.DELETE(id));
 
       if(response && response.data){
-        alert(response.data.message);
+        toast.success(response.data.message);
         handleGetDriver();
       }
     } catch (error) {
-      if (error && error.message) {
-        console.error(error.message);
+      if (error && error.response) {
+        console.error(error.response);
+        toast.error(error.response.data.message);
       }
     }
   }

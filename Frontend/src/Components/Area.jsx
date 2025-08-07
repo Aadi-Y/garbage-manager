@@ -55,10 +55,12 @@ function Area() {
     try {
       const response = await axiosInstance.delete(apiPath.AREA.DELETE(id));
 
-      console.log(response);
+      if(response && response.data){
+        toast.success(response.data.message);
+      }
     } catch (error) {
-      if (error?.message) {
-        console.log(error.message);
+      if (error?.response) {
+        console.log(error.response.data.message);
       }
     }
   }

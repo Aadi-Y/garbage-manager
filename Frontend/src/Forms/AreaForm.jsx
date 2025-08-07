@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
+import toast from "react-hot-toast";
 
 const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
   const [formData, setFormData] = useState({
@@ -29,8 +30,6 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
       const response = await axiosInstance.put(apiPath.AREA.ASSIGN_DRIVER(id), {
         driverId: selectedDriver,
       });
-
-      console.log(response);
     } catch (error) {
       console.log(error);
       if (error && error.response) {
@@ -56,12 +55,15 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
         await handleAssignDriver(response.data.area._id);
         setIsLoading(false);
         handleCloseModal();
-        alert(response.data.message);
+        toast.success(response.data.message);
         await handleGetAreaForAdmin();
         setSelectedDriver(null);
       }
     } catch (err) {
       console.log(err);
+      if(err?.response){
+        toast.error(err?.response.data.message);
+      }
       setError("Failed to create area. Try again.");
     } finally {
       setIsLoading(false);
@@ -88,6 +90,7 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
         await handleAssignDriver(response.data.area._id);
         await handleGetAreaForAdmin();
         handleCloseModal();
+        toast.success(response.data.message);
       }
     } catch (error) {
       setError("Failed to update area. Try again.");

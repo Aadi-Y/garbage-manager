@@ -407,7 +407,19 @@ async function handleGetAllDriverId(req,res){
 
 async function handleGetGarbagesForDriver(req,res){
     try{
+        const {id} = req.user;
         
+        let garbages = await Driver.find({userId:id}).select("assignedRequest -_id")
+        .populate("assignedRequest")
+        .exec();
+
+        garbages = garbages[0].assignedRequest;
+
+        res.status(200).json({
+            error:true,
+            message:"All the garbage assigned to this driver is fetched",
+            garbages
+        })
     }catch(error){
         res.status(500).json({
             error:true,
@@ -427,5 +439,6 @@ module.exports = {
     handleGetArea,
     handleGetAreaForDriver,
     handleGetAssignedGarbages,
-    handleGetAllDriverId
+    handleGetAllDriverId,
+    handleGetGarbagesForDriver
 }

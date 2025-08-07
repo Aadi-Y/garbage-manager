@@ -7,12 +7,12 @@ import { FaAddressCard } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { CgCalendarDates } from "react-icons/cg";
 import moment from "moment";
-function About({garbage}) {
-  const {openModal,toggleModal} = useContext(AboutContext);
+function About({ garbage }) {
+  const { openModal, toggleModal } = useContext(AboutContext);
 
-//   function handleCloseModal() {
-//     setOpenModal((prev) => !prev);
-//   }
+  //   function handleCloseModal() {
+  //     setOpenModal((prev) => !prev);
+  //   }
 
   return (
     <>
@@ -21,42 +21,70 @@ function About({garbage}) {
         onRequestClose={toggleModal}
         style={{
           overlay: {
-            background: "rgba(0,0,0,0.3)",
-            backdropFilter: "blur(2px)",
+            background: "gray",
+            backdropFilter: "blur(px)",
           },
           content: {
             width: "500px",
             height: "600px",
             borderRadius: "2rem",
-            margin:"auto",
-            overflowY:"auto",
-            zIndex:"1000"
+            margin: "auto",
+            overflowY: "auto",
+            zIndex: "1000",
           },
         }}
       >
         <section>
           <div className="flex items-center justify-between py-3">
-            <h1 className="font-medium text-[1.3rem]">{garbage?.garbageType}</h1>
-            <h2 className="flex items-center gap-1"> <span><CgCalendarDates /></span>Created on: {moment(garbage?.createdAt).format("DD-MMM-YYYY")}</h2>
+            <h1 className="font-medium text-[1.3rem]">
+              {garbage?.garbageType}
+            </h1>
+            <h2 className="flex items-center gap-1">
+              {" "}
+              <span>
+                <CgCalendarDates />
+              </span>
+              Created on: {moment(garbage?.createdAt).format("DD-MMM-YYYY")}
+            </h2>
           </div>
-          <div>
-            <p className=""><span className="font-medium">Deposited on:</span> {moment(garbage?.deposited).format("DD-MMM-YYYY")}</p>
-          </div>
-          <div>
-            <p><span className="font-medium">Status:</span> {garbage?.status}</p>
-          </div>
-          <div>
-            <p><span className="font-medium">Weight:</span> {garbage?.weight}</p>
+          <div className="flex justify-between">
+            <div>
+              <div>
+                <p className="">
+                  <span className="font-medium">Deposited on:</span>{" "}
+                  {moment(garbage?.deposited).format("DD-MMM-YYYY")}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span className="font-medium">Status:</span> {garbage?.status}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span className="font-medium">Weight:</span> {garbage?.weight}
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className={`border p-2 rounded border-none text-white shadow-md ${garbage?.disposed === true ? "bg-green-500": "bg-red-500"}`}>
+                {garbage?.disposed === true ? "Disposed" : "Yet to Dispose"}
+              </p>
+            </div>
           </div>
           <div>
             <h1 className="font-medium mt-5">Description: </h1>
-            <p className="pl-2">
-              {garbage?.description}
-            </p>
+            <p className="pl-2">{garbage?.description}</p>
           </div>
 
           <div className="mt-5">
-            <h1 className="font-medium flex items-center gap-2"><span><FaUser className="text-gray-600"/></span>Assigned Driver</h1>
+            <h1 className="font-medium flex items-center gap-2">
+              <span>
+                <FaUser className="text-gray-600" />
+              </span>
+              Assigned Driver
+            </h1>
             <div className="px-2">
               <p>
                 <span>Name: </span>Aadithya
@@ -68,7 +96,12 @@ function About({garbage}) {
           </div>
 
           <div className="border p-2 rounded-md bg-slate-100 shadow-md border-none mt-5">
-            <h1 className="font-medium underline flex items-center gap-2"><span><FaAddressCard className="text-gray-600"/></span>Address : </h1>
+            <h1 className="font-medium underline flex items-center gap-2">
+              <span>
+                <FaAddressCard className="text-gray-600" />
+              </span>
+              Address :{" "}
+            </h1>
             <p className="flex flex-col px-9">
               <i>{garbage?.area},</i>
               <i>{garbage?.landMark},</i>
@@ -80,9 +113,9 @@ function About({garbage}) {
           </div>
         </section>
         <IoClose
-                  onClick={toggleModal}
-                  className="absolute top-3 right-4 text-[1.3rem] cursor-pointer flex justify-center items-center text-gray-600"
-                />
+          onClick={toggleModal}
+          className="absolute top-3 right-4 text-[1.3rem] cursor-pointer flex justify-center items-center text-gray-600"
+        />
       </Modal>
     </>
   );

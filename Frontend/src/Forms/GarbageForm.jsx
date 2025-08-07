@@ -3,6 +3,7 @@ import { FaPen } from "react-icons/fa6";
 import { IoMdTrash } from "react-icons/io";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
+import toast from "react-hot-toast";
 
 function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
   const [formData, setFormData] = useState({
@@ -46,12 +47,13 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
 
       console.log(response);
       if (response && response.data) {
-        alert(response.data.message);
+        toast.success(response.data.message);
         handleCloseModal();
       }
     } catch (error) {
-      if (error && error.message) {
-        consol.error(error.message);
+      if (error && error.response) {
+        consol.error(error.response);
+        toast.error(error.response.data.message);
       }
     }
   };
@@ -72,12 +74,12 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
       console.log(response);
       if (response && response.data) {
         handleCloseModal();
-        alert(response.data.message);
+        toast.success(response.data.message);
         handleGetGarbages();
       }
     } catch (error) {
-      if (error?.message) {
-        console.log("Error in Updation : ", error.message);
+      if (error?.response) {
+        console.log("Error in Updation : ", error.response);
       }
     }
   };

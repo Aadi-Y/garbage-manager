@@ -210,33 +210,32 @@ async function handleDeleteGarbage(req, res) {
 
 async function handleDisposeStatus(req, res) {
     try {
-        const garbageId = req.params.id;
+        const gId = req.params.id; 
 
-        const garbage = await Garbage.findById(garbageId);
-
+        const garbage = await Garbage.findById(gId); 
         if (!garbage) {
             return res.status(404).json({
                 error: true,
                 message: "Garbage not found"
-            })
+            });
         }
 
-        garbage.disposed = !garbage.disposed;
-
-        await garbage.save();
+        garbage.disposed = !garbage.disposed; 
+        await garbage.save(); 
 
         res.status(201).json({
             error: false,
-            message: "Garbage disposed status changed"
+            message: "Garbage disposed status changed" 
         });
 
     } catch (error) {
         res.status(500).json({
             error: true,
-            message: error.message
-        })
+            message: error.message 
+        });
     }
 }
+
 
 module.exports = {
     handleCreateGarbage,
