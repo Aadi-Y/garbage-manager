@@ -14,16 +14,18 @@ import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
 import { useEffect } from "react";
 import moment from "moment";
+import Tippy from "@tippyjs/react";
+import 'tippy.js/dist/tippy.css';
 
 function Driver() {
   const [openModal1, setOpenModal] = useState(false);
   const [drivers, setDrivers] = useState([]);
   const { toggleModal } = useContext(AboutContext);
-  const [disable ,setDisable] = useState(true);
-  const {role} = useContext(AboutContext);
+  const [disable, setDisable] = useState(true);
+  const { role } = useContext(AboutContext);
 
   console.log(role);
-  
+
   const [openDetails, setOpenDetails] = useState({
     isShown: false,
     type: "view",
@@ -40,9 +42,9 @@ function Driver() {
     setOpenModal((prev) => !prev);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     drivers.length > 0 ? setDisable(true) : setDisable(false);
-  },[drivers]);
+  }, [drivers]);
 
   async function handleGetDriver() {
     try {
@@ -59,14 +61,14 @@ function Driver() {
     }
   }
 
-  async function handleGetAllDrivers(){
-    try{
+  async function handleGetAllDrivers() {
+    try {
       const response = await axiosInstance.get(apiPath.DRIVER.GET_ALL_DRIVER);
-      if(response && response.data){
+      if (response && response.data) {
         setDrivers(response.data.drivers);
       }
-    }catch(error){
-      if(error?.response){
+    } catch (error) {
+      if (error?.response) {
         console.log(error?.response);
       }
     }
@@ -76,7 +78,7 @@ function Driver() {
     try {
       const response = await axiosInstance.delete(apiPath.DRIVER.DELETE(id));
 
-      if(response && response.data){
+      if (response && response.data) {
         toast.success(response.data.message);
         handleGetDriver();
       }
@@ -113,7 +115,7 @@ function Driver() {
         style={{
           overlay: {
             background: "rgba(0,0,0,0.5)",
-            backdropFilter:"blur(4px)"
+            backdropFilter: "blur(4px)",
           },
           content: {
             height: "600px",
@@ -128,7 +130,12 @@ function Driver() {
           },
         }}
       >
-        <DriverForm handleCloseModal={handleCloseModal} type={openAddEdit.type} driver={openAddEdit.data} handleGetDriver={handleGetDriver}/>
+        <DriverForm
+          handleCloseModal={handleCloseModal}
+          type={openAddEdit.type}
+          driver={openAddEdit.data}
+          handleGetDriver={handleGetDriver}
+        />
         <IoClose
           className="absolute top-5 right-2 text-2xl cursor-pointer"
           onClick={handleCloseModal}
@@ -142,7 +149,8 @@ function Driver() {
               Driver List
             </h1>
           </div>
-          {/* <section
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-x-5 gap-y-5 mr-5">
+            {/* <section
             className="border w-100 px-5 py-6 bg-white rounded-xl border-none shadow-lg"
             onClick={toggleModal}
           >
@@ -199,68 +207,76 @@ function Driver() {
             </div>
           </section> */}
 
-          {drivers &&
-            drivers.length > 0 &&
-            drivers.map((driver,index) => (
-              <section
-                className="border w-100 px-5 py-6 bg-white rounded-xl border-none shadow-lg"
-                onClick={toggleModal}
-                key={index}
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <h1 className="font-medium text-[1.1rem]">{driver.userId.userName}</h1>
-                  <p className="text-[15px] text-gray-600">
-                    Joined on : {moment(driver?.createdAt).format("DD MMM YYYY")}
-                  </p>
-                </div>
-                <div>
-                  <p className="flex items-center gap-2 text-gray-700">
-                    <FaPhoneAlt className="text-black" />
-                    <span className="font-medium text-black">Phone : </span>
-                    {driver?.phoneNumber}
-                  </p>
-                </div>
-                <div>
-                  <p className="flex items-center gap-2">
-                    <span>
-                      <FaTruck />
-                    </span>
-                    {driver?.vehicle}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-600">
-                    <span className="font-medium text-black">Vehicle no :</span>{" "}
-                    {driver?.vehicleNumber}
-                  </p>
-                </div>
-                <div className="flex justify-end gap-4 pt-2 mt-2">
-                  <button
-                    className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                    aria-label="Edit"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleEditDriver(driver);
-                    }}
-                  >
-                    <FaPen />
-                    <span>Edit</span>
-                  </button>
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                    aria-label="Delete"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      handleDeleteDriver(driver?._id);
-                    }}
-                  >
-                    <FaTrash />
-                    <span>Delete</span>
-                  </button>
-                </div>
-                <AboutDriver driver={driver}/>
-              </section>
-            ))}
+            {drivers &&
+              drivers.length > 0 &&
+              drivers.map((driver, index) => (
+                <section
+                  className="border md:min-w-100 max-w-auto px-5 py-6 bg-white rounded-xl border-none shadow-lg"
+                  onClick={toggleModal}
+                  key={index}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <h1 className="font-medium text-[1.1rem]">
+                      {driver.userId.userName}
+                    </h1>
+                    <p className="text-[15px] text-gray-600 hidden md:flex">
+                      Joined on :{" "}
+                      {moment(driver?.createdAt).format("DD MMM YYYY")}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="flex items-center gap-2 text-gray-700">
+                      <FaPhoneAlt className="text-black" />
+                      <span className="font-medium text-black">Phone : </span>
+                      {driver?.phoneNumber}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="flex items-center gap-2">
+                      <span>
+                        <FaTruck />
+                      </span>
+                      {driver?.vehicle}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600">
+                      <span className="font-medium text-black">
+                        Vehicle no :
+                      </span>{" "}
+                      {driver?.vehicleNumber}
+                    </p>
+                  </div>
+                  <div className="flex justify-end gap-4 pt-2 mt-2">
+                    <Tippy content="Edit">
+                      <button
+                      className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                      aria-label="Edit"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleEditDriver(driver);
+                      }}
+                    >
+                      <FaPen />
+                    </button>
+                    </Tippy>
+                    <Tippy content="Delete">
+                      <button
+                      className="bg-red-500 hover:bg-red-600 text-white  px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                      aria-label="Delete"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleDeleteDriver(driver?._id);
+                      }}
+                    >
+                      <FaTrash />
+                    </button>
+                    </Tippy>
+                  </div>
+                  <AboutDriver driver={driver} />
+                </section>
+              ))}
+          </section>
         </section>
       </section>
 
@@ -268,7 +284,9 @@ function Driver() {
         <button
           onClick={handleCloseModal}
           disabled={disable}
-          className={`bg-green-500 transition-all duration-200 p-2 text-white rounded-lg fixed bottom-5 right-5 flex items-center gap-2 ${disable ? "cursor-not-allowed bg-green-600" : "cursor-pointer"}`}
+          className={`bg-green-500 transition-all duration-200 p-2 text-white rounded-lg fixed bottom-5 right-5 flex items-center gap-2 ${
+            disable ? "cursor-not-allowed bg-green-600" : "cursor-pointer"
+          }`}
         >
           <span>
             <FaPlus />
@@ -276,8 +294,6 @@ function Driver() {
           Driver
         </button>
       </div>
-
-      
     </>
   );
 }

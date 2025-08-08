@@ -16,6 +16,8 @@ import { apiPath } from "../Utility/apiPath";
 import moment from "moment";
 import { trimDescription } from "../Helper/helper";
 import toast from "react-hot-toast";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 function Garbage({}) {
   const [openModal1, setOpenModal] = useState(false);
@@ -59,7 +61,7 @@ function Garbage({}) {
 
   async function handleGetGarbages() {
     try {
-      const response = await axiosInstance.get(apiPath.GARBAGE.GET_S);
+      const response = await axiosInstance.get(apiPath.GARBAGE.GET_USERS);
       console.log(response);
       console.log(response.data.garbages);
 
@@ -98,17 +100,19 @@ function Garbage({}) {
   //   }
   // }
 
-  async function handleGetAllGarbagesForDriver(){
-    try{
-      const response = await axiosInstance.get(apiPath.AREA.GET_ALL_GARBAGE_DRIVER);
+  async function handleGetAllGarbagesForDriver() {
+    try {
+      const response = await axiosInstance.get(
+        apiPath.AREA.GET_ALL_GARBAGE_DRIVER
+      );
 
       console.log(response);
-      if(response){
+      if (response) {
         setGarbages(response.data.garbages);
       }
-    }catch(error){
+    } catch (error) {
       console.log(error);
-      if(error && error.response){
+      if (error && error.response) {
         console.log(error.response);
       }
     }
@@ -162,25 +166,27 @@ function Garbage({}) {
     const newDescription = trimDescription(description);
   }
 
-  async function handleDisposeGarbage(garbageId){
-    try{
-      const response = await axiosInstance.put(apiPath.GARBAGE.DISPOSED(garbageId));
+  async function handleDisposeGarbage(garbageId) {
+    try {
+      const response = await axiosInstance.put(
+        apiPath.GARBAGE.DISPOSED(garbageId)
+      );
 
       console.log(response);
-      if(response){
+      if (response) {
         toast.success(response.data.message);
         role === "Driver" && handleGetAllGarbagesForDriver();
       }
-    }catch(error){
+    } catch (error) {
       console.log(error);
-      if(error?.response){
+      if (error?.response) {
         setError(error.response.data.message);
       }
     }
   }
 
   useEffect(() => {
-    role === "User" && handleGetGarbages();
+    handleGetGarbages();
     role === "Admin" && handleGetAllGarbages();
     role === "Driver" && handleGetAllGarbagesForDriver();
   }, []);
@@ -193,19 +199,31 @@ function Garbage({}) {
         contentClassName="custom-scrollbar"
         style={{
           overlay: {
-            background: "rgba(0,0,0,0.5)",
+            background: "rgba(0, 0, 0, 0.5)",
             backdropFilter: "blur(4px)",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: 0, // ← Prevent internal padding on overlay
+            margin: 0, // ← Prevent margin pushing content
           },
           content: {
-            width: "500px",
+            position: "relative", // Important to stay inside overlay
+            inset: "unset", // ← Critical: prevent default top/left styles
+            width: "90%",
+            maxWidth: "500px",
+            minWidth: "280px",
+            maxHeight: "90vh",
             background: "rgba(255,255,255,0.9)",
-            height: "600px",
             borderRadius: "16px",
-            padding: "2rem",
-            margin: "auto",
-            position: "relative",
+            padding: "1.5rem",
             overflowY: "auto",
-            zIndex: "1000",
             boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
           },
         }}
@@ -226,85 +244,19 @@ function Garbage({}) {
           <h1 className="font-semibold text-[1.2rem] text-center mb-2">
             Garbage list
           </h1>
-          <section className=" grid lg:grid-cols-3 gap-x-5 grid-col-1 md:grid-cols-2 gap-y-5 pr-5">
-            {/* <section
-              className="bg-white rounded-2xl shadow-lg w-100 p-4"
-              onClick={toggleModal}
-            >
-              <div className="flex justify-between items-center py-2">
-                <p className="font-medium text-[1.2rem]">Organic</p>
-                <p className="text-[15px] text-gray-600 flex items-center gap-1">
-                  <span>
-                    <CgCalendarDates />
-                  </span>{" "}
-                  Created on : Jan 25 2025
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <p className="font-medium">Deposited on: </p>
-                <p>Jan 24 2025</p>
-              </div>
-              <div className="flex gap-2">
-                <p className="font-medium">Status: </p>
-                <i>Pending</i>
-              </div>
-              <div>
-                <p className="flex items-center justify-start gap-2">
-                  <span>
-                    <FaWeight className="text-gray-600" />
-                  </span>
-                  20 Kgs
-                </p>
-              </div>
-              <div>
-                <p>It is actually a organic waste....</p>
-              </div>
-
-              {role === "user" && (
-                <div className="flex justify-end gap-4 pt-2 mt-2">
-                  <button
-                    className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                    aria-label="Edit"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <FaPen />
-                    <span>Edit</span>
-                  </button>
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                    aria-label="Delete"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    <FaTrash />
-                    <span>Delete</span>
-                  </button>
-                </div>
-              )}
-
-              {role === "driver" && (
-                <div className="flex justify-end">
-                  <button
-                    className="border p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200 shadow-md"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                    }}
-                  >
-                    Completed
-                  </button>
-                </div>
-              )}
-            </section> */}
-
+          <section
+            className={`grid xl:grid-cols-3 gap-x-5 grid-col-2 gap-y-5 pr-3 pl-3 ${
+              role === "Admin" || role === "Driver"
+                ? "md:grid-cols-1"
+                : "md:grid-cols-2"
+            }`}
+          >
             {garbages &&
               garbages.length > 0 &&
-              garbages.map((garbage,index) => (
+              garbages.map((garbage, index) => (
                 <section className="">
                   <section
-                    className="bg-white rounded-2xl shadow-lg p-4"
+                    className="bg-white rounded-2xl shadow-lg p-4 min-w-100 max-w-auto"
                     onClick={() => handleViewDetailsAndToggle(garbage)}
                     key={index}
                   >
@@ -344,43 +296,51 @@ function Garbage({}) {
 
                     {role === "User" && (
                       <div className="flex justify-end gap-4 pt-2 mt-2">
-                        <button
-                          className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                          aria-label="Edit"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleEditGarbage(garbage);
-                          }}
-                        >
-                          <FaPen />
-                          <span>Edit</span>
-                        </button>
-                        <button
-                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                          aria-label="Delete"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleGarbageDelete(garbage?._id);
-                          }}
-                        >
-                          <FaTrash />
-                          <span>Delete</span>
-                        </button>
+                        <Tippy content="Edit">
+                          <button
+                            className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                            aria-label="Edit"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleEditGarbage(garbage);
+                            }}
+                          >
+                            <FaPen />
+                          </button>
+                        </Tippy>
+                        <Tippy content="Delete">
+                          <button
+                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                            aria-label="Delete"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleGarbageDelete(garbage?._id);
+                            }}
+                          >
+                            <FaTrash />
+                          </button>
+                        </Tippy>
                       </div>
                     )}
 
                     {role === "Driver" && (
                       <div className="flex justify-end">
                         <button
-                          className={`border p-2 rounded-lg text-white cursor-pointer transition-all duration-200 shadow-md ${garbage?.disposed === true ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"}`}
+                          className={`border p-2 rounded-lg text-white cursor-pointer transition-all duration-200 shadow-md ${
+                            garbage?.disposed === true
+                              ? "bg-green-500 hover:bg-green-600"
+                              : "bg-red-500 hover:bg-red-600"
+                          }`}
                           onClick={(event) => {
                             event.stopPropagation();
                             handleDisposeGarbage(garbage?._id);
                           }}
                         >
-                          {
-                            garbage?.disposed ? <p>Completed</p> : <p>Not Completed</p>
-                          }
+                          {garbage?.disposed ? (
+                            <p>Completed</p>
+                          ) : (
+                            <p>Not Completed</p>
+                          )}
                         </button>
                       </div>
                     )}

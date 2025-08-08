@@ -4,6 +4,8 @@ import { IoMdTrash } from "react-icons/io";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
 import toast from "react-hot-toast";
+import { useContext } from "react";
+import { AboutContext } from "../About/AboutState";
 
 function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
   const [formData, setFormData] = useState({
@@ -23,6 +25,8 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
 
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const {role} = useContext(AboutContext);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -238,21 +242,23 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
           />
         </div>
 
-        <div>
-          <label>Status:</label>
-          <br />
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white"
-          >
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
-            <option value="Rejected">Rejected</option>
-            <option value="Scheduled">Scheduled</option>
-          </select>
-        </div>
+        {role === "Admin" && (
+          <div>
+            <label>Status:</label>
+            <br />
+            <select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="w-full rounded-lg p-2 outline-none focus:ring-1 focus:ring-green-500 bg-white"
+            >
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Scheduled">Scheduled</option>
+            </select>
+          </div>
+        )}
 
         {/* <div className='flex'>
           <label>Disposed:</label><br />
