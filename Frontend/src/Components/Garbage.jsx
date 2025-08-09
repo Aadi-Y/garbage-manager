@@ -210,12 +210,12 @@ function Garbage({}) {
             alignItems: "center",
             justifyContent: "center",
             zIndex: 1000,
-            padding: 0, // ← Prevent internal padding on overlay
-            margin: 0, // ← Prevent margin pushing content
+            padding: 0,
+            margin: 0,
           },
           content: {
-            position: "relative", // Important to stay inside overlay
-            inset: "unset", // ← Critical: prevent default top/left styles
+            position: "relative",
+            inset: "unset",
             width: "90%",
             maxWidth: "500px",
             minWidth: "280px",
