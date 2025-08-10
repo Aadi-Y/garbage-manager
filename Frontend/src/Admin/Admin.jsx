@@ -5,47 +5,108 @@ import AdminGarbage from "./AdminGarbage";
 import Driver from "../Components/Driver";
 
 function Admin() {
-  const [activeTab, setActiveTab] = useState("Area");
+  const [activeTab, setActiveTab] = useState("area");
+  const [showMenu, setShowMenu] = useState(false);
+
+  function handleActiveTab(component) {
+    setActiveTab(component);
+  }
 
   return (
-    <section className="flex flex-col">
-      <section className="mt- bg-slate-100 min-h-screen flex gap-2">
-        {/* Sidebar Navigation */}
-        <section className="pt-10 mt-10">
-          <nav className="min-h-screen border w-70 pt-5 bg-white border-none shadow-lg rounded flex flex-col gap-2 p-2 fixed">
-            <li
-              className={`list-none text-center p-3 cursor-pointer rounded text-white transition-all duration-200 ${
-                activeTab === "Area" ? "bg-green-600" : "bg-green-500 hover:bg-green-600"
-              }`}
-              onClick={() => setActiveTab("Area")}
-            >
-              Area
-            </li>
-            <li
-              className={`list-none text-center p-3 cursor-pointer rounded text-white transition-all duration-200 ${
-                activeTab === "Garbage" ? "bg-green-600" : "bg-green-500 hover:bg-green-600"
-              }`}
-              onClick={() => setActiveTab("Garbage")}
-            >
-              Garbage
-            </li>
-            <li
-              className={`list-none text-center p-3 cursor-pointer rounded text-white transition-all duration-200 ${
-                activeTab === "Driver" ? "bg-green-600" : "bg-green-500 hover:bg-green-600"
-              }`}
-              onClick={() => setActiveTab("Driver")}
-            >
-              Driver
-            </li>
-          </nav>
-        </section>
+    <section className="mt-10 pt-5 min-h-screen bg-slate-100">
+      <div className="md:hidden pt-4 pr-2 flex items-end justify-end">
+        <button
+          onClick={() => setShowMenu((prev) => !prev)}
+          className="bg-green-600 text-white px-4 py-2 rounded"
+        >
+          ☰
+        </button>
+      </div>
 
-        {/* Content Section */}
-        <section className="ml-70 flex-1 p-5">
-          {activeTab === "Area" && <Area personRole={"admin"}/>}
-          {activeTab === "Garbage" && <Garbage personRole={"admin"}/>}
-          {activeTab === "Driver" && <Driver personRole={"admin"}/>}
-        </section>
+      {/* Mobile dropdown menu */}
+      {showMenu && (
+        <div className="md:hidden bg-white shadow-lg rounded p-4 flex flex-col gap-2 mt-2 mx-4 fixed top-30 right-0 w-[50%]">
+          <li
+            className={`list-none p-3 rounded text-white cursor-pointer transition-all ${
+              activeTab === "area"
+                ? "bg-green-600"
+                : "bg-green-500 hover:bg-green-600"
+            }`}
+            onClick={() => {
+              handleActiveTab("area");
+              setShowMenu(false);
+            }}
+          >
+            Area
+          </li>
+          <li
+            className={`list-none p-3 rounded text-white cursor-pointer transition-all ${
+              activeTab === "garbage"
+                ? "bg-green-600"
+                : "bg-green-500 hover:bg-green-600"
+            }`}
+            onClick={() => {
+              handleActiveTab("garbage");
+              setShowMenu(false);
+            }}
+          >
+            Garbage
+          </li>
+          <li
+            className={`list-none p-3 rounded text-white cursor-pointer transition-all ${
+              activeTab === "driver"
+                ? "bg-green-600"
+                : "bg-green-500 hover:bg-green-600"
+            }`}
+            onClick={() => {
+              handleActiveTab("driver");
+              setShowMenu(false);
+            }}
+          >
+            Driver
+          </li>
+        </div>
+      )}
+
+      {/* Sidebar for md and up */}
+      <nav className="hidden md:flex min-h-screen md:w-60 lg:w-72 pt-5 mt-10 fixed bg-white shadow-lg rounded flex-col gap-2 p-2">
+        <li
+          className={`list-none text-center p-3 cursor-pointer rounded text-white transition-all duration-200 ${
+            activeTab === "area"
+              ? "bg-green-600"
+              : "bg-green-500 hover:bg-green-600"
+          }`}
+          onClick={() => handleActiveTab("area")}
+        >
+          Area
+        </li>
+        <li
+          className={`list-none text-center p-3 cursor-pointer rounded text-white transition-all duration-200 ${
+            activeTab === "garbage"
+              ? "bg-green-600"
+              : "bg-green-500 hover:bg-green-600"
+          }`}
+          onClick={() => handleActiveTab("garbage")}
+        >
+          Garbage
+        </li>
+        <li
+          className={`list-none text-center p-3 cursor-pointer rounded text-white transition-all duration-200 ${
+            activeTab === "driver"
+              ? "bg-green-600"
+              : "bg-green-500 hover:bg-green-600"
+          }`}
+          onClick={() => handleActiveTab("driver")}
+        >
+          Driver
+        </li>
+      </nav>
+
+      {/* Main content */}
+      <section className="md:ml-60 lg:ml-72 ml-4 mt-4">
+        {activeTab === "garbage" && <Garbage personRole={"driver"} />}
+        {activeTab === "driver" && <Driver personRole={"driver"} />}
+        {activeTab === "area" && <Area personRole={"driver"} />}
       </section>
     </section>
   );

@@ -141,22 +141,35 @@ function AboutDriver({ driver }) {
           isOpen={openModal}
           onRequestClose={{}}
           style={{
-            overlay: {
-              background: "rgba(0,0,0,0.4)",
-              backdropFilter: "blur(4px)",
-            },
-            content: {
-              width: "500px",
-              height: "600px",
-              background: "rgba(255,255,255,0.9)",
-              borderRadius: "16px",
-              overflow: "auto",
-              margin: "auto",
-              zIndex: "1000",
-              position: "relative",
-              boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-            },
-          }}
+          overlay: {
+            background: "rgba(0, 0, 0, 0.5)",
+            backdropFilter: "blur(4px)",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: 0,
+            margin: 0,
+          },
+          content: {
+            position: "relative",
+            inset: "unset",
+            width: "90%",
+            maxWidth: "500px",
+            minWidth: "280px",
+            maxHeight: "90vh",
+            background: "rgba(255,255,255,0.9)",
+            borderRadius: "16px",
+            padding: "1.5rem",
+            overflowY: "auto",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
+          },
+        }}
         >
           <section className="flex flex-col gap-3 py-5">
             <div>

@@ -87,20 +87,32 @@ function Area() {
         onRequestClose={handleCloseModal}
         style={{
           overlay: {
-            background: "rgba(0, 0, 0, 0.4)",
+            background: "rgba(0, 0, 0, 0.5)",
             backdropFilter: "blur(4px)",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: 0,
+            margin: 0,
           },
           content: {
-            background: "rgba(255, 255, 255, 0.9)",
-            borderRadius: "16px",
-            border: "none",
+            position: "relative",
+            inset: "unset",
             width: "90%",
             maxWidth: "500px",
-            margin: "auto",
-            padding: "2rem",
-            position: "relative",
+            minWidth: "280px",
+            maxHeight: "90vh",
+            background: "rgba(255,255,255,0.9)",
+            borderRadius: "16px",
+            padding: "1.5rem",
+            overflowY: "auto",
             boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-            overflow: "auto",
           },
         }}
       >
@@ -118,8 +130,8 @@ function Area() {
         />
       </Modal>
 
-      <section className="min-h-screen bg-gradient-to-br from-slate-100 to-white mt-5">
-        <h1 className="text-[1.2rem] font-semibold text-center text-slate-800 mb-3 pt-15">
+      <section className="min-h-screen bg-gradient-to-br from-slate-100 to-white md:ml-3">
+        <h1 className="text-[1.2rem] font-semibold text-center text-slate-800 mb-3 md:pt-5">
           Area Overview
         </h1>
 

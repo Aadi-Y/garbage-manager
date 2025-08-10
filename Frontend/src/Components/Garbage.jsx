@@ -18,6 +18,9 @@ import { trimDescription } from "../Helper/helper";
 import toast from "react-hot-toast";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import { IoCheckmarkCircle } from "react-icons/io5";
+import { IoCloseCircle } from "react-icons/io5";
+
 
 function Garbage({}) {
   const [openModal1, setOpenModal] = useState(false);
@@ -239,15 +242,15 @@ function Garbage({}) {
           className="absolute top-3 right-2 text-[1.3rem] cursor-pointer flex justify-center items-center text-gray-600"
         />
       </Modal>
-      <section className={role === "User" ? `mt-15` : `mt-10`}>
-        <section className="bg-slate-100 min-h-[100vh] h-auto pt-10">
+      <section className={role === "User" ? `md:mt-0` : `md:mt-0`}>
+        <section className=" min-h-[100vh] h-auto md:pt-5">
           <h1 className="font-semibold text-[1.2rem] text-center mb-2">
             Garbage list
           </h1>
           <section
-            className={`grid xl:grid-cols-3 gap-x-5 grid-col-2 gap-y-5 pr-3 pl-3 ${
+            className={`grid xl:grid-cols-3 gap-x-5 grid-col-2 gap-y-5 pr-3 pl-0 md:pl-3 ${
               role === "Admin" || role === "Driver"
-                ? "md:grid-cols-1"
+                ? "md:grid-cols-1 lg:grid-cols-2"
                 : "md:grid-cols-2"
             }`}
           >
@@ -337,9 +340,13 @@ function Garbage({}) {
                           }}
                         >
                           {garbage?.disposed ? (
-                            <p>Completed</p>
+                            <Tippy content="Completed">
+                              <p><IoCheckmarkCircle /></p>
+                            </Tippy>
                           ) : (
-                            <p>Not Completed</p>
+                            <Tippy content="Not Completed">
+                              <p><IoCloseCircle/></p>
+                            </Tippy>
                           )}
                         </button>
                       </div>

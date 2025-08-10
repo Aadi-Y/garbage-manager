@@ -13,7 +13,7 @@ function DriverPage() {
 
   return (
     <section className="mt-10 pt-5 min-h-screen bg-slate-100">
-      <div className="md:hidden p-4 flex items-end justify-end">
+      <div className="md:hidden pt-4 pr-2 flex items-end justify-end">
         <button
           onClick={() => setShowMenu((prev) => !prev)}
           className="bg-green-600 text-white px-4 py-2 rounded"
@@ -24,7 +24,7 @@ function DriverPage() {
 
       {/* Mobile dropdown menu */}
       {showMenu && (
-        <div className="md:hidden bg-white shadow-lg rounded p-4 flex flex-col gap-2 mt-2 mx-4 absolute top-30 right-0 w-[50%]">
+        <div className="md:hidden bg-white shadow-lg rounded p-4 flex flex-col gap-2 mt-2 mx-4 fixed top-30 right-0 w-[50%]">
           <li
             className={`list-none p-3 rounded text-white cursor-pointer transition-all ${
               activeTab === "area"
@@ -68,7 +68,7 @@ function DriverPage() {
       )}
 
       {/* Sidebar for md and up */}
-      <nav className="hidden md:flex min-h-screen border md:w-60 lg:w-72 pt-5 mt-10 fixed bg-white shadow-lg rounded flex-col gap-2 p-2">
+      <nav className="hidden md:flex min-h-screen md:w-60 lg:w-72 pt-5 mt-10 fixed bg-white shadow-lg rounded flex-col gap-2 p-2">
         <li
           className={`list-none text-center p-3 cursor-pointer rounded text-white transition-all duration-200 ${
             activeTab === "area"
