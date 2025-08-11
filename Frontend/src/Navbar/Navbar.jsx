@@ -9,13 +9,16 @@ import {useContext} from "react";
 import { AboutContext } from "../About/AboutState";
 
 function Navbar() {
-  const {user} = useContext(AboutContext);
+  const {user,handleGetUser} = useContext(AboutContext);
+  console.log(user);
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async() => {
     localStorage.removeItem("token");
+    handleGetUser();
     navigate("/login");
+
   }
 
   return (
@@ -33,14 +36,14 @@ function Navbar() {
               </p>
               <div>
                 <div className="hidden absolute bg-white top-20 right-15 shadow-md rounded px-6 py-4 group-hover:flex flex-col">
-                  <h1 className="font-medium">{user.userName}</h1>
-                  <p><span className="font-medium">User Id :</span> {user.userId}</p>
-                  <p><span className="font-medium">Role :</span> {user.role}</p>
+                  <h1 className="font-medium">{user?.userName}</h1>
+                  <p><span className="font-medium">User Id :</span> {user?.userId}</p>
+                  <p><span className="font-medium">Role :</span> {user?.role}</p>
                 </div>
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <h2>{user.userName}</h2>
+              <h2>{user?.userName}</h2>
               <button className="flex items-center gap-2 bg-green-500 text-white rounded-md p-1 cursor-pointer"
               onClick={handleLogout}
               >

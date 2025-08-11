@@ -274,7 +274,7 @@ function Area() {
       {role === "Admin" && (
         <button
           onClick={handleCloseModal}
-          className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full shadow-lg transition-all text-sm font-medium tracking-wide flex items-center gap-2 cursor-pointer"
+          className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-md shadow-lg transition-all text-sm font-medium tracking-wide flex items-center gap-2 cursor-pointer"
         >
           <FaPlus className="text-[15px]" /> <span>Area</span>
         </button>

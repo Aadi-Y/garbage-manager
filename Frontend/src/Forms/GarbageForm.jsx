@@ -290,7 +290,7 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
         </div>
 
         <button
-          className="w-full rounded-lg p-2 cursor-pointer bg-green-500 hover:bg-green-600"
+          className="w-full rounded-lg p-2 cursor-pointer bg-green-500 hover:bg-green-600 text-white" 
           type="submit"
         >
           {type === "edit" ? "Edit Garbage" : "Submit Garbage"}

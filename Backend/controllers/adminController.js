@@ -55,7 +55,7 @@ async function handleAssignGarbage(req, res) {
 
         res.status(201).json({
             error: false,
-            message: "Garbage assigned successfully.",
+            message: "Garbage assigned",
             driver,
         });
 
@@ -132,7 +132,7 @@ async function handleAssignDriver(req, res) {
 
         res.status(201).json({
             error: false,
-            message: "Driver assigned successfully",
+            message: "Driver assigned",
             area: populatedArea
         });
 
@@ -171,7 +171,7 @@ async function handleRemoveDriver(req, res) {
 
         res.status(201).json({
             error: false,
-            message: "Assigned driver removed successfully"
+            message: "Driver removed"
         });
 
     } catch (error) {
@@ -209,7 +209,7 @@ async function handleRemoveGarbage(req, res) {
 
         res.status(201).json({
             error: false,
-            message: "Assigned garbage has been removed from the driver"
+            message: "Garbage Removed"
         });
 
     } catch (error) {
@@ -265,7 +265,7 @@ async function handleCreateArea(req, res) {
 
         res.status(201).json({
             error: false,
-            message: "Area is created Successfully",
+            message: "Area Created",
             area
         })
 
@@ -377,7 +377,7 @@ async function handleDeleteArea(req, res) {
 
         res.status(202).json({
             error: false,
-            message: "Area deleted Successfully"
+            message: "Area deleted"
         })
     } catch (error) {
         res.status(500).json({

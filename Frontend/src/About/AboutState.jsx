@@ -31,7 +31,7 @@ function AboutState({children}){
     },[]);
 
     return(<>
-        <AboutContext.Provider value={{openModal,setOpenModal,toggleModal,role,user}}>
+        <AboutContext.Provider value={{openModal,setOpenModal,toggleModal,role,user,handleGetUser}}>
             {children}
         </AboutContext.Provider>
     </>)

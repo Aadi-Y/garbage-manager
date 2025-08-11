@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import { IoClose } from "react-icons/io5";
 import { AboutContext } from "./AboutState";
@@ -7,12 +7,37 @@ import { FaAddressCard } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
 import { CgCalendarDates } from "react-icons/cg";
 import moment from "moment";
+import { axiosInstance } from "../Utility/axiosInstance";
+import {apiPath} from "../Utility/apiPath";
+
 function About({ garbage }) {
   const { openModal, toggleModal } = useContext(AboutContext);
+  const [driver,setDriver] = useState(null);
 
-  //   function handleCloseModal() {
-  //     setOpenModal((prev) => !prev);
-  //   }
+  async function handleGetGarbageDriver(id){
+      try{
+        const response = await axiosInstance.get(apiPath.GARBAGE.GET_GARBAGE_DRIVER(id));
+  
+        console.log(response);
+
+        if(response && response.data){
+          setDriver(response.data);
+        }
+      }catch(error){
+        console.log(error);
+      }
+    }
+
+  
+  useEffect(() => {
+  const fetchData = async () => {
+    await handleGetGarbageDriver(garbage?._id);
+  };
+
+  fetchData();
+}, [garbage]);
+
+console.log(driver);
 
   return (
     <>
@@ -102,10 +127,10 @@ function About({ garbage }) {
             </h1>
             <div className="px-2">
               <p>
-                <span>Name: </span>Aadithya
+                <span>Name: </span>{driver?.name}
               </p>
               <p>
-                <span>Vehicle Number: </span>TN 28 UZ 1900
+                <span>Vehicle Number: </span>{driver?.vehicleNumber}
               </p>
             </div>
           </div>

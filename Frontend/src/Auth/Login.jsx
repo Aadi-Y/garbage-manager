@@ -4,12 +4,15 @@ import { apiPath } from "../Utility/apiPath";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { AboutContext } from "../About/AboutState";
+import { useContext } from "react";
 
 function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const {handleGetUser} = useContext(AboutContext);
 
   function handleNavigate(role) {
     if (role === "User") {
@@ -33,6 +36,7 @@ function Login() {
         toast.success(response.data.message);
         handleNavigate(response.data.user.role);
         localStorage.setItem("token", response.data.token);
+        handleGetUser();
       }
     } catch (err) {
       if (err && err.response) {

@@ -19,7 +19,7 @@ import 'tippy.js/dist/tippy.css';
 
 
 function Driver() {
-  const [openModal1, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [drivers, setDrivers] = useState([]);
   const { toggleModal } = useContext(AboutContext);
   const [disable, setDisable] = useState(true);
@@ -106,12 +106,20 @@ function Driver() {
     role === "Admin" && handleGetAllDrivers();
   }, []);
 
+  function handleViewAndToggle(item){
+    setOpenDetails({
+      isShown:true,
+      data:item
+    });
+    toggleModal();
+  }
+
   console.log(drivers);
 
   return (
     <>
       <Modal
-        isOpen={openModal1}
+        isOpen={openModal}
         onRequestClose={handleCloseModal}
         style={{
           overlay: {
@@ -226,7 +234,7 @@ function Driver() {
               drivers.map((driver, index) => (
                 <section
                   className="border md:min-w-100 max-w-auto px-5 py-6 bg-white rounded-xl border-none shadow-lg"
-                  onClick={toggleModal}
+                  onClick={()=>handleViewAndToggle(driver)}
                   key={index}
                 >
                   <div className="flex items-center justify-between mb-3">
@@ -287,9 +295,11 @@ function Driver() {
                     </button>
                     </Tippy>
                   </div>
-                  <AboutDriver driver={driver} />
                 </section>
               ))}
+
+              {openDetails.isShown && 
+              <AboutDriver driver={openDetails.data} />}
           </section>
         </section>
       </section>

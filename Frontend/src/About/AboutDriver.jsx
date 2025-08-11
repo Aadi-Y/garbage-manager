@@ -101,7 +101,7 @@ function AboutDriver({ driver }) {
       );
 
       if (response && response.data) {
-        alert(response.data.message);
+        toast.success(response.data.message);
         handleGetAllAssignedGarbages();
       }
     } catch (error) {
@@ -121,14 +121,17 @@ function AboutDriver({ driver }) {
   }, [driver]);
 
   useEffect(() => {
-    handleGetAllGarbageIds();
-    handleGetAllAssignedGarbages();
+    const fetchData = async() => {
+      await handleGetAllGarbageIds();
+      await handleGetAllAssignedGarbages();
+    }
+
+    fetchData();
   }, []);
 
   function testing(e) {
     e.preventDefault();
-    // console.log("testing");
-    toggleModal;
+    toggleModal();
   }
 
   // console.log(driver._id);
@@ -139,10 +142,10 @@ function AboutDriver({ driver }) {
       <section>
         <Modal
           isOpen={openModal}
-          onRequestClose={{}}
+          onRequestClose={()=>toggleModal()}
           style={{
           overlay: {
-            background: "rgba(0, 0, 0, 0.5)",
+            background: "rgba(0, 0, 0, 0.2)",
             backdropFilter: "blur(4px)",
             position: "fixed",
             top: 0,
@@ -167,7 +170,6 @@ function AboutDriver({ driver }) {
             borderRadius: "16px",
             padding: "1.5rem",
             overflowY: "auto",
-            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
           },
         }}
         >

@@ -14,6 +14,7 @@ export const apiPath = {
         UPDATE:(id)=>`/api/garbage/updateGarbage/${id}`,
         DELETE:(id)=>`/api/garbage/deleteGarbage/${id}`,
         DISPOSED:(id)=>`/api/garbage/disposeStatus/${id}`,
+        GET_GARBAGE_DRIVER:(id)=>`/api/garbage/getGarbageDriver/${id}`
     },
     DRIVER:{
         CREATE:"/api/driver/createDriver",

@@ -4,6 +4,8 @@ import { apiPath } from "../Utility/apiPath";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import {AboutContext} from "../About/AboutState";
+import {useContext} from "react";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -14,6 +16,7 @@ function Signup() {
   });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const {handleGetUser} = useContext(AboutContext);
 
   const navigate = useNavigate();
 
@@ -43,6 +46,7 @@ function Signup() {
         toast.success(response.data.message);
         handleNavigate(response.data.user.role);
         localStorage.setItem("token", response.data.token);
+        handleGetUser();
       }
 
       console.log(response);

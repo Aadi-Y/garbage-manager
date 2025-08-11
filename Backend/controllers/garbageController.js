@@ -1,4 +1,5 @@
 const Garbage = require("../models/garbage");
+const Driver = require("../models/driver");
 const generateId = require("../helper/generateID");
 
 async function handleAssignId(id = generateId()) {
@@ -210,9 +211,9 @@ async function handleDeleteGarbage(req, res) {
 
 async function handleDisposeStatus(req, res) {
     try {
-        const gId = req.params.id; 
+        const gId = req.params.id;
 
-        const garbage = await Garbage.findById(gId); 
+        const garbage = await Garbage.findById(gId);
         if (!garbage) {
             return res.status(404).json({
                 error: true,
@@ -220,20 +221,40 @@ async function handleDisposeStatus(req, res) {
             });
         }
 
-        garbage.disposed = !garbage.disposed; 
-        await garbage.save(); 
+        garbage.disposed = !garbage.disposed;
+        await garbage.save();
 
         res.status(201).json({
             error: false,
-            message: "Garbage disposed status changed" 
+            message: "Garbage disposed status changed"
         });
 
     } catch (error) {
         res.status(500).json({
             error: true,
-            message: error.message 
+            message: error.message
         });
     }
+}
+
+async function handleGetGarbageDriver(req, res) {
+    try {
+        const { garbageId } = req.params;
+
+        const driver = await Driver.findOne({
+            assignedRequest: garbageId
+        }).populate("assignedRequest"); 
+
+        if (!driver) {
+            return res.status(404).json({ message: "No driver found for this garbage ID" });
+        }
+
+        res.json(driver);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error" });
+    }
+
 }
 
 
@@ -244,5 +265,6 @@ module.exports = {
     handleGetUserGarbage,
     handleGetAllGarbage,
     handleDisposeStatus,
-    handleGetAllGarbageIds
+    handleGetAllGarbageIds,
+    handleGetGarbageDriver
 }

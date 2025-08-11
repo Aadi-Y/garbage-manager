@@ -25,6 +25,7 @@ import { IoCloseCircle } from "react-icons/io5";
 function Garbage({}) {
   const [openModal1, setOpenModal] = useState(false);
   const [selectDriver, setSelectDriver] = useState(null);
+  const [selectedGarbage,setSelectedGarbage] = useState(null);
   // const [role, setRole] = useState("");
   const [garbages, setGarbages] = useState([]);
   const { toggleModal } = useContext(AboutContext);
@@ -161,6 +162,7 @@ function Garbage({}) {
 
   function handleViewDetailsAndToggle(item) {
     handleViewDetails(item);
+    setOpenDetails({ isOpen: true, data: item });
     toggleModal();
   }
 
@@ -186,6 +188,10 @@ function Garbage({}) {
         setError(error.response.data.message);
       }
     }
+  }
+
+  function handleSelectGarbage(garbage){
+    setSelectedGarbage(garbage);
   }
 
   useEffect(() => {
@@ -242,7 +248,7 @@ function Garbage({}) {
           className="absolute top-3 right-2 text-[1.3rem] cursor-pointer flex justify-center items-center text-gray-600"
         />
       </Modal>
-      <section className={role === "User" ? `md:mt-0` : `md:mt-0`}>
+      <section className={role === "User" ? `md:mt-15` : `md:mt-0`}>
         <section className=" min-h-[100vh] h-auto md:pt-5">
           <h1 className="font-semibold text-[1.2rem] text-center mb-2">
             Garbage list
@@ -283,7 +289,7 @@ function Garbage({}) {
                     </div>
                     <div className="flex gap-2">
                       <p className="font-medium">Status: </p>
-                      <i>{garbage?.status}</i>
+                      <i>{garbage?.disposed ? "Disposed" : "Pending"}</i>
                     </div>
                     <div>
                       <p className="flex items-center justify-start gap-2">
@@ -297,7 +303,7 @@ function Garbage({}) {
                       <p>{garbage?.description}</p>
                     </div>
 
-                    {role === "User" && (
+                    {role === "User" || role === "Admin" && (
                       <div className="flex justify-end gap-4 pt-2 mt-2">
                         <Tippy content="Edit">
                           <button
@@ -352,9 +358,12 @@ function Garbage({}) {
                       </div>
                     )}
                   </section>
-                  <About garbage={openDetails.data} />
                 </section>
               ))}
+
+            {openDetails.isOpen && (
+      <About garbage={openDetails.data} />
+    )}
           </section>
         </section>
       </section>
