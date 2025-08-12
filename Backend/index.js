@@ -17,10 +17,10 @@ app.use(cors({
     origin:"*"
 }));
 
-app.use("/api/auth", authRouter);
-app.use("/api/garbage", garbageRouter);
-app.use("/api/driver", driverRouter);
-app.use("/api/area", areaRouter);
+// app.use("/api/auth", authRouter);
+// app.use("/api/garbage", garbageRouter);
+// app.use("/api/driver", driverRouter);
+// app.use("/api/area", areaRouter);
 
 
 app.get("/", (req, res) => {
