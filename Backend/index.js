@@ -25,7 +25,7 @@ app.use("/api/area", areaRouter);
 
 app.get("/", (req, res) => {
     res.status(200).json({
-        message: "Welcome to Garbage Management System"
+        message: "Welcome to Garbage Management Sys"
     })
 })
 
