@@ -201,8 +201,41 @@ async function handleGetProfile(req, res) {
     }
 }
 
+async function handleUpdateDriverInUser(req, res) {
+    try {
+        const { id } = req.user; // user id from middleware
+        const { driverId } = req.body; // new driverId from request
+
+        const userDetails = await User.findByIdAndUpdate(
+            id, 
+            { driverId }, 
+            { new: true, runValidators: true }
+        );
+
+        if (!userDetails) {
+            return res.status(404).json({
+                error: true,
+                message: "User not found"
+            });
+        }
+
+        res.status(200).json({
+            error: false,
+            message: "Driver Id is updated",
+            userDetails
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: true,
+            message: error.message
+        });
+    }
+}
+
+
 module.exports = {
     handleRegister,
     handleLogin,
-    handleGetProfile
+    handleGetProfile,
+    handleUpdateDriverInUser
 }

@@ -30,6 +30,8 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
       const response = await axiosInstance.put(apiPath.AREA.ASSIGN_DRIVER(id), {
         driverId: selectedDriver,
       });
+
+      console.log(response);
     } catch (error) {
       console.log(error);
       if (error && error.response) {
@@ -193,8 +195,8 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
             <option value="">Select</option>
             {driverId.length !== 0 &&
               driverId.map((driver, index) => (
-                <option value={driver?._id} key={index}>
-                  {driver?.driverId}
+                <option value={driver?.userId} key={index}>
+                  {driver?.name}({driver?.driverId})
                 </option>
               ))}
           </select>

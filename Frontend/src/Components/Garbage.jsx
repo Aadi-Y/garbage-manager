@@ -21,11 +21,10 @@ import "tippy.js/dist/tippy.css";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { IoCloseCircle } from "react-icons/io5";
 
-
 function Garbage({}) {
   const [openModal1, setOpenModal] = useState(false);
   const [selectDriver, setSelectDriver] = useState(null);
-  const [selectedGarbage,setSelectedGarbage] = useState(null);
+  const [selectedGarbage, setSelectedGarbage] = useState(null);
   // const [role, setRole] = useState("");
   const [garbages, setGarbages] = useState([]);
   const { toggleModal } = useContext(AboutContext);
@@ -190,15 +189,19 @@ function Garbage({}) {
     }
   }
 
-  function handleSelectGarbage(garbage){
+  function handleSelectGarbage(garbage) {
     setSelectedGarbage(garbage);
   }
 
   useEffect(() => {
-    handleGetGarbages();
-    role === "Admin" && handleGetAllGarbages();
-    role === "Driver" && handleGetAllGarbagesForDriver();
-  }, []);
+    if (role === "User") {
+      handleGetGarbages();
+    }else if(role === "Admin"){
+      handleGetAllGarbages();
+    }else if(role === "Driver") {
+      handleGetAllGarbagesForDriver();
+    }
+  }, [role]);
 
   return (
     <>
@@ -248,125 +251,136 @@ function Garbage({}) {
           className="absolute top-3 right-2 text-[1.3rem] cursor-pointer flex justify-center items-center text-gray-600"
         />
       </Modal>
-      <section className={role === "User" ? `md:mt-15` : `md:mt-0`}>
-        <section className=" min-h-[100vh] h-auto md:pt-5">
-          <h1 className="font-semibold text-[1.2rem] text-center mb-2">
-            Garbage list
-          </h1>
-          <section
-            className={`grid xl:grid-cols-3 gap-x-5 grid-col-2 gap-y-5 pr-3 pl-0 md:pl-3 ${
-              role === "Admin" || role === "Driver"
-                ? "md:grid-cols-1 lg:grid-cols-2"
-                : "md:grid-cols-2"
-            }`}
-          >
-            {garbages &&
-              garbages.length > 0 &&
-              garbages.map((garbage, index) => (
-                <section className="">
-                  <section
-                    className="bg-white rounded-2xl shadow-lg p-4 min-w-100 max-w-auto"
-                    onClick={() => handleViewDetailsAndToggle(garbage)}
-                    key={index}
-                  >
-                    <div className="flex justify-between items-center py-2">
-                      <p className="font-medium text-[1.2rem]">
-                        {garbage?.garbageType}
-                      </p>
-                      <p className="text-[15px] text-gray-600 flex items-center gap-1">
-                        <span>
-                          <CgCalendarDates />
-                        </span>{" "}
-                        Created on :{" "}
-                        {moment(garbage?.createdAt).format("DD-MMM-YYYY")}
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <p className="font-medium">Deposited on: </p>
-                      <p>
-                        {moment(garbage?.depositedOn).format("DD-MMM-YYYY")}
-                      </p>
-                    </div>
-                    <div className="flex gap-2">
-                      <p className="font-medium">Status: </p>
-                      <i>{garbage?.disposed ? "Disposed" : "Pending"}</i>
-                    </div>
-                    <div>
-                      <p className="flex items-center justify-start gap-2">
-                        <span>
-                          <FaWeight className="text-gray-600" />
-                        </span>
-                        {garbage?.weight} {garbage?.weight > 1 ? "Kgs" : "Kg"}
-                      </p>
-                    </div>
-                    <div>
-                      <p>{garbage?.description}</p>
-                    </div>
 
-                    {role === "User" || role === "Admin" && (
-                      <div className="flex justify-end gap-4 pt-2 mt-2">
-                        <Tippy content="Edit">
+      {garbages.length === 0 ? (
+        <section className="flex justify-center items-center min-h-[100vh]">
+          <p className="font-medium text-[15px] md:text-[20px]">
+            No Garbage found
+          </p>
+        </section>
+      ) : (
+        <section className={role === "User" ? `md:mt-15` : `md:mt-0`}>
+          <section className=" min-h-[100vh] h-auto md:pt-5">
+            <h1 className="font-semibold text-[1.2rem] text-center mb-2">
+              Garbage list
+            </h1>
+            <section
+              className={`grid xl:grid-cols-3 gap-x-5 grid-col-2 gap-y-5 pr-3 pl-0 md:pl-3 ${
+                role === "Admin" || role === "Driver"
+                  ? "md:grid-cols-1 lg:grid-cols-2"
+                  : "md:grid-cols-2"
+              }`}
+            >
+              {garbages &&
+                garbages.length > 0 &&
+                garbages.map((garbage, index) => (
+                  <section className="">
+                    <section
+                      className="bg-white rounded-2xl shadow-lg p-4 min-w-100 max-w-auto"
+                      onClick={() => handleViewDetailsAndToggle(garbage)}
+                      key={index}
+                    >
+                      <div className="flex justify-between items-center py-2">
+                        <p className="font-medium text-[1.2rem]">
+                          {garbage?.garbageType}
+                        </p>
+                        <p className="text-[15px] text-gray-600 flex items-center gap-1">
+                          <span>
+                            <CgCalendarDates />
+                          </span>{" "}
+                          Created on :{" "}
+                          {moment(garbage?.createdAt).format("DD-MMM-YYYY")}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <p className="font-medium">Deposited on: </p>
+                        <p>
+                          {moment(garbage?.depositedOn).format("DD-MMM-YYYY")}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <p className="font-medium">Status: </p>
+                        <i>{garbage?.disposed ? "Disposed" : "Pending"}</i>
+                      </div>
+                      <div>
+                        <p className="flex items-center justify-start gap-2">
+                          <span>
+                            <FaWeight className="text-gray-600" />
+                          </span>
+                          {garbage?.weight} {garbage?.weight > 1 ? "Kgs" : "Kg"}
+                        </p>
+                      </div>
+                      <div>
+                        <p>{garbage?.description}</p>
+                      </div>
+
+                      {role !== "Driver" && (
+                        <div className="flex justify-end gap-4 pt-2 mt-2">
+                          <Tippy content="Edit">
+                            <button
+                              className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                              aria-label="Edit"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleEditGarbage(garbage);
+                              }}
+                            >
+                              <FaPen />
+                            </button>
+                          </Tippy>
+                          <Tippy content="Delete">
+                            <button
+                              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                              aria-label="Delete"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleGarbageDelete(garbage?._id);
+                              }}
+                            >
+                              <FaTrash />
+                            </button>
+                          </Tippy>
+                        </div>
+                      )}
+
+                      {role === "Driver" && (
+                        <div className="flex justify-end">
                           <button
-                            className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                            aria-label="Edit"
+                            className={`border p-2 rounded-lg text-white cursor-pointer transition-all duration-200 shadow-md ${
+                              garbage?.disposed === true
+                                ? "bg-green-500 hover:bg-green-600"
+                                : "bg-red-500 hover:bg-red-600"
+                            }`}
                             onClick={(event) => {
                               event.stopPropagation();
-                              handleEditGarbage(garbage);
+                              handleDisposeGarbage(garbage?._id);
                             }}
                           >
-                            <FaPen />
+                            {garbage?.disposed ? (
+                              <Tippy content="Completed">
+                                <p>
+                                  <IoCheckmarkCircle />
+                                </p>
+                              </Tippy>
+                            ) : (
+                              <Tippy content="Not Completed">
+                                <p>
+                                  <IoCloseCircle />
+                                </p>
+                              </Tippy>
+                            )}
                           </button>
-                        </Tippy>
-                        <Tippy content="Delete">
-                          <button
-                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                            aria-label="Delete"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleGarbageDelete(garbage?._id);
-                            }}
-                          >
-                            <FaTrash />
-                          </button>
-                        </Tippy>
-                      </div>
-                    )}
-
-                    {role === "Driver" && (
-                      <div className="flex justify-end">
-                        <button
-                          className={`border p-2 rounded-lg text-white cursor-pointer transition-all duration-200 shadow-md ${
-                            garbage?.disposed === true
-                              ? "bg-green-500 hover:bg-green-600"
-                              : "bg-red-500 hover:bg-red-600"
-                          }`}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleDisposeGarbage(garbage?._id);
-                          }}
-                        >
-                          {garbage?.disposed ? (
-                            <Tippy content="Completed">
-                              <p><IoCheckmarkCircle /></p>
-                            </Tippy>
-                          ) : (
-                            <Tippy content="Not Completed">
-                              <p><IoCloseCircle/></p>
-                            </Tippy>
-                          )}
-                        </button>
-                      </div>
-                    )}
+                        </div>
+                      )}
+                    </section>
                   </section>
-                </section>
-              ))}
+                ))}
 
-            {openDetails.isOpen && (
-      <About garbage={openDetails.data} />
-    )}
+              {openDetails.isOpen && <About garbage={openDetails.data} />}
+            </section>
           </section>
         </section>
-      </section>
+      )}
 
       {role === "User" && (
         <div>

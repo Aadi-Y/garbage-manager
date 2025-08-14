@@ -21,8 +21,11 @@ const userSchema = new mongoose.Schema({
     userId:{
         type:String,
         requied:true
+    },
+    driverId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Driver"
     }
-
 },
     {
         timestamps: true

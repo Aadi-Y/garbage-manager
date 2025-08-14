@@ -15,8 +15,7 @@ import { apiPath } from "../Utility/apiPath";
 import { useEffect } from "react";
 import moment from "moment";
 import Tippy from "@tippyjs/react";
-import 'tippy.js/dist/tippy.css';
-
+import "tippy.js/dist/tippy.css";
 
 function Driver() {
   const [openModal, setOpenModal] = useState(false);
@@ -102,14 +101,17 @@ function Driver() {
   }
 
   useEffect(() => {
-    role === "Driver" && handleGetDriver();
-    role === "Admin" && handleGetAllDrivers();
-  }, []);
+    if (role === "Driver") {
+        handleGetDriver();
+    } else if (role === "Admin") {
+        handleGetAllDrivers();
+    }
+}, [role]);
 
-  function handleViewAndToggle(item){
+  function handleViewAndToggle(item) {
     setOpenDetails({
-      isShown:true,
-      data:item
+      isShown: true,
+      data: item,
     });
     toggleModal();
   }
@@ -164,145 +166,95 @@ function Driver() {
         />
       </Modal>
 
-      <section className="md:mt-10 bg-slate-100 min-h-screen md:ml-3">
-        <section className="md:pt-0">
-          <div>
-            <h1 className="text-center font-semibold text-[1.2rem] mb-2">
-              Driver List
-            </h1>
-          </div>
-          <section className="grid grid-cols-1 lg:grid-cols-2 xl:gird-cols-3 gap-x-5 gap-y-5 mr-5">
-            {/* <section
-            className="border w-100 px-5 py-6 bg-white rounded-xl border-none shadow-lg"
-            onClick={toggleModal}
-          >
-            <div className="flex items-center justify-between mb-3">
-              <h1 className="font-medium text-[1.1rem]">Aadithya Y</h1>
-              <p className="text-[15px] text-gray-600">
-                Created on : Jan 25 2025
-              </p>
-            </div>
+      {drivers.length === 0 ? (
+        <section className="flex justify-center items-center min-h-[100vh]">
+          <p className="font-medium text-[15px] md:text-[20px]">
+            No Driver Found
+          </p>
+        </section>
+      ) : (
+        <section className="md:mt-10 bg-slate-100 min-h-screen md:ml-3">
+          <section className="md:pt-0">
             <div>
-              <p className="flex items-center gap-2 text-gray-700">
-                <FaPhoneAlt className="text-black" />
-                <span className="font-medium text-black">Phone : </span>
-                9898989898
-              </p>
+              <h1 className="text-center font-semibold text-[1.2rem] mb-2">
+                Driver List
+              </h1>
             </div>
-            <div>
-              <p className="flex items-center gap-2">
-                <span>
-                  <FaTruck />
-                </span>
-                Lorry
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-600">
-                <span className="font-medium text-black">Vehicle no :</span> TN
-                25 IU 1890
-              </p>
-            </div>
-            <div className="flex justify-end gap-4 pt-2 mt-2">
-              <button
-                className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                aria-label="Edit"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleEditDriver();
-                }}
-              >
-                <FaPen />
-                <span>Edit</span>
-              </button>
-              <button
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                aria-label="Delete"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleDeleteDriver();
-                }}
-              >
-                <FaTrash />
-                <span>Delete</span>
-              </button>
-            </div>
-          </section> */}
+            <section className="grid grid-cols-1 lg:grid-cols-2 xl:gird-cols-3 gap-x-5 gap-y-5 mr-5">
+              {drivers &&
+                drivers.length > 0 &&
+                drivers.map((driver, index) => (
+                  <section
+                    className="border md:min-w-100 max-w-auto px-5 py-6 bg-white rounded-xl border-none shadow-lg"
+                    onClick={() => handleViewAndToggle(driver)}
+                    key={index}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <h1 className="font-medium text-[1.1rem]">
+                        {driver.name}
+                      </h1>
+                      <p className="text-[15px] text-gray-600 hidden md:flex">
+                        Joined on :{" "}
+                        {moment(driver?.createdAt).format("DD MMM YYYY")}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="flex items-center gap-2 text-gray-700">
+                        <FaPhoneAlt className="text-black" />
+                        <span className="font-medium text-black">Phone : </span>
+                        {driver?.phoneNumber}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="flex items-center gap-2">
+                        <span>
+                          <FaTruck />
+                        </span>
+                        {driver?.vehicle}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600">
+                        <span className="font-medium text-black">
+                          Vehicle no :
+                        </span>{" "}
+                        {driver?.vehicleNumber}
+                      </p>
+                    </div>
+                    <div className="flex justify-end gap-4 pt-2 mt-2">
+                      <Tippy content="Edit">
+                        <button
+                          className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                          aria-label="Edit"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleEditDriver(driver);
+                          }}
+                        >
+                          <FaPen />
+                        </button>
+                      </Tippy>
+                      <Tippy content="Delete">
+                        <button
+                          className="bg-red-500 hover:bg-red-600 text-white  px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                          aria-label="Delete"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleDeleteDriver(driver?._id);
+                          }}
+                        >
+                          <FaTrash />
+                        </button>
+                      </Tippy>
+                    </div>
+                  </section>
+                ))}
 
-            {drivers &&
-              drivers.length > 0 &&
-              drivers.map((driver, index) => (
-                <section
-                  className="border md:min-w-100 max-w-auto px-5 py-6 bg-white rounded-xl border-none shadow-lg"
-                  onClick={()=>handleViewAndToggle(driver)}
-                  key={index}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <h1 className="font-medium text-[1.1rem]">
-                      {driver.userId.userName}
-                    </h1>
-                    <p className="text-[15px] text-gray-600 hidden md:flex">
-                      Joined on :{" "}
-                      {moment(driver?.createdAt).format("DD MMM YYYY")}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="flex items-center gap-2 text-gray-700">
-                      <FaPhoneAlt className="text-black" />
-                      <span className="font-medium text-black">Phone : </span>
-                      {driver?.phoneNumber}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="flex items-center gap-2">
-                      <span>
-                        <FaTruck />
-                      </span>
-                      {driver?.vehicle}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-600">
-                      <span className="font-medium text-black">
-                        Vehicle no :
-                      </span>{" "}
-                      {driver?.vehicleNumber}
-                    </p>
-                  </div>
-                  <div className="flex justify-end gap-4 pt-2 mt-2">
-                    <Tippy content="Edit">
-                      <button
-                      className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                      aria-label="Edit"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleEditDriver(driver);
-                      }}
-                    >
-                      <FaPen />
-                    </button>
-                    </Tippy>
-                    <Tippy content="Delete">
-                      <button
-                      className="bg-red-500 hover:bg-red-600 text-white  px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                      aria-label="Delete"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleDeleteDriver(driver?._id);
-                      }}
-                    >
-                      <FaTrash />
-                    </button>
-                    </Tippy>
-                  </div>
-                </section>
-              ))}
-
-              {openDetails.isShown && 
-              <AboutDriver driver={openDetails.data} />}
+              {openDetails.isShown && <AboutDriver driver={openDetails.data} />}
+            </section>
           </section>
         </section>
-      </section>
+      )}
 
       <div>
         <button

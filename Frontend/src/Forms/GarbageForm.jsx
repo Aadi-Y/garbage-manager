@@ -52,6 +52,7 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
       console.log(response);
       if (response && response.data) {
         toast.success(response.data.message);
+        handleGetGarbages();
         handleCloseModal();
       }
     } catch (error) {

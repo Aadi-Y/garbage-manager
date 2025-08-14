@@ -7,9 +7,10 @@ import {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import { AboutContext } from "../About/AboutState";
+import { Link } from "react-router-dom";
 
 function Navbar() {
-  const {user,handleGetUser} = useContext(AboutContext);
+  const {user,handleGetUser,reset} = useContext(AboutContext);
   console.log(user);
 
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function Navbar() {
   const handleLogout = async() => {
     localStorage.removeItem("token");
     handleGetUser();
+    reset();
     navigate("/login");
 
   }
@@ -29,7 +31,8 @@ function Navbar() {
             <img src={logo} alt="" className="h-10" />
           </div>
 
-          <div className="flex items-center gap-3">
+          {
+            user ? <div className="flex items-center gap-3">
             <div className="group cursor-pointer">
               <p className="text-4xl text-gray-700">
                 <CgProfile />
@@ -53,7 +56,11 @@ function Navbar() {
                 Logout
               </button>
             </div>
+          </div> : <div className="flex gap-2">
+            <button className="bg-green-500 text-white px-2 py-1 rounded"><Link to="/login">Login</Link></button>
+            <button className="bg-green-500 text-white px-2 py-1 cursor-pointer rounded"><Link to="/signup">Signup</Link></button>
           </div>
+          }
         </section>
       </section>
     </>

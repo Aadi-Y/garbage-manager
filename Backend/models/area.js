@@ -20,7 +20,7 @@ const areaSchema = new mongoose.Schema({
     },
     assignedDrivers:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"Driver"
+        ref:"User"
     }],
 })
 

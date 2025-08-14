@@ -283,7 +283,12 @@ async function handleCreateArea(req, res) {
 async function handleGetArea(req, res) {
     try {
         const area = await Area.find({})
-        .populate("assignedDrivers")
+        .populate({path:"assignedDrivers",
+            populate:{
+                path:"driverId",
+                model:"Driver"
+            }
+        })
         .exec();
 
         res.status(200).json({
@@ -306,7 +311,12 @@ async function handleGetAreaForDriver(req,res) {
     try {
         const { id } = req.user;
         const area = await Area.find({assignedDrivers:id})
-        .populate("assignedDrivers");
+        .populate({path:"assignedDrivers",
+            populate:{
+                path:"driverId",
+                model:"Driver"
+            }
+        });
 
         if(!area || area.length === 0){
             return res.status(400).json({
@@ -389,7 +399,7 @@ async function handleDeleteArea(req, res) {
 
 async function handleGetAllDriverId(req,res){
     try{
-        const availableIds = await Driver.find({}).select("driverId");
+        const availableIds = await Driver.find({}).select("driverId name userId");
         const driverId = availableIds;
 
         res.status(200).json({
