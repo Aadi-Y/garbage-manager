@@ -196,9 +196,9 @@ function Garbage({}) {
   useEffect(() => {
     if (role === "User") {
       handleGetGarbages();
-    }else if(role === "Admin"){
+    } else if (role === "Admin") {
       handleGetAllGarbages();
-    }else if(role === "Driver") {
+    } else if (role === "Driver") {
       handleGetAllGarbagesForDriver();
     }
   }, [role]);

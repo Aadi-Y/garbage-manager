@@ -3,7 +3,7 @@ import { axiosInstance } from "../Utility/axiosInstance";
 import { apiPath } from "../Utility/apiPath";
 import toast from "react-hot-toast";
 
-function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
+function DriverForm({ driver, type, handleCloseModal, handleGetDriver }) {
   const [formData, setFormData] = useState({
     name: driver?.name || "",
     phoneNumber: driver?.phoneNumber || "",
@@ -14,11 +14,11 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
     vehicleNumber: driver?.vehicleNumber || "",
     availability: driver?.availability || false,
     currentLocation: driver?.currentLocation || "",
-    assignedRequest: driver?.assignedRequest || [], 
+    assignedRequest: driver?.assignedRequest || [],
   });
 
-  const [error,setError] = useState("");
-  const [isLoading,setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -40,50 +40,56 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
     console.log("Submitting Driver:", driverData);
     setError(null);
     setIsLoading(true);
-    try{
-      const response = await axiosInstance.post(apiPath.DRIVER.CREATE,driverData);
+    try {
+      const response = await axiosInstance.post(
+        apiPath.DRIVER.CREATE,
+        driverData
+      );
 
       console.log(response);
-      if(response && response.data){
+      if (response && response.data) {
         toast.success(response.data.message);
         setIsLoading(false);
         handleCloseModal();
         handleGetDriver();
       }
-    }catch(error){
-      if(error && error.response){
+    } catch (error) {
+      if (error && error.response) {
         setError(error.response.data.message);
         console.error(error);
       }
-    }finally{
+    } finally {
       setError(null);
       setIsLoading(false);
     }
   };
 
-  const handleDriverUpdation = async (e) =>{
+  const handleDriverUpdation = async (e) => {
     e.preventDefault();
     const driverData = {
       ...formData,
       phoneNumber: Number(formData.phoneNumber),
       aadharId: Number(formData.aadharId),
     };
-    try{
-      const response = await axiosInstance.put(apiPath.DRIVER.UPDATE(driver?._id),driverData);
+    try {
+      const response = await axiosInstance.put(
+        apiPath.DRIVER.UPDATE(driver?._id),
+        driverData
+      );
       console.log(response);
 
-      if(response && response.data){
+      if (response && response.data) {
         toast.success(response.data.message);
         handleCloseModal();
         handleGetDriver();
       }
-    }catch(error){
-      if(error?.response){
+    } catch (error) {
+      if (error?.response) {
         toast.error(response.data.message);
         console.log(error?.response);
       }
     }
-  }
+  };
 
   return (
     <div>
@@ -106,7 +112,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div> */}
         <div>
-          <label className='text-md font-medium mb-1 text-gray-700'>Name</label>
+          <label className="text-md font-medium mb-1 text-gray-700">Name</label>
           <br />
           <input
             type="text"
@@ -119,7 +125,9 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label className='text-md font-medium mb-1 text-gray-700'>Phone Number</label>
+          <label className="text-md font-medium mb-1 text-gray-700">
+            Phone Number
+          </label>
           <br />
           <input
             type="number"
@@ -132,7 +140,7 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label className='text-md font-medium mb-1 text-gray-700'>Age</label>
+          <label className="text-md font-medium mb-1 text-gray-700">Age</label>
           <br />
           <input
             type="text"
@@ -145,7 +153,9 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label className='text-md font-medium mb-1 text-gray-700'>Licence Number</label>
+          <label className="text-md font-medium mb-1 text-gray-700">
+            Licence Number
+          </label>
           <br />
           <input
             type="text"
@@ -158,7 +168,9 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label className='text-md font-medium mb-1 text-gray-700'>Aadhar ID</label>
+          <label className="text-md font-medium mb-1 text-gray-700">
+            Aadhar ID
+          </label>
           <br />
           <input
             type="number"
@@ -171,7 +183,9 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label className='text-md font-medium mb-1 text-gray-700'>Vehicle Type</label>
+          <label className="text-md font-medium mb-1 text-gray-700">
+            Vehicle Type
+          </label>
           <br />
           <input
             type="text"
@@ -184,7 +198,9 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <label className='text-md font-medium mb-1 text-gray-700'>Vehicle Number</label>
+          <label className="text-md font-medium mb-1 text-gray-700">
+            Vehicle Number
+          </label>
           <br />
           <input
             type="text"
@@ -197,7 +213,9 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div className="flex">
-          <label className='text-md font-medium mb-1 text-gray-700'>Availability</label>
+          <label className="text-md font-medium mb-1 text-gray-700">
+            Availability
+          </label>
           <input
             type="checkbox"
             name="availability"
@@ -207,10 +225,14 @@ function DriverForm({ driver,type,handleCloseModal,handleGetDriver }) {
           />
         </div>
         <div>
-          <h6 className="text-sm text-gray-500">(*If Not available please leave empty)</h6>
+          <h6 className="text-sm text-gray-500">
+            (*If Not available please leave empty)
+          </h6>
         </div>
         <div>
-          <label className='text-md font-medium mb-1 text-gray-700'>Current Location</label>
+          <label className="text-md font-medium mb-1 text-gray-700">
+            Current Location
+          </label>
           <br />
           <textarea
             type="text"

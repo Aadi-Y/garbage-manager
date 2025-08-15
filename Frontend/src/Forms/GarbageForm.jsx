@@ -26,7 +26,7 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {role} = useContext(AboutContext);
+  const { role } = useContext(AboutContext);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -291,7 +291,7 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
         </div>
 
         <button
-          className="w-full rounded-lg p-2 cursor-pointer bg-green-500 hover:bg-green-600 text-white" 
+          className="w-full rounded-lg p-2 cursor-pointer bg-green-500 hover:bg-green-600 text-white"
           type="submit"
         >
           {type === "edit" ? "Edit Garbage" : "Submit Garbage"}

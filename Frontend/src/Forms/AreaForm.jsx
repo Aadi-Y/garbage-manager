@@ -63,7 +63,7 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
       }
     } catch (err) {
       console.log(err);
-      if(err?.response){
+      if (err?.response) {
         toast.error(err?.response.data.message);
       }
       setError("Failed to create area. Try again.");

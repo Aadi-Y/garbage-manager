@@ -70,16 +70,16 @@ function Area() {
     }
   }
 
-  async function handleGetAreaForDriver(){
-    try{
+  async function handleGetAreaForDriver() {
+    try {
       const response = await axiosInstance.get(apiPath.AREA.GET_FOR_DRIVER);
-      
-      if(response && response.data){
+
+      if (response && response.data) {
         setAreas(response.data.area);
       }
-    }catch(error){
+    } catch (error) {
       console.log(error);
-      if(error?.response){
+      if (error?.response) {
         console.log(error.response.data.message);
       }
     }
@@ -94,13 +94,13 @@ function Area() {
     handleCloseModal();
   }
 
- useEffect(() => {
-  if (role === "Admin") {
-    handleGetAreaForAdmin();
-  } else if (role === "Driver") {
-    handleGetAreaForDriver();
-  }
-}, [role]);
+  useEffect(() => {
+    if (role === "Admin") {
+      handleGetAreaForAdmin();
+    } else if (role === "Driver") {
+      handleGetAreaForDriver();
+    }
+  }, [role]);
 
   return (
     <>
@@ -152,97 +152,99 @@ function Area() {
         />
       </Modal>
 
-      {
-        areas.length === 0 ?  <section className="flex justify-center items-center h-[100vh]">
-        <p className="font-medium text-[15px] md:text-[20px]">No Area found</p>
-      </section>  :  
-      <section className="min-h-screen bg-gradient-to-br from-slate-100 to-white md:ml-3">
-        
-        <h1 className="text-[1.2rem] font-semibold text-center text-slate-800 mb-3 md:pt-5">
-          Area Overview
-        </h1>
-
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-x-5 gap-y-5 mr-5">
-          {areas &&
-            areas.length > 0 &&
-            areas.map((area, index) => (
-              <div
-                className="bg-white rounded-2xl shadow-lg p-6 md:min-w-100 max-w-auto space-y-6"
-                key={index}
-              >
-                <div className="flex justify-between items-center">
-                  <h2 className="text-xl font-semibold text-slate-800">
-                    Area {index}
-                  </h2>
-                  <div className="text-sm text-slate-500">
-                    ID: {area.areaId}
-                  </div>
-                  <div className="text-sm text-slate-500">
-                    📅 {moment(area?.createdAt).format("DD-MMM-YYYY")}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <h3 className="text-slate-600 font-medium mb-1 flex items-center gap-2">
-                      <span>
-                        <FaAddressCard />
-                      </span>{" "}
-                      Address
-                    </h3>
-                    <p className="text-slate-700 text-sm">{area?.areaName}</p>
-                    <p className="text-slate-700 text-sm">
-                      {area?.areaLocation}
-                    </p>
-                    <p className="text-slate-700 text-sm">{area?.pincode}</p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-slate-600 font-medium mb-1 flex items-center gap-2">
-                      <span>
-                        <FaUserGroup />
-                      </span>{" "}
-                      Assigned Drivers
-                    </h3>
-                    <ul className="list-disc list-inside text-slate-700 text-sm">
-                      {area.assignedDrivers.length !== 0 ? (
-                        area.assignedDrivers.map((driver, index) => (
-                          <li key={index}>{driver?.driverId?.driverId}</li>
-                        ))
-                      ) : (
-                        <p>No driver assigned</p>
-                      )}
-                    </ul>
-                  </div>
-                </div>
-
-                {role === "Admin" && (
-                  <div className="flex justify-end gap-4 pt-2">
-                    <Tippy content="Edit">
-                      <button
-                        className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                        aria-label="Edit"
-                        onClick={() => handleAreaEdit(area)}
-                      >
-                        <FaPen />
-                      </button>
-                    </Tippy>
-                    <Tippy content="Delete">
-                      <button
-                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
-                        aria-label="Delete"
-                        onClick={() => handleAreaDelete(area._id)}
-                      >
-                        <FaTrash />
-                      </button>
-                    </Tippy>
-                  </div>
-                )}
-              </div>
-            ))}
+      {areas.length === 0 ? (
+        <section className="flex justify-center items-center h-[100vh]">
+          <p className="font-medium text-[15px] md:text-[20px]">
+            No Area found
+          </p>
         </section>
-      </section> 
-      }
+      ) : (
+        <section className="min-h-screen bg-gradient-to-br from-slate-100 to-white md:ml-3">
+          <h1 className="text-[1.2rem] font-semibold text-center text-slate-800 mb-3 md:pt-5">
+            Area Overview
+          </h1>
+
+          <section className="grid grid-cols-1 lg:grid-cols-3 gap-x-5 gap-y-5 mr-5">
+            {areas &&
+              areas.length > 0 &&
+              areas.map((area, index) => (
+                <div
+                  className="bg-white rounded-2xl shadow-lg p-6 md:min-w-100 max-w-auto space-y-6"
+                  key={index}
+                >
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-xl font-semibold text-slate-800">
+                      Area {index}
+                    </h2>
+                    <div className="text-sm text-slate-500">
+                      ID: {area.areaId}
+                    </div>
+                    <div className="text-sm text-slate-500">
+                      📅 {moment(area?.createdAt).format("DD-MMM-YYYY")}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <h3 className="text-slate-600 font-medium mb-1 flex items-center gap-2">
+                        <span>
+                          <FaAddressCard />
+                        </span>{" "}
+                        Address
+                      </h3>
+                      <p className="text-slate-700 text-sm">{area?.areaName}</p>
+                      <p className="text-slate-700 text-sm">
+                        {area?.areaLocation}
+                      </p>
+                      <p className="text-slate-700 text-sm">{area?.pincode}</p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-slate-600 font-medium mb-1 flex items-center gap-2">
+                        <span>
+                          <FaUserGroup />
+                        </span>{" "}
+                        Assigned Drivers
+                      </h3>
+                      <ul className="list-disc list-inside text-slate-700 text-sm">
+                        {area.assignedDrivers.length !== 0 ? (
+                          area.assignedDrivers.map((driver, index) => (
+                            <li key={index}>{driver?.driverId?.driverId}</li>
+                          ))
+                        ) : (
+                          <p>No driver assigned</p>
+                        )}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {role === "Admin" && (
+                    <div className="flex justify-end gap-4 pt-2">
+                      <Tippy content="Edit">
+                        <button
+                          className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                          aria-label="Edit"
+                          onClick={() => handleAreaEdit(area)}
+                        >
+                          <FaPen />
+                        </button>
+                      </Tippy>
+                      <Tippy content="Delete">
+                        <button
+                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-md cursor-pointer"
+                          aria-label="Delete"
+                          onClick={() => handleAreaDelete(area._id)}
+                        >
+                          <FaTrash />
+                        </button>
+                      </Tippy>
+                    </div>
+                  )}
+                </div>
+              ))}
+          </section>
+        </section>
+      )}
 
       {role === "Admin" && (
         <button

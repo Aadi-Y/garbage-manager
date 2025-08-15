@@ -102,11 +102,11 @@ function Driver() {
 
   useEffect(() => {
     if (role === "Driver") {
-        handleGetDriver();
+      handleGetDriver();
     } else if (role === "Admin") {
-        handleGetAllDrivers();
+      handleGetAllDrivers();
     }
-}, [role]);
+  }, [role]);
 
   function handleViewAndToggle(item) {
     setOpenDetails({
