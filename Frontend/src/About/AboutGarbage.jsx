@@ -8,36 +8,37 @@ import { FaUser } from "react-icons/fa";
 import { CgCalendarDates } from "react-icons/cg";
 import moment from "moment";
 import { axiosInstance } from "../Utility/axiosInstance";
-import {apiPath} from "../Utility/apiPath";
+import { apiPath } from "../Utility/apiPath";
 
 function About({ garbage }) {
   const { openModal, toggleModal } = useContext(AboutContext);
-  const [driver,setDriver] = useState(null);
+  const [driver, setDriver] = useState(null);
 
-  async function handleGetGarbageDriver(id){
-      try{
-        const response = await axiosInstance.get(apiPath.GARBAGE.GET_GARBAGE_DRIVER(id));
-  
-        console.log(response);
+  async function handleGetGarbageDriver(id) {
+    try {
+      const response = await axiosInstance.get(
+        apiPath.GARBAGE.GET_GARBAGE_DRIVER(id)
+      );
 
-        if(response && response.data){
-          setDriver(response.data);
-        }
-      }catch(error){
-        console.log(error);
+      console.log(response);
+
+      if (response && response.data) {
+        setDriver(response.data);
       }
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-  
   useEffect(() => {
-  const fetchData = async () => {
-    await handleGetGarbageDriver(garbage?._id);
-  };
+    const fetchData = async () => {
+      await handleGetGarbageDriver(garbage?._id);
+    };
 
-  fetchData();
-}, [garbage]);
+    fetchData();
+  }, [garbage]);
 
-console.log(driver);
+  console.log(driver);
 
   return (
     <>
@@ -108,7 +109,11 @@ console.log(driver);
             </div>
 
             <div>
-              <p className={`border p-2 rounded border-none text-white shadow-md ${garbage?.disposed === true ? "bg-green-500": "bg-red-500"}`}>
+              <p
+                className={`border p-2 rounded border-none text-white shadow-md ${
+                  garbage?.disposed === true ? "bg-green-500" : "bg-red-500"
+                }`}
+              >
                 {garbage?.disposed === true ? "Disposed" : "Yet to Dispose"}
               </p>
             </div>
@@ -127,10 +132,12 @@ console.log(driver);
             </h1>
             <div className="px-2">
               <p>
-                <span>Name: </span>{driver?.name}
+                <span>Name: </span>
+                {driver?.name}
               </p>
               <p>
-                <span>Vehicle Number: </span>{driver?.vehicleNumber}
+                <span>Vehicle Number: </span>
+                {driver?.vehicleNumber}
               </p>
             </div>
           </div>

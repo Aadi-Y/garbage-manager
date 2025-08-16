@@ -4,8 +4,8 @@ import { apiPath } from "../Utility/apiPath";
 import { axiosInstance } from "../Utility/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import {AboutContext} from "../About/AboutState";
-import {useContext} from "react";
+import { AboutContext } from "../About/AboutState";
+import { useContext } from "react";
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -16,7 +16,7 @@ function Signup() {
   });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const {handleGetUser} = useContext(AboutContext);
+  const { handleGetUser } = useContext(AboutContext);
 
   const navigate = useNavigate();
 

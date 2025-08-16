@@ -121,10 +121,10 @@ function AboutDriver({ driver }) {
   }, [driver]);
 
   useEffect(() => {
-    const fetchData = async() => {
+    const fetchData = async () => {
       await handleGetAllGarbageIds();
       await handleGetAllAssignedGarbages();
-    }
+    };
 
     fetchData();
   }, []);
@@ -142,36 +142,36 @@ function AboutDriver({ driver }) {
       <section>
         <Modal
           isOpen={openModal}
-          onRequestClose={()=>toggleModal()}
+          onRequestClose={() => toggleModal()}
           style={{
-          overlay: {
-            background: "rgba(0, 0, 0, 0.2)",
-            backdropFilter: "blur(4px)",
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 1000,
-            padding: 0,
-            margin: 0,
-          },
-          content: {
-            position: "relative",
-            inset: "unset",
-            width: "90%",
-            maxWidth: "500px",
-            minWidth: "280px",
-            maxHeight: "90vh",
-            background: "rgba(255,255,255,0.9)",
-            borderRadius: "16px",
-            padding: "1.5rem",
-            overflowY: "auto",
-          },
-        }}
+            overlay: {
+              background: "rgba(0, 0, 0, 0.2)",
+              backdropFilter: "blur(4px)",
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 1000,
+              padding: 0,
+              margin: 0,
+            },
+            content: {
+              position: "relative",
+              inset: "unset",
+              width: "90%",
+              maxWidth: "500px",
+              minWidth: "280px",
+              maxHeight: "90vh",
+              background: "rgba(255,255,255,0.9)",
+              borderRadius: "16px",
+              padding: "1.5rem",
+              overflowY: "auto",
+            },
+          }}
         >
           <section className="flex flex-col gap-3 py-5">
             <div>

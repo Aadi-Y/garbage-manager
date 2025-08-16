@@ -12,7 +12,7 @@ function Login() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const {handleGetUser} = useContext(AboutContext);
+  const { handleGetUser } = useContext(AboutContext);
 
   function handleNavigate(role) {
     if (role === "User") {
