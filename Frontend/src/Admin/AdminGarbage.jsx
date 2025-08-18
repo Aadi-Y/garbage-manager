@@ -6,13 +6,13 @@ import { FaPen } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { FaWeight } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
-import {AboutContext} from "../About/AboutState";
-import {useContext} from 'react';
+import { AboutContext } from "../About/AboutState";
+import { useContext } from "react";
 import About from "../About/AboutGarbage";
 
 function AdminGarbage() {
   const [openModal1, setOpenModal] = useState(false);
-  const {toggleModal} = useContext(AboutContext);
+  const { toggleModal } = useContext(AboutContext);
   const context = useContext(AboutContext);
   console.log(context.openModal);
 
@@ -56,9 +56,7 @@ function AdminGarbage() {
           <h1 className="font-medium text-[1.2rem] text-center">
             Garbage list
           </h1>
-          <section className="p-2"
-          onClick={()=>toggleModal()}
-          >
+          <section className="p-2" onClick={() => toggleModal()}>
             <section className="bg-white rounded-2xl shadow-lg w-100 p-4">
               <div className="flex justify-between items-center py-2">
                 <p className="font-medium text-[1.2rem]">Organic</p>
@@ -112,8 +110,7 @@ function AdminGarbage() {
           <FaPlus className="text-[15px]" /> <span>Garbage</span>
         </button>
 
-        <About/>
-        
+        <About />
       </div>
     </>
   );
