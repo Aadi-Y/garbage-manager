@@ -28,8 +28,20 @@ function Login() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  function valid(email) {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!valid(formData?.email)) {
+      setError("Invalid email, Please check !");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await axiosInstance.post(apiPath.AUTH.LOGIN, formData);
       if (response && response.data) {

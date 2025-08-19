@@ -34,9 +34,21 @@ function Signup() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  function valid(email) {
+    const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return pattern.test(email);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signing up with:", formData);
+    // console.log("Signing up with:", formData);
+
+    if (!valid(formData?.email)) {
+        setError("Invalid email, Please check !");
+        setIsLoading(false);
+        return;
+      }
+
     try {
       const response = await axiosInstance.post(
         apiPath.AUTH.REGISTER,
