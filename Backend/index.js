@@ -7,6 +7,7 @@ const garbageRouter = require("./routes/garbageRoute");
 const driverRouter = require("./routes/driverRoute");
 const areaRouter = require("./routes/areaRoute");
 const cors = require("cors");
+const serverless = require("serverless-http");
 
 const app = express();
 
@@ -30,12 +31,8 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 8000
 
 handleDatabase()
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log(`Server running at http://localhost:${PORT}`);
-        });
-    })
-    .catch((err) => {
-        console.error("Server not started due to DB error");
-        process.exit(1);
-    });
+  .then(() => console.log("Database connected"))
+  .catch((err) => console.error("DB connection failed", err));
+
+module.exports = app;
+module.exports.handler = serverless(app);
