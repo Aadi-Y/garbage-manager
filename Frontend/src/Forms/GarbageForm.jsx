@@ -41,7 +41,7 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
       ...formData,
       pincode: Number(formData.pincode),
     };
-    console.log("Submitting Garbage:", garbageData);
+    // console.log("Submitting Garbage:", garbageData);
     // if (onSubmit) onSubmit(garbageData);
     try {
       const response = await axiosInstance.post(
@@ -49,7 +49,7 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
         garbageData
       );
 
-      console.log(response);
+      // console.log(response);
       if (response && response.data) {
         toast.success(response.data.message);
         handleGetGarbages();
@@ -76,7 +76,7 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
         garbageData
       );
 
-      console.log(response);
+      // console.log(response);
       if (response && response.data) {
         handleCloseModal();
         toast.success(response.data.message);

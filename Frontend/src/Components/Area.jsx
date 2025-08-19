@@ -44,7 +44,7 @@ function Area() {
         setIsLoading(false);
       }
 
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       if (error && error.response) {
         console.error(error.response.data.message);
@@ -57,7 +57,7 @@ function Area() {
   async function handleAreaDelete(id) {
     try {
       const response = await axiosInstance.delete(apiPath.AREA.DELETE(id));
-      console.log(response);
+      // console.log(response);
 
       if (response && response.data) {
         toast.success(response.data.message);
@@ -73,6 +73,7 @@ function Area() {
   async function handleGetAreaForDriver() {
     try {
       const response = await axiosInstance.get(apiPath.AREA.GET_FOR_DRIVER);
+      // console.log(response);
 
       if (response && response.data) {
         setAreas(response.data.area);
@@ -206,10 +207,19 @@ function Area() {
                         </span>{" "}
                         Assigned Drivers
                       </h3>
-                      <ul className="list-disc list-inside text-slate-700 text-sm">
+                      {/* <ul className="list-disc list-inside text-slate-700 text-sm">
                         {area.assignedDrivers.length !== 0 ? (
                           area.assignedDrivers.map((driver, index) => (
                             <li key={index}>{driver?.driverId?.driverId}</li>
+                          ))
+                        ) : (
+                          <p>No driver assigned</p>
+                        )}
+                      </ul> */}
+                      <ul className="list-disc list-inside text-slate-700 text-sm">
+                        {area.assignedDrivers.length !== 0 ? (
+                          area.assignedDrivers.map((driver, index) => (
+                            <li key={index}>{driver?.userName}</li>
                           ))
                         ) : (
                           <p>No driver assigned</p>

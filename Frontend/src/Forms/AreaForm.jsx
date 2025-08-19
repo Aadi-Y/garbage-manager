@@ -31,7 +31,7 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
         driverId: selectedDriver,
       });
 
-      console.log(response);
+      // console.log(response);
     } catch (error) {
       console.log(error);
       if (error && error.response) {
@@ -50,9 +50,9 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
         ...formData,
         areaPincode: Number(formData.areaPincode),
       };
-      console.log("Submitting Area:", areaData);
+      // console.log("Submitting Area:", areaData);
       const response = await axiosInstance.post(apiPath.AREA.CREATE, formData);
-      console.log(response);
+      // console.log(response);
       if (response && response.data) {
         await handleAssignDriver(response.data.area._id);
         setIsLoading(false);
@@ -87,7 +87,7 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
         apiPath.AREA.UPDATE(area._id),
         areaData
       );
-      console.log(response);
+      // console.log(response);
       if (response && response.data) {
         await handleAssignDriver(response.data.area._id);
         await handleGetAreaForAdmin();
@@ -104,7 +104,7 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
   async function handleGetAllDriverIds() {
     try {
       const response = await axiosInstance.get(apiPath.AREA.GET_ALL_DRIVER_ID);
-      console.log(response);
+      // console.log(response);
 
       if (response && response.data) {
         setDriverIds(response.data.driverId);
@@ -121,7 +121,7 @@ const AreaForm = ({ type, handleCloseModal, area, handleGetAreaForAdmin }) => {
     handleGetAllDriverIds();
   }, []);
 
-  console.log(driverId);
+  // console.log(driverId);
 
   return (
     <div>

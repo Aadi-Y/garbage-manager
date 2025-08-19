@@ -24,7 +24,7 @@ function Driver() {
   const [disable, setDisable] = useState(true);
   const { role } = useContext(AboutContext);
 
-  console.log(role);
+  // console.log(role);
 
   const [openDetails, setOpenDetails] = useState({
     isShown: false,
@@ -49,7 +49,7 @@ function Driver() {
   async function handleGetDriver() {
     try {
       const response = await axiosInstance.get(apiPath.DRIVER.GET_DRIVER);
-      console.log(response.data.driver);
+      // console.log(response.data.driver);
 
       if (response && response.data) {
         setDrivers(response.data.driver);

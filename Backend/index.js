@@ -35,4 +35,8 @@ handleDatabase()
   .catch((err) => console.error("DB connection failed", err));
 
 module.exports = app;
+
+// app.listen(PORT,()=>{
+//     console.log("Server is running at the port",PORT);
+// })
 // module.exports.handler = serverless(app);

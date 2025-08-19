@@ -14,7 +14,7 @@ function AdminGarbage() {
   const [openModal1, setOpenModal] = useState(false);
   const { toggleModal } = useContext(AboutContext);
   const context = useContext(AboutContext);
-  console.log(context.openModal);
+  // console.log(context.openModal);
 
   function handleCloseModal() {
     setOpenModal((prev) => !prev);

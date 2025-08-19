@@ -15,4 +15,4 @@ export const trimDescription = (sentence) => {
 
 const sentence = "It is an mixed waste with many types of garbages mixed together"
 let result = trimDescription(sentence);
-console.log(result);
+// console.log(result);

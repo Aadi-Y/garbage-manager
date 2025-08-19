@@ -20,7 +20,7 @@ function About({ garbage }) {
         apiPath.GARBAGE.GET_GARBAGE_DRIVER(id)
       );
 
-      console.log(response);
+      // console.log(response);
 
       if (response && response.data) {
         setDriver(response.data);
@@ -38,7 +38,7 @@ function About({ garbage }) {
     fetchData();
   }, [garbage]);
 
-  console.log(driver);
+  // console.log(driver);
 
   return (
     <>

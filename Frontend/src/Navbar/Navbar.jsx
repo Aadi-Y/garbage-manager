@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   const { user, handleGetUser, reset } = useContext(AboutContext);
-  console.log(user);
+  // console.log(user);
 
   const navigate = useNavigate();
 

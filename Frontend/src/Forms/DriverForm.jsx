@@ -37,7 +37,7 @@ function DriverForm({ driver, type, handleCloseModal, handleGetDriver }) {
       phoneNumber: Number(formData.phoneNumber),
       aadharId: Number(formData.aadharId),
     };
-    console.log("Submitting Driver:", driverData);
+    // console.log("Submitting Driver:", driverData);
     setError(null);
     setIsLoading(true);
     try {
@@ -46,7 +46,7 @@ function DriverForm({ driver, type, handleCloseModal, handleGetDriver }) {
         driverData
       );
 
-      console.log(response);
+      // console.log(response);
       if (response && response.data) {
         toast.success(response.data.message);
         setIsLoading(false);
@@ -76,7 +76,7 @@ function DriverForm({ driver, type, handleCloseModal, handleGetDriver }) {
         apiPath.DRIVER.UPDATE(driver?._id),
         driverData
       );
-      console.log(response);
+      // console.log(response);
 
       if (response && response.data) {
         toast.success(response.data.message);

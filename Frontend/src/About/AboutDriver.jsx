@@ -34,14 +34,14 @@ function AboutDriver({ driver }) {
 
   async function handleAssignGarbage(e) {
     e.preventDefault();
-    console.log(garbages);
+    // console.log(garbages);
     try {
       const response = await axiosInstance.put(
         apiPath.AREA.ASSIGN_GARBAGE(driver._id),
         { garbages }
       );
 
-      console.log(response);
+      // console.log(response);
       if (response && response.data) {
         toast.success(response.data.message);
         handleGetAllAssignedGarbages();
@@ -61,7 +61,7 @@ function AboutDriver({ driver }) {
         apiPath.AREA.GET_ASSIGNED_GARBAGES(driver._id)
       );
 
-      console.log(response);
+      // console.log(response);
       if (response && response.data) {
         setAssignedRequest(response.data.garbageIds);
       }
@@ -80,7 +80,7 @@ function AboutDriver({ driver }) {
     try {
       const response = await axiosInstance.get(apiPath.GARBAGE.GET_ALL_ID);
 
-      console.log(response);
+      // console.log(response);
       if (response && response.data) {
         setGarbageIds(response.data.garbageIds);
       }

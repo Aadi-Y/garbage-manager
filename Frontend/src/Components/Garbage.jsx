@@ -32,7 +32,7 @@ function Garbage({}) {
   const { role } = useContext(AboutContext);
   const [error, setError] = useState("");
 
-  console.log(role);
+  // console.log(role);
 
   const [openDetails, setOpenDetails] = useState({
     isShown: false,
@@ -65,8 +65,8 @@ function Garbage({}) {
   async function handleGetGarbages() {
     try {
       const response = await axiosInstance.get(apiPath.GARBAGE.GET_USERS);
-      console.log(response);
-      console.log(response.data.garbages);
+      // console.log(response);
+      // console.log(response.data.garbages);
 
       if (response && response.data) {
         setGarbages(response.data.garbages);
@@ -81,7 +81,7 @@ function Garbage({}) {
   async function handleGetAllGarbages() {
     try {
       const response = await axiosInstance.get(apiPath.GARBAGE.GET_ALL);
-      console.log(response.data.garbages);
+      // console.log(response.data.garbages);
       if (response && response.data) {
         setGarbages(response.data.garbages);
       }
@@ -109,7 +109,7 @@ function Garbage({}) {
         apiPath.AREA.GET_ALL_GARBAGE_DRIVER
       );
 
-      console.log(response);
+      // console.log(response);
       if (response) {
         setGarbages(response.data.garbages);
       }
@@ -145,7 +145,7 @@ function Garbage({}) {
     try {
       const response = await axiosInstance.delete(apiPath.GARBAGE.DELETE(id));
 
-      console.log(response);
+      // console.log(response);
 
       if (response && response.data) {
         toast.success(response.data.message);
@@ -176,7 +176,7 @@ function Garbage({}) {
         apiPath.GARBAGE.DISPOSED(garbageId)
       );
 
-      console.log(response);
+      // console.log(response);
       if (response) {
         toast.success(response.data.message);
         role === "Driver" && handleGetAllGarbagesForDriver();
