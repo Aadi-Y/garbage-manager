@@ -181,7 +181,7 @@ async function handleGetProfile(req, res) {
         const user = await User.findById({ _id: id }).select("-password");
 
         if (!user) {
-            res.status(404).json({
+            return res.status(404).json({
                 error: true,
                 message: "User not found"
             })

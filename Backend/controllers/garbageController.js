@@ -39,7 +39,7 @@ async function handleCreateGarbage(req, res) {
         const { id } = await req.user
 
         if (!id) {
-            res.status(404).json({
+            return res.status(404).json({
                 error: true,
                 message: "User not found"
             })

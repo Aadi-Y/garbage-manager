@@ -1,5 +1,5 @@
 const express = require("express");
-const { handleRegister, handleLogin, handleGetProfile,handleUpdateDriverInUser } = require("../controllers/authController");
+const { handleRegister, handleLogin, handleGetProfile, handleUpdateDriverInUser } = require("../controllers/authController");
 const { protect } = require("../middleware/protect");
 const { roleAuthentication } = require("../middleware/roleMiddleware");
 
@@ -8,7 +8,7 @@ const router = express.Router();
 router.post("/register", handleRegister);
 router.post("/login", handleLogin);
 router.get("/get_profile", protect, roleAuthentication(["User", "Driver", "Admin"]), handleGetProfile);
-router.put("/updateDriverId",protect,handleUpdateDriverInUser);
+router.put("/updateDriverId", protect, handleUpdateDriverInUser);
 
 
 module.exports = router

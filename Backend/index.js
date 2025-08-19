@@ -7,8 +7,6 @@ const garbageRouter = require("./routes/garbageRoute");
 const driverRouter = require("./routes/driverRoute");
 const areaRouter = require("./routes/areaRoute");
 const cors = require("cors");
-const generateId = require("./helper/generateID");
-const id = generateId();
 
 const app = express();
 
@@ -35,7 +33,6 @@ handleDatabase()
     .then(() => {
         app.listen(PORT, () => {
             console.log(`Server running at http://localhost:${PORT}`);
-            console.log(id);
         });
     })
     .catch((err) => {

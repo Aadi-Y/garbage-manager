@@ -2,7 +2,7 @@ function roleAuthentication(roles) {
     return (req,res,next) => {
         try {
             if (!roles.includes(req.user.role)) {
-                res.status(403).json({
+                return res.status(403).json({
                     error: true,
                     message: "Access denied"
                 })
