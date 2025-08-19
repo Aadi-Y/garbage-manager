@@ -7,7 +7,7 @@ const garbageRouter = require("./routes/garbageRoute");
 const driverRouter = require("./routes/driverRoute");
 const areaRouter = require("./routes/areaRoute");
 const cors = require("cors");
-const serverless = require("serverless-http");
+// const serverless = require("serverless-http");
 
 const app = express();
 
@@ -35,4 +35,4 @@ handleDatabase()
   .catch((err) => console.error("DB connection failed", err));
 
 module.exports = app;
-module.exports.handler = serverless(app);
+// module.exports.handler = serverless(app);
