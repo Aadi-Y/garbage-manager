@@ -15,7 +15,7 @@ async function handleAssignId(id = generateId()) {
 // @access Private
 async function handleAssignGarbage(req, res) {
     try {
-        const { garbages } = req.body; 
+        const { garbages } = req.body;
         const driverId = req.params.id;
 
         if (!garbages) {
@@ -259,7 +259,7 @@ async function handleCreateArea(req, res) {
             areaLocation,
             areaPincode,
             areaId: await handleAssignId(),
-            assignedDrivers:[]
+            assignedDrivers: []
         }
         const area = await Area.create(newArea);
 
@@ -283,13 +283,14 @@ async function handleCreateArea(req, res) {
 async function handleGetArea(req, res) {
     try {
         const area = await Area.find({})
-        .populate({path:"assignedDrivers",
-            populate:{
-                path:"driverId",
-                model:"Driver"
-            }
-        })
-        .exec();
+            .populate({
+                path: "assignedDrivers",
+                populate: {
+                    path: "driverId",
+                    model: "Driver"
+                }
+            })
+            .exec();
 
         res.status(200).json({
             error: false,
@@ -307,21 +308,22 @@ async function handleGetArea(req, res) {
 // @decr It is used to get all the assinged areas
 // @route GET /api/garbage/getAreaForDriver;
 // @access Private
-async function handleGetAreaForDriver(req,res) {
+async function handleGetAreaForDriver(req, res) {
     try {
         const { id } = req.user;
-        const area = await Area.find({assignedDrivers:id})
-        .populate({path:"assignedDrivers",
-            populate:{
-                path:"driverId",
-                model:"Driver"
-            }
-        });
+        const area = await Area.find({ assignedDrivers: id })
+            .populate({
+                path: "assignedDrivers",
+                populate: {
+                    path: "driverId",
+                    model: "Driver"
+                }
+            });
 
-        if(!area || area.length === 0){
+        if (!area || area.length === 0) {
             return res.status(400).json({
-                error:true,
-                message:"No area is assigned to you"
+                error: true,
+                message: "No area is assigned to you"
             })
         }
 
@@ -397,43 +399,43 @@ async function handleDeleteArea(req, res) {
     }
 }
 
-async function handleGetAllDriverId(req,res){
-    try{
+async function handleGetAllDriverId(req, res) {
+    try {
         const availableIds = await Driver.find({}).select("driverId name userId");
         const driverId = availableIds;
 
         res.status(200).json({
-            error:true,
-            message:"All the driver id are fetched",
+            error: true,
+            message: "All the driver id are fetched",
             driverId
         });
-    }catch(error){
+    } catch (error) {
         res.status(500).json({
-            error:true,
-            message:error.message
+            error: true,
+            message: error.message
         })
     }
 }
 
-async function handleGetGarbagesForDriver(req,res){
-    try{
-        const {id} = req.user;
-        
-        let garbages = await Driver.find({userId:id}).select("assignedRequest -_id")
-        .populate("assignedRequest")
-        .exec();
+async function handleGetGarbagesForDriver(req, res) {
+    try {
+        const { id } = req.user;
+
+        let garbages = await Driver.find({ userId: id }).select("assignedRequest -_id")
+            .populate("assignedRequest")
+            .exec();
 
         garbages = garbages[0].assignedRequest;
 
         res.status(200).json({
-            error:true,
-            message:"All the garbage assigned to this driver is fetched",
+            error: true,
+            message: "All the garbage assigned to this driver is fetched",
             garbages
         })
-    }catch(error){
+    } catch (error) {
         res.status(500).json({
-            error:true,
-            message:error.message
+            error: true,
+            message: error.message
         })
     }
 }
