@@ -43,6 +43,7 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
     };
     // console.log("Submitting Garbage:", garbageData);
     // if (onSubmit) onSubmit(garbageData);
+    setIsLoading(true);
     try {
       const response = await axiosInstance.post(
         apiPath.GARBAGE.CREATE,
@@ -60,6 +61,8 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
         consol.error(error.response);
         toast.error(error.response.data.message);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,6 +73,7 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
       ...formData,
       pincode: Number(formData.pincode),
     };
+    setIsLoading(true);
     try {
       const response = await axiosInstance.put(
         apiPath.GARBAGE.UPDATE(garbage?._id),
@@ -86,6 +90,8 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
       if (error?.response) {
         console.log("Error in Updation : ", error.response);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -294,7 +300,13 @@ function GarbageForm({ handleCloseModal, garbage, type, handleGetGarbages }) {
           className="w-full rounded-lg p-2 cursor-pointer bg-green-500 hover:bg-green-600 text-white"
           type="submit"
         >
-          {type === "edit" ? "Edit Garbage" : "Submit Garbage"}
+          {type === "edit"
+            ? isLoading
+              ? "Editing Garbage"
+              : "Edit Garbage"
+            : isLoading
+            ? "Submitting Garbage"
+            : "Submit Garbage"}
         </button>
       </form>
     </div>

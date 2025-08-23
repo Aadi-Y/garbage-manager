@@ -42,6 +42,8 @@ function Login() {
       return;
     }
 
+    setIsLoading(true);
+
     try {
       const response = await axiosInstance.post(apiPath.AUTH.LOGIN, formData);
       if (response && response.data) {
@@ -55,8 +57,9 @@ function Login() {
         setError(err.response.data.message);
         console.error(err.response);
       }
+    }finally{
+      setIsLoading(false);
     }
-    console.log("Logging in with:", formData);
   };
 
   return (
@@ -106,7 +109,7 @@ function Login() {
         <button
           type="submit"
           disabled={isLoading}
-          className="border w-full p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200 font-semibold"
+          className={`border w-full p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200 font-semibold ${isLoading ? "bg-green-600" : ""}`}
         >
           {isLoading ? "Logging In" : "Login"}
         </button>

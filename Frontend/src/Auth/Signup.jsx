@@ -40,6 +40,7 @@ function Signup() {
   }
 
   const handleSubmit = async (e) => {
+   
     e.preventDefault();
     // console.log("Signing up with:", formData);
 
@@ -48,6 +49,8 @@ function Signup() {
         setIsLoading(false);
         return;
       }
+    
+    setIsLoading(true);
 
     try {
       const response = await axiosInstance.post(
@@ -67,6 +70,8 @@ function Signup() {
       if (error.response) {
         setError(error.response.data.message);
       }
+    }finally{
+      setIsLoading(false);
     }
   };
 
@@ -147,7 +152,7 @@ function Signup() {
         <button
           type="submit"
           disabled={isLoading}
-          className="border w-full outline-none focus:border-green-600 rounded-lg p-2 bg-green-500  text-white hover:bg-green-600 cursor-pointer transition-all duration-200 font-medium"
+          className={`border w-full outline-none focus:border-green-600 rounded-lg p-2 bg-green-500  text-white hover:bg-green-600 cursor-pointer transition-all duration-200 font-medium ${isLoading ? "bg-green-600" : ""}`} 
         >
           {isLoading ? "Signing up" : "Signup"}
         </button>

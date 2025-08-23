@@ -71,6 +71,7 @@ function DriverForm({ driver, type, handleCloseModal, handleGetDriver }) {
       phoneNumber: Number(formData.phoneNumber),
       aadharId: Number(formData.aadharId),
     };
+    setIsLoading(true);
     try {
       const response = await axiosInstance.put(
         apiPath.DRIVER.UPDATE(driver?._id),
@@ -88,6 +89,9 @@ function DriverForm({ driver, type, handleCloseModal, handleGetDriver }) {
         toast.error(response.data.message);
         console.log(error?.response);
       }
+    }finally{
+      setError("");
+      setIsLoading(false);
     }
   };
 
@@ -249,7 +253,7 @@ function DriverForm({ driver, type, handleCloseModal, handleGetDriver }) {
           type="submit"
           className="p-2 rounded bg-green-500 hover:bg-green-600 w-full cursor-pointer text-white"
         >
-          {type === "edit" ? "Update Driver" : "Create Driver"}
+          {type === "edit" ? isLoading ? "Updating Driver" : "Update Driver" : isLoading ? "Creating Driver" : "Create Driver"}
         </button>
       </form>
     </div>

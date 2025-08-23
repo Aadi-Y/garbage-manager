@@ -1,4 +1,5 @@
 export const base_url = "https://garbage-management-backend.vercel.app";
+// export const base_url = "http://localhost:8000";
 
 export const apiPath = {
     AUTH:{
