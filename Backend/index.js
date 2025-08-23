@@ -36,7 +36,7 @@ handleDatabase()
 
 module.exports = app;
 
-app.listen(PORT,()=>{
-    console.log("Server is running at the port",PORT);
-})
+// app.listen(PORT,()=>{
+//     console.log("Server is running at the port",PORT);
+// })
 // module.exports.handler = serverless(app);
