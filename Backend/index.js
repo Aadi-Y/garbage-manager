@@ -30,16 +30,6 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 8000
 
-// handleDatabase()
-//   .then(() => console.log("Database connected"))
-//   .catch((err) => console.error("DB connection failed", err));
-
-// module.exports = app;
-
-// app.listen(PORT,()=>{
-//     console.log("Server is running at the port",PORT);
-// })
-
 handleDatabase()
   .then(() => {
     console.log("Database connected");
