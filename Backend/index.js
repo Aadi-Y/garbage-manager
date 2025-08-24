@@ -30,13 +30,21 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 8000
 
-handleDatabase()
-  .then(() => console.log("Database connected"))
-  .catch((err) => console.error("DB connection failed", err));
+// handleDatabase()
+//   .then(() => console.log("Database connected"))
+//   .catch((err) => console.error("DB connection failed", err));
 
-module.exports = app;
+// module.exports = app;
 
 // app.listen(PORT,()=>{
 //     console.log("Server is running at the port",PORT);
 // })
-// module.exports.handler = serverless(app);
+
+handleDatabase()
+  .then(() => {
+    console.log("Database connected");
+    app.listen(PORT, () => {
+      console.log("Server is running at port", PORT);
+    });
+  })
+  .catch((err) => console.error("DB connection failed", err));
