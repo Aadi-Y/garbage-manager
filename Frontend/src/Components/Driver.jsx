@@ -24,6 +24,8 @@ function Driver() {
   const [disable, setDisable] = useState(true);
   const { role } = useContext(AboutContext);
 
+  const [isLoading,setIsLoading] = useState(false);
+
   // console.log(role);
 
   const [openDetails, setOpenDetails] = useState({
@@ -47,6 +49,7 @@ function Driver() {
   }, [drivers]);
 
   async function handleGetDriver() {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.get(apiPath.DRIVER.GET_DRIVER);
       // console.log(response.data.driver);
@@ -58,10 +61,13 @@ function Driver() {
       if (error?.response) {
         console.log(error?.response);
       }
+    }finally{
+      setIsLoading(false);
     }
   }
 
   async function handleGetAllDrivers() {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.get(apiPath.DRIVER.GET_ALL_DRIVER);
       if (response && response.data) {
@@ -71,6 +77,8 @@ function Driver() {
       if (error?.response) {
         console.log(error?.response);
       }
+    }finally{
+      setIsLoading(false);
     }
   }
 
@@ -117,6 +125,21 @@ function Driver() {
   }
 
   console.log(drivers);
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <h1 style={{fontWeight:700}}>Loading please wait...</h1>
+      </div>
+    );
+  }
 
   return (
     <>

@@ -71,6 +71,7 @@ function Area() {
   }
 
   async function handleGetAreaForDriver() {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.get(apiPath.AREA.GET_FOR_DRIVER);
       // console.log(response);
@@ -83,6 +84,8 @@ function Area() {
       if (error?.response) {
         console.log(error.response.data.message);
       }
+    }finally{
+      setIsLoading(false);
     }
   }
 
@@ -102,6 +105,21 @@ function Area() {
       handleGetAreaForDriver();
     }
   }, [role]);
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <h1 style={{fontWeight:700}}>Loading please wait...</h1>
+      </div>
+    );
+  }
 
   return (
     <>

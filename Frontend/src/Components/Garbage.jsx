@@ -31,6 +31,7 @@ function Garbage({}) {
   const [garbageDescription, setGarbageDescription] = useState("");
   const { role } = useContext(AboutContext);
   const [error, setError] = useState("");
+  const [isLoading,setIsLoading] = useState(false);
 
   // console.log(role);
 
@@ -63,6 +64,7 @@ function Garbage({}) {
   }
 
   async function handleGetGarbages() {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.get(apiPath.GARBAGE.GET_USERS);
       // console.log(response);
@@ -75,10 +77,13 @@ function Garbage({}) {
       if (error?.response) {
         console.error("Error in creation : " + error.response);
       }
+    }finally{
+      setIsLoading(false);
     }
   }
 
   async function handleGetAllGarbages() {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.get(apiPath.GARBAGE.GET_ALL);
       // console.log(response.data.garbages);
@@ -89,6 +94,8 @@ function Garbage({}) {
       if (error?.response) {
         console.log(error?.response);
       }
+    }finally{
+      setIsLoading(false);
     }
   }
 
@@ -104,6 +111,7 @@ function Garbage({}) {
   // }
 
   async function handleGetAllGarbagesForDriver() {
+    setIsLoading(true);
     try {
       const response = await axiosInstance.get(
         apiPath.AREA.GET_ALL_GARBAGE_DRIVER
@@ -118,6 +126,8 @@ function Garbage({}) {
       if (error && error.response) {
         console.log(error.response);
       }
+    }finally{
+      setIsLoading(false);
     }
   }
 
@@ -202,6 +212,21 @@ function Garbage({}) {
       handleGetAllGarbagesForDriver();
     }
   }, [role]);
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <h1 style={{fontWeight:700}}>Loading please wait...</h1>
+      </div>
+    );
+  }
 
   return (
     <>
