@@ -382,7 +382,7 @@ function Garbage({}) {
         </section>
       )}
 
-      {role === "User" && (
+      {role !== "Driver" && (
         <div>
           <button
             onClick={handleCloseModal}

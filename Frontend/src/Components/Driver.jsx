@@ -256,20 +256,36 @@ function Driver() {
         </section>
       )}
 
-      <div>
-        <button
-          onClick={handleCloseModal}
-          disabled={disable}
-          className={`bg-green-500 transition-all duration-200 p-2 text-white rounded-lg fixed bottom-5 right-5 flex items-center gap-2 ${
-            disable ? "cursor-not-allowed bg-green-600" : "cursor-pointer"
-          }`}
-        >
-          <span>
-            <FaPlus />
-          </span>
-          Driver
-        </button>
-      </div>
+      {role === "Driver" && (
+        <div>
+          <button
+            onClick={handleCloseModal}
+            disabled={disable}
+            className={`bg-green-500 transition-all duration-200 p-2 text-white rounded-lg fixed bottom-5 right-5 flex items-center gap-2 ${
+              disable ? "cursor-not-allowed bg-green-600" : "cursor-pointer"
+            }`}
+          >
+            <span>
+              <FaPlus />
+            </span>
+            Driver
+          </button>
+        </div>
+      )}
+
+      {/* {role === "Admin" && (
+        <div>
+          <button
+            onClick={handleCloseModal}
+            className={`bg-green-500 transition-all duration-200 p-2 text-white rounded-lg fixed bottom-5 right-5 flex items-center gap-2 hover:bg-green-600 cursor-pointer`}
+          >
+            <span>
+              <FaPlus />
+            </span>
+            Driver
+          </button>
+        </div>
+      )} */}
     </>
   );
 }
