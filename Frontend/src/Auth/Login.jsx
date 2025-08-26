@@ -57,7 +57,7 @@ function Login() {
         setError(err.response.data.message);
         console.error(err.response);
       }
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -109,7 +109,9 @@ function Login() {
         <button
           type="submit"
           disabled={isLoading}
-          className={`border w-full p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200 font-semibold ${isLoading ? "bg-green-600" : ""}`}
+          className={`border w-full p-2 rounded-lg bg-green-500 text-white hover:bg-green-600 cursor-pointer transition-all duration-200 font-semibold ${
+            isLoading ? "bg-green-600" : ""
+          }`}
         >
           {isLoading ? "Logging In" : "Login"}
         </button>
