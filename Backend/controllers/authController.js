@@ -3,9 +3,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const generateId = require("../helper/generateID");
 
-async function handleAssignId(id=generateId()){
-    const existing = await User.findOne({userId:id});
-    if(existing){
+async function handleAssignId(id = generateId()) {
+    const existing = await User.findOne({ userId: id });
+    if (existing) {
         return await handleAssignId(id);
     }
 
@@ -76,7 +76,7 @@ async function handleRegister(req, res) {
 
         }
 
-        if(!isUpperCase(role)){
+        if (!isUpperCase(role)) {
             role = capitalize(role);
         }
 
@@ -207,8 +207,8 @@ async function handleUpdateDriverInUser(req, res) {
         const { driverId } = req.body; // new driverId from request
 
         const userDetails = await User.findByIdAndUpdate(
-            id, 
-            { driverId }, 
+            id,
+            { driverId },
             { new: true, runValidators: true }
         );
 
